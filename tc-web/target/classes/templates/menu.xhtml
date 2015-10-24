@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<ui:composition>
+	<div id="menu">
+		<h:form>
+			<p:menubar styleClass="labelmenu">
+			
+				
+
+				<p:submenu label="Manutenção">
+					<p:menuitem value="Usuarios" url="/admin/manutencaousuario.jsf"
+						ajax="false" />
+
+					<p:menuitem value="Série" url="/admin/cadastroserie.jsf"
+						ajax="false" />
+					<p:menuitem value="Turno" url="/admin/cadastroturno.jsf"
+						ajax="false" />
+					<p:menuitem value="Instituição"
+						url="/admin/manutencaoinstituicao.jsf" ajax="false" />
+					<p:menuitem value="Grau Dificuldade"
+						url="/admin/cadastrograudificuldade.jsf" ajax="false" />
+					<p:menuitem value="Status Avaliação"
+						url="/admin/cadastrostatusavaliacao.jsf" ajax="false" />
+					<p:menuitem value="Tópico de Estudo"
+						url="/admin/cadastrotopicoestudo.jsf" ajax="false" />
+
+					<p:menuitem value="Disciplina" url="/admin/cadastrardisciplina.jsf"
+						ajax="false" />
+
+				</p:submenu>
+				
+				<p:submenu label="Questões">
+					<p:menuitem value="Consultar Questões públicas" url="/restrito/atualizacadastro.jsf" /> 
+					<p:menuitem value="Buscador de Questão" url="/professor/pesquisaquestao.jsf" />
+				</p:submenu>
+
+				<p:submenu label="Professor">
+
+					<p:menuitem value="Criar Avaliação"	url="/professor/criaravaliacao.jsf" />
+					<p:menuitem value="Corrigir Avaliação" url="/professor/correcaoavaliacao.jsf" />
+					<p:menuitem value="Criar Turma/Grupo ou Curso" url="/professor/cadastroturma.jsf" />
+					<p:menuitem value="Estatísticas/Informações" url="/professor/estatisticas.jsf" />
+					<p:submenu label="Incluir Questão" >
+							<p:menuitem value="Dissertativa" url="/professor/incluirquestaodissertativa.jsf" />
+							<p:menuitem value="Objetiva" url="/professor/incluirquestaoobjetiva.jsf" />
+							<p:menuitem value="Relacionar" url="/professor/incluirquestaorelacionar.jsf" />
+							<p:menuitem value="Verdadeiro ou Falso" url="/professor/incluirquestaoVF.jsf" />
+							<p:menuitem value="Ordenar" url="/professor/incluirquestaoordenar.jsf" />
+					</p:submenu>
+				</p:submenu>
+
+				<p:submenu label="Aluno">
+				<p:menuitem value="Minhas Avaliações" url="/aluno/avaliacoesaluno.jsf" />
+				<p:menuitem value="Responder Avaliação" url="/aluno/responderavaliacao.jsf" />
+				<p:menuitem value="Estatísticas/Informações" url="/aluno/estatisticasaluno.jsf" />
+				<p:submenu label="Participar">
+					<p:menuitem value="Turma, Grupo ou Curso" url="/aluno/entrarturma.jsf" />
+				</p:submenu>
+				</p:submenu>
+
+
+				<p:submenu label="Preferências">
+				</p:submenu>
+				
+				<p:submenu label="Perfil">
+					<p:menuitem value="Atualizar informações" url="/restrito/atualizacadastro.jsf" />
+				</p:submenu>
+
+			</p:menubar>
+		</h:form>
+	</div>
+
+
+</ui:composition>
+
+</html>

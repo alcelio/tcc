@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+
+		<h:form id="form">
+		<p:growl id="msg0" />
+			<p:dataTable var="questao" value="#{dtFilterView.questoes}"
+				widgetVar="carsTable"
+				emptyMessage="Nenhuma questão encontrada com os determinados critérios"
+				filteredValue="#{dtFilterView.filtroQuestao}">
+
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="Buscar em todos os campos:" />
+						<p:inputText id="globalFilter" onkeyup="PF('carsTable').filter()"
+							style="width:200px" placeholder="Pesquisar em todos os campos" />
+					</p:outputPanel>
+				</f:facet>
+
+				<p:column filterBy="#{questao.disciplina.dsDisciplina}"
+					headerText="Disciplinas" footerText="Disciplina"
+					filterMatchMode="exact">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('carsTable').filter()">
+							<f:selectItem itemLabel="Todos" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dtFilterView.disciplinas}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{questao.disciplina.dsDisciplina}" />
+				</p:column>
+
+
+				<p:column filterBy="#{questao.topicoEstudo.dsTopicoEstudo}"
+					headerText="Tópicos de Estudo" footerText="Tópico de estudo"
+					filterMatchMode="exact">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('carsTable').filter()">
+							<f:selectItem itemLabel="Todos" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dtFilterView.topicosEstudo}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{questao.topicoEstudo}" />
+				</p:column>
+
+				<p:column filterBy="#{questao.grauDificuldade}"
+					headerText="Grau de dificuldade" footerText="Grau de dificuldade"
+					filterMatchMode="exact">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('carsTable').filter()">
+							<f:selectItem itemLabel="Todos" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dtFilterView.grauDificuldade}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{questao.grauDificuldade}" />
+				</p:column>
+
+				<p:column filterBy="#{questao.tipoQuestao}"
+					headerText="Tipo de questão" footerText="Tipos de questão"
+					filterMatchMode="exact">
+					<f:facet name="filter">
+						<p:selectOneMenu onchange="PF('carsTable').filter()">
+							<f:selectItem itemLabel="Todos" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dtFilterView.tipoQuestao}" />
+						</p:selectOneMenu>
+					</f:facet>
+					<h:outputText value="#{questao.tipoQuestao}" />
+				</p:column>
+
+				<p:column headerText="Enunciado" footerText="Enunciado da questão"
+					filterMatchMode="contain">
+					<f:facet name="filter">
+					</f:facet>
+					<h:outputText value="#{questao.pergunta}" />
+				</p:column>
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update="form:detalheQuestao" 
+					oncomplete="PF('detalheQuestao').show()"
+					 icon="ui-icon-search" title="Vizualizar Questão">
+					 <f:setPropertyActionListener value="#{questao}"
+							target="#{dtFilterView.questao}" />
+					</p:commandButton>
+				</p:column>
+
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton icon="ui-icon-add" action="#{mbAvaliacao.adicionaQuestaoListaAvaliacao()}"
+						title="Adicionar questão à avalição">
+						<f:setPropertyActionListener target="#{mbAvaliacao.questao}" value="#{questao}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<p:dialog header="Dealhes da questão" widgetVar="detalheQuestao" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="detalheQuestao" style="text-align:center;">
+					<p:panelGrid columns="1"
+						rendered="#{not empty dtFilterView.questao}"
+						columnClasses="label,value">
+
+						<h:outputText value="Pergunta/Enunciado: #{dtFilterView.questao.pergunta}" />
+						<h:outputText value="Resposta: #{dtFilterView.questao.dissertativa.dsRespDissertativa}" />
+
+						<p:panelGrid columns="2"  >
+							<h:outputText value="Opção A: #{dtFilterView.questao.opcaoA}"  rendered="#{not empty dtFilterView.questao.opcaoA}" />
+							<p:panelGrid columns="2" rendered="#{not empty dtFilterView.questao.opcaoA}">
+								<h:outputText value="Correta:" />
+								 <p:selectBooleanCheckbox value="Correta: #{dtFilterView.questao.respObjOpcaoA}"  />
+							</p:panelGrid>
+							
+							<h:outputText value="Opção B: #{dtFilterView.questao.opcaoB}" rendered="#{not empty dtFilterView.questao.opcaoB}"/>
+							<p:panelGrid columns="2" rendered="#{not empty dtFilterView.questao.opcaoB}">
+								<h:outputText value="Correta:" />
+								 <p:selectBooleanCheckbox value="Correta: #{dtFilterView.questao.respObjOpcaoB}"  />
+							</p:panelGrid>
+							
+							<h:outputText value="Opção C: #{dtFilterView.questao.opcaoC}" rendered="#{not empty dtFilterView.questao.opcaoC}"/>
+							<p:panelGrid columns="2" rendered="#{not empty dtFilterView.questao.opcaoC}">
+								<h:outputText value="Correta:" />
+								 <p:selectBooleanCheckbox value="Correta: #{dtFilterView.questao.respObjOpcaoC}"  />
+							</p:panelGrid>
+							
+							<h:outputText value="Opção D: #{dtFilterView.questao.opcaoD}" rendered="#{not empty dtFilterView.questao.opcaoD}" />
+							<p:panelGrid columns="2" rendered="#{not empty dtFilterView.questao.opcaoD}" >
+								<h:outputText value="Correta:" />
+								 <p:selectBooleanCheckbox value="Correta: #{dtFilterView.questao.respObjOpcaoD}"  />
+							</p:panelGrid>
+							
+							<h:outputText value="Opção E: #{dtFilterView.questao.opcaoE}" rendered="#{not empty dtFilterView.questao.opcaoE}"/>
+							<p:panelGrid columns="2" rendered="#{not empty dtFilterView.questao.opcaoE}">
+								<h:outputText value="Correta:" />
+								 <p:selectBooleanCheckbox value="Correta: #{dtFilterView.questao.respObjOpcaoE}" />
+							</p:panelGrid>
+							
+						</p:panelGrid>
+
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+
+		<p:panel>
+			<p:commandButton value="Voltar" immediate="true"
+				action="#{dtFilterView.goBack()}"
+				icon="ui-icon ui-icon-back" update="@all">
+			</p:commandButton>
+			<p:commandButton value="Abandonar" immediate="true"
+				action="/restrito/home.jsf}" icon="ui-icon ui-icon-close"
+				update="@all">
+			</p:commandButton>
+		</p:panel>
+
+
+
+	</ui:define>
+
+</ui:composition>

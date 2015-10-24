@@ -1,0 +1,436 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+		<p:fieldset legend="Cadastrar Usuário">
+			<br />
+			<p:tabView id="tbv1" dynamic="true" cache="true">
+				<p:tab title="Área de Inserção">
+					<h:form prependId="false" id="formUsuario">
+						<p:growl id="msg0" />
+						<h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid"
+							id="grid0">
+							
+							
+							<h:inputHidden id="idUsuario"
+								value="#{mbCadastroUsuario.usuario.idUsuario}" />
+
+<!-- 							<h:outputLabel /> -->
+
+							<h:outputLabel for="usuario" value="Login:" />
+							<p:inputText id="usuario"
+								value="#{mbCadastroUsuario.usuario.login}" size="20" 
+								required="true"
+								requiredMessage="O campo [Login] é obrigatório"
+								/>
+
+							<h:outputLabel for="senha" value="Senha.:" />
+							<p:password id="senha" size="20" maxlength="22"
+								promptLabel="Digite sua Senha"
+								value="#{mbCadastroUsuario.confirmaSenha}"
+								weakLabel="Senha Fraca" goodLabel="Senha Boa"
+								strongLabel="Senha Forte" feedback="true" required="true"
+								requiredMessage="O campo [Senha] é obrigatório"/>
+
+							<h:outputLabel for="senhaconf2" value="Confirmar Senha:" />
+							<p:password id="senhaconf2" size="20"
+								value="#{mbCadastroUsuario.usuario.senha}" maxlength="22"
+								promptLabel="Confirme sua Senha" required="true"
+								requiredMessage="O campo [Confirma Senha] é obrigatório">
+							</p:password>
+
+
+							<h:outputLabel for="sexo" value="Sexo:" />
+							<p:selectOneMenu id="sexo"
+								value="#{mbCadastroUsuario.usuario.sexo.idSexo}">
+								<f:selectItems value="#{bbSexo.sexos}" var="sexo"
+									itemValue="#{sexo.idSexo}" itemLabel="#{sexo.dsSexo}" size="20" />
+							</p:selectOneMenu>
+
+							<h:outputLabel for="nomePessoa" value="Nome::" />
+							<p:inputText id="nomePessoa" size="40"
+								value="#{mbCadastroUsuario.usuario.nome}" required="true"
+								requiredMessage="O campo [Nome] é obrigatório"
+								onkeyup="this.value = this.value.toUpperCase()" />
+
+							<h:outputLabel for="telefone" value="Telefone:" />
+							<p:inputMask id="telefone" size="40" mask="(99) 9999-9999"
+								value="#{mbCadastroUsuario.usuario.foneCel}" required="true"
+								requiredMessage="O campo [Telefone] é obrigatório"
+								onkeyup="this.value = this.value.toUpperCase()" />
+
+							<h:outputLabel for="email" value="E-mail:" />
+							<p:inputText id="email" size="40"
+								value="#{mbCadastroUsuario.usuario.email}" required="true"
+								requiredMessage="O campo [E-mail] é obrigatório">
+								<f:validator validatorId="emailValidator" />
+							</p:inputText>
+
+							<h:outputLabel for="dataNascimento" value="Data de Nasc.:" />
+							<p:calendar id="dataNascimento"
+								value="#{mbCadastroUsuario.usuario.dataNascimento}"
+								required="true"
+								requiredMessage="O campo [Data de Nascimento] é obrigatório"
+								locale="pt_BR" navigator="true" effect="explode"
+								pattern="dd/MM/yyyy" />
+
+
+							<h:outputLabel for="cep" value="CEP.:" />
+							<p:inputMask id="cep" size="10" value="#{mbCadastroUsuario.cep}"
+								mask="99999-999" required="true"
+								requiredMessage="É obrigatório o preenchimento do campo [CEP]" />
+
+							<h:outputLabel />
+
+							<p:panel>
+								<p:commandButton value="Salvar"
+									action="#{mbCadastroUsuario.addUsuario}" icon="ui-icon-disk"
+									update="@form :formtable" process="@form">
+									<f:ajax render="@all" listener="#{mbCadastroUsuario.encerraCadastramento()}"/>
+									</p:commandButton>
+								<p:commandButton value="Cancelar"
+									action="/publico/login.jsf"
+									immediate="true" icon="ui-icon ui-icon-close" >
+									
+									</p:commandButton>
+							</p:panel>
+						</h:panelGrid>
+					</h:form>
+				</p:tab>
+			</p:tabView>
+
+			<h:form id="formtable" >
+				<p:growl id="msg1" />
+				<p:dataTable id="idTabela" var="usuario"
+					value="#{mbCadastroUsuario.usuarios}" paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" >
+
+					<f:facet name="header" >Lista de Usuários</f:facet>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						<h:outputText value="#{usuario.nome}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+						<p:commandButton value="Editar" image="ui-icon ui-icon-pencil"
+							process="@this" update=":tbv1:formUsuario">
+							<f:setPropertyActionListener
+								target="#{mbCadastroUsuario.usuario}" value="#{usuario}" />
+						</p:commandButton>
+						<p:commandButton value="Remover"
+							action="#{mbCadastroUsuario.deletar}"
+							image="ui-icon ui-icon-close" update="@form">
+							<f:setPropertyActionListener
+								target="#{mbCadastroUsuario.usuario}" value="#{usuario}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+
+		</p:fieldset>
+	</ui:define>
+
+</ui:composition>
+
+
+
+<!-- 			<h:form prependId="false" id="formUsuario"> -->
+<!-- 				<p:growl id="msg0" /> -->
+
+<!-- 				<p:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" -->
+<!-- 					id="grid0"> -->
+
+<!-- 					******* DADOS SOBRE O USUARIO *************** -->
+<!-- 					<p:panel> -->
+<!-- 						<p:panelGrid columns="1" cellpadding="10" styleClass="panelGrid" -->
+<!-- 							id="griDados"> -->
+<!-- 							<h:inputHidden id="idusuario" -->
+<!-- 								value="#{mbUsuario.usuario.idUsuario}" /> -->
+
+<!-- 							<h:inputHidden id="idendereco" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.idEndereco}" /> -->
+
+
+<!-- 							<h:outputLabel for="nomePessoa" value="Nome.:" /> -->
+<!-- 							<p:inputText id="nomePessoa" size="40" -->
+<!-- 								value="#{mbUsuario.usuario.nome}" required="true" -->
+<!-- 								requiredMessage="O campo [Nome] é obrigatório" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+<!-- 							<h:outputLabel for="sexo" value="Sexo.:" /> -->
+<!-- 							<p:selectOneMenu id="sexo" -->
+<!-- 								value="#{mbUsuario.usuario.sexo.idSexo}"> -->
+<!-- 								<f:selectItems value="#{bbSexo.sexos}" var="sexo" -->
+<!-- 									itemValue="#{sexo.idSexo}" itemLabel="#{sexo.dsSexo}" /> -->
+<!-- 							</p:selectOneMenu> -->
+
+<!-- 							<h:outputLabel for="telefone" value="Telefone.:" /> -->
+<!-- 							<p:inputMask id="telefone" size="40" mask="(99) 9999-9999" -->
+<!-- 								value="#{mbUsuario.usuario.foneCel}" required="true" -->
+<!-- 								requiredMessage="O campo [Telefone] é obrigatório" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+<!-- 							<h:outputLabel for="email" value="E-mail.:" /> -->
+<!-- 							<p:inputText id="email" size="40" -->
+<!-- 								value="#{mbUsuario.usuario.email}" required="true" -->
+<!-- 								requiredMessage="O campo [E-mail] é obrigatório"> -->
+<!-- 								<f:validator validatorId="emailValidator" /> -->
+<!-- 							</p:inputText> -->
+
+
+<!-- 							<h:outputLabel for="dataNascimento" value="Data de Nascimento.:" /> -->
+<!-- 							<p:calendar id="dataNascimento" -->
+<!-- 								value="#{mbUsuario.usuario.dataNascimento}" required="true" -->
+<!-- 								requiredMessage="O campo [Data de Nascimento] é obrigatório" -->
+<!-- 								locale="pt_BR" navigator="true" effect="explode" -->
+<!-- 								pattern="dd/MM/yyyy" /> -->
+
+<!-- 							<h:outputLabel for="senhaconf2" value="Confirmar Senha.:" /> -->
+<!-- 							<p:password id="senhaconf2" size="30" -->
+<!-- 								value="#{mbUsuario.usuario.senha}" maxlength="22" -->
+<!-- 								promptLabel="Confirme sua Senha" weakLabel="Senha Fraca" -->
+<!-- 								validator="passwordValidator" goodLabel="Senha Boa" -->
+<!-- 								strongLabel="Senha Forte" feedback="true"> -->
+<!-- 							</p:password> -->
+
+<!-- 							<h:outputLabel /> -->
+<!-- 							<p:panel> -->
+<!-- 								<p:commandButton value="Salvar" action="#{mbUsuario.addUsuario}" -->
+<!-- 									icon="ui-icon-disk" /> -->
+<!-- 								<p:commandButton value="Cancelar" -->
+<!-- 									actionListener="#{mbUsuario.limpUsuario}" -->
+<!-- 									icon="ui-icon ui-icon-close" update="@form" /> -->
+<!-- 							</p:panel> -->
+
+
+<!-- 						</p:panelGrid> -->
+<!-- 					</p:panel> -->
+
+<!-- 					******* DADOS ENDEREÇO DO USUARIO*************** -->
+<!-- 					<p:panel> -->
+<!-- 						<p:panelGrid columns="1" cellpadding="10" styleClass="panelGrid" -->
+<!-- 							id="gridEndereco"> -->
+
+<!-- 							<h:outputLabel for="cep" value="CEP.:" /> -->
+<!-- 							<p:inputMask id="cep" size="10" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsCEP}" mask="99999-999" -->
+<!-- 								required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [CEP]" /> -->
+
+<!-- 							<h:outputLabel for="estado" value="Estado.:" /> -->
+<!-- 							<p:selectOneMenu id="estado" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.estado.idEstado}"> -->
+<!-- 								<f:selectItems value="#{bbEstado.estados}" var="estado" -->
+<!-- 									itemValue="#{estado.idEstado}" -->
+<!-- 									itemLabel="#{estado.dsNomeEstado}" /> -->
+<!-- 							</p:selectOneMenu> -->
+
+
+<!-- 							<h:outputLabel for="cidade" value="Cidade.:" /> -->
+<!-- 							<p:inputText id="cidade" size="60" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsCidade}" required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [Bairro]" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+<!-- 							<h:outputLabel for="bairro" value="Bairro.:" /> -->
+<!-- 							<p:inputText id="bairro" size="60" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsBairro}" required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [Bairro]" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+
+<!-- 							<h:outputLabel for="idTipoLogradouro" -->
+<!-- 								value="Tipo de Logradouro.:" /> -->
+<!-- 							<p:selectOneMenu id="idTipoLogradouro" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.tipoLogradouro.idTipoLogradouro}"> -->
+<!-- 								<f:selectItems value="#{bbTipoLogradouro.tipoLogradouros}" -->
+<!-- 									noSelectionValue="Selecione" var="tipoLogradouro" -->
+<!-- 									itemValue="#{tipoLogradouro.idTipoLogradouro}" -->
+<!-- 									itemLabel="#{tipoLogradouro.dsTipoLogradouro}" /> -->
+<!-- 							</p:selectOneMenu> -->
+
+<!-- 							<h:outputLabel for="nomelogradouro" value="Logradouro.:" /> -->
+<!-- 							<p:inputText id="nomelogradouro" size="75" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsEndereco}" required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [Logradouro]" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+
+<!-- 							<h:outputLabel for="numero" value="Numero.:" /> -->
+<!-- 							<p:inputText id="numero" size="8" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsNumero}" required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [Número]" /> -->
+
+<!-- 							<h:outputLabel for="complemento" value="Complemento.:" /> -->
+<!-- 							<p:inputText id="complemento" size="20" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsComplemento}" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+
+<!-- 						</p:panelGrid> -->
+<!-- 					</p:panel> -->
+
+<!-- 				</p:panelGrid> -->
+<!-- 			</h:form> -->
+
+
+<!-- <ui:define name="tarefas"> -->
+<!-- 		<p:fieldset legend="Cadastrao de Usuário"> -->
+<!-- 			<br /> -->
+<!-- 			<p:tabView id="tbv1" dynamic="true" cache="true"> -->
+<!-- 				<p:tab title="Área de Inserção/Edição"> -->
+
+<!-- 					<h:form prependId="false" id="formUsuario"> -->
+<!-- 						<p:growl id="msg0" /> -->
+<!-- 						<h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" -->
+<!-- 							id="grid0"> -->
+
+<!-- 							<h:inputHidden id="idusuario" -->
+<!-- 								value="#{mbUsuario.usuario.idUsuario}" /> -->
+
+<!-- 							<h:inputHidden id="idendereco" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.idEndereco}" /> -->
+
+
+<!-- 							<h:outputLabel for="nomePessoa" value="Nome.:" /> -->
+<!-- 							<p:inputText id="nomePessoa" size="40" -->
+<!-- 								value="#{mbUsuario.usuario.nome}" required="true" -->
+<!-- 								requiredMessage="O campo [Nome] é obrigatório" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+<!-- 							<h:outputLabel for="sexo" value="Sexo.:" /> -->
+<!-- 							<p:selectOneMenu id="sexo" -->
+<!-- 								value="#{mbUsuario.usuario.sexo.idSexo}"> -->
+<!-- 								<f:selectItems value="#{bbSexo.sexos}" var="sexo" -->
+<!-- 									itemValue="#{sexo.idSexo}" itemLabel="#{sexo.dsSexo}" /> -->
+<!-- 							</p:selectOneMenu> -->
+
+<!-- 							<h:outputLabel for="telefone" value="Telefone.:" /> -->
+<!-- 							<p:inputMask id="telefone" size="40" mask="(99) 9999-9999" -->
+<!-- 								value="#{mbUsuario.usuario.foneCel}" required="true" -->
+<!-- 								requiredMessage="O campo [Telefone] é obrigatório" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+<!-- 							<h:outputLabel for="email" value="E-mail.:" /> -->
+<!-- 							<p:inputText id="email" size="40" -->
+<!-- 								value="#{mbUsuario.usuario.email}" required="true" -->
+<!-- 								requiredMessage="O campo [E-mail] é obrigatório"> -->
+<!-- 								<f:validator validatorId="emailValidator" /> -->
+<!-- 							</p:inputText> -->
+
+
+<!-- 							<h:outputLabel for="dataNascimento" value="Data de Nascimento.:" /> -->
+<!-- 							<p:calendar id="dataNascimento" -->
+<!-- 								value="#{mbUsuario.usuario.dataNascimento}" required="true" -->
+<!-- 								requiredMessage="O campo [Data de Nascimento] é obrigatório" -->
+<!-- 								locale="pt_BR" navigator="true" effect="explode" -->
+<!-- 								pattern="dd/MM/yyyy" /> -->
+
+<!-- 							<h:outputLabel for="estado" value="Estado.:" /> -->
+<!-- 							<p:selectOneMenu id="estado" -->
+<!-- 							value="#{mbUsuario.usuario.endereco.estado.idEstado}"> -->
+<!-- 								<f:selectItems value="#{bbEstado.estados}" var="estado" -->
+<!-- 									itemValue="#{estado.idEstado}" itemLabel="#{estado.dsNomeEstado}" /> -->
+<!-- 							</p:selectOneMenu> -->
+
+
+<!-- 							<h:outputLabel for="cidade" value="Cidade.:" /> -->
+<!-- 							<p:inputText id="cidade" size="60" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsCidade}" required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [Bairro]" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+<!-- 							<h:outputLabel for="bairro" value="Bairro.:" /> -->
+<!-- 							<p:inputText id="bairro" size="60" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsBairro}" required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [Bairro]" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+
+<!-- 							<h:outputLabel for="idTipoLogradouro" -->
+<!-- 								value="Tipo de Logradouro.:" /> -->
+<!-- 							<p:selectOneMenu id="idTipoLogradouro" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.tipoLogradouro.idTipoLogradouro}"> -->
+<!-- 								<f:selectItems value="#{bbTipoLogradouro.tipoLogradouros}" -->
+<!-- 									noSelectionValue="Selecione" -->
+<!-- 									var="tipoLogradouro" -->
+<!-- 									itemValue="#{tipoLogradouro.idTipoLogradouro}" -->
+<!-- 									itemLabel="#{tipoLogradouro.dsTipoLogradouro}" /> -->
+<!-- 							</p:selectOneMenu> -->
+
+<!-- 							<h:outputLabel for="nomelogradouro" value="Logradouro.:" /> -->
+<!-- 							<p:inputText id="nomelogradouro" size="75" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsEndereco}" required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [Logradouro]" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+<!-- 							<h:outputLabel for="cep" value="CEP.:" /> -->
+<!-- 							<p:inputMask id="cep" size="10" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsCEP}" mask="99999-999" -->
+<!-- 								required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [CEP]" /> -->
+
+<!-- 							<h:outputLabel for="numero" value="Numero.:" /> -->
+<!-- 							<p:inputText id="numero" size="8" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsNumero}" required="true" -->
+<!-- 								requiredMessage="É obrigatório o preenchimento do campo [Número]" /> -->
+
+<!-- 							<h:outputLabel for="complemento" value="Complemento.:" /> -->
+<!-- 							<p:inputText id="complemento" size="20" -->
+<!-- 								value="#{mbUsuario.usuario.endereco.dsComplemento}" -->
+<!-- 								onkeyup="this.value = this.value.toUpperCase()" /> -->
+
+
+<!-- 							<h:outputLabel for="usuario" value="Nome de Usuário.:" /> -->
+<!-- 							<p:inputText id="usuario" value="#{mbUsuario.usuario.login}" -->
+<!-- 								size="30" /> -->
+
+<!-- 							<h:outputLabel for="senha" value="Senha.:" /> -->
+<!-- 							<p:password id="senha" size="30" maxlength="22" -->
+<!-- 								promptLabel="Digite sua Senha" -->
+<!-- 								value="#{mbUsuario.confirmaSenha}" weakLabel="Senha Fraca" -->
+<!-- 								goodLabel="Senha Boa" strongLabel="Senha Forte" feedback="true" /> -->
+
+<!-- 							<h:outputLabel for="senhaconf2" value="Confirmar Senha.:" /> -->
+<!-- 							<p:password id="senhaconf2" size="30" -->
+<!-- 								value="#{mbUsuario.usuario.senha}" maxlength="22" -->
+<!-- 								promptLabel="Confirme sua Senha" weakLabel="Senha Fraca" -->
+<!-- 								validator="passwordValidator" goodLabel="Senha Boa" -->
+<!-- 								strongLabel="Senha Forte" feedback="true"> -->
+<!-- 							</p:password> -->
+
+<!-- 							<h:outputLabel /> -->
+<!-- 							<p:panel> -->
+<!-- 								<p:commandButton value="Salvar" action="#{mbUsuario.addUsuario}" -->
+<!-- 									icon="ui-icon-disk" /> -->
+<!-- 								<p:commandButton value="Cancelar"  -->
+<!-- 									actionListener="#{mbUsuario.limpUsuario}" -->
+<!-- 									icon="ui-icon ui-icon-close" /> -->
+<!-- 							</p:panel> -->
+<!-- 						</h:panelGrid> -->
+<!-- 					</h:form> -->
+<!-- 				</p:tab> -->
+<!-- 			</p:tabView> -->
+
+
+<!-- 		</p:fieldset> -->
+<!-- 	</ui:define> -->
+

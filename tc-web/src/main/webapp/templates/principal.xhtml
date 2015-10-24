@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:namespace="http://java.sun.com/jsf/composite/namespace">
+<!-- xmlns:sec="http://www.springframework.org/security/facelets/tags" -->
+
+<h:head>
+	<title>iAvaliar - Avaliação da Aprendizagem</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css"
+		rel="stylesheet" type="text/css" update="@all"/>
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/recursos/restrito/imagens/favicon.ico"
+		rel="shortcut icon" type="image/x-icon" />
+</h:head>
+
+<h:body>
+
+	<div id="topo">
+		<a href="http://www.agsolutio.com.br/"><h:graphicImage
+				library="imagens" name="logoBicolor.png"
+				style="margin-left:50px; margin-top:10px;" /> </a>
+
+		<div id="logoff">
+			<h:form>
+				<br />
+				<h5>
+					<h:outputText
+						value="Olá, #{mbLoginController.procuraUsuario(request.getUserPrincipal().getName()).nome}!" />
+				</h5>
+				<br />
+
+
+				<h4>
+					<h:commandLink action="#{mbLoginController.efetuarLogout}"
+						value="LOGOFF" style="color:#ffffff;" />
+				</h4>
+			</h:form>
+		</div>
+	</div>
+
+	<ui:insert name="menu">
+		<ui:include src="/templates/menu.xhtml" />
+	</ui:insert>
+
+<!-- 	<div> -->
+<!-- 		<h:form> -->
+<!-- 			<p:themeSwitcher value="#{temaBean.tema}"> -->
+<!-- 				<f:selectItems value="#{temaBean.temas}" /> -->
+<!-- 				<f:selectItem itemLabel="Escolha o Tema" itemValue="" /> -->
+<!-- 				<f:selectItem itemLabel="Aristo" itemValue="aristo" /> -->
+<!-- 				<f:selectItem itemLabel="Bluesky" itemValue="bluesky" /> -->
+<!-- 				<f:selectItem itemLabel="Cupertino" itemValue="cupertino" /> -->
+<!-- 				<f:selectItem itemLabel="Sam" itemValue="sam" /> -->
+<!-- 				<f:selectItem itemLabel="UI-Lightness" itemValue="ui-lightness" /> -->
+<!-- 				<f:selectItem itemLabel="Affterdark" itemValue="afterdark" /> -->
+<!-- 				<f:ajax /> -->
+<!-- 			</p:themeSwitcher> -->
+<!-- 		</h:form> -->
+<!-- 	</div> -->
+
+
+	<div id="tarefas">
+		<ui:insert name="tarefas"></ui:insert>
+	</div>
+
+	<ui:insert name="rodape">
+		<ui:include src="/templates/rodape.xhtml" />
+	</ui:insert>
+
+<!-- 	<p:stack icon="/resources/imagens/stack.png" expanded="true"> -->
+<!-- 		<p:menuitem value="Home" icon="/resources/imagens/home.png" -->
+<!-- 			url="/restrito/home.jsf" /> -->
+<!-- 		<p:menuitem value="Email" icon="/resources/imagens/email.png" -->
+<!-- 			url="mailto:doalcelio@gmail.com" /> -->
+
+<!-- 	</p:stack> -->
+
+</h:body>
+
+</html>

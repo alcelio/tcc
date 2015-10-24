@@ -1,0 +1,400 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+		<p:fieldset>
+
+			<!-- ************************ MONTAGEM DO CAEBÇALHO DENTRO DE UM GRID*****************************		 -->
+
+
+			<h:panelGrid columns="3" id="panelGridCabecalho">
+
+				<p:panel header="Tipo de Questão">
+					<h:form id="formTipoQuestao">
+						<h:commandButton value="Dissertativa"
+							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}"
+							disabled="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}" >
+							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
+
+<!-- 							<h:graphicImage library="imagens" -->
+<!-- 								name="dissertativa_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}.png" /> -->
+						</h:commandButton>
+
+						<h:commandButton value="Objetiva"
+							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_OBJETIVA)}"
+							disabled="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_OBJETIVA)}" >
+							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
+<!-- 							<h:graphicImage library="imagens" -->
+<!-- 								name="objetiva_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_OBJETIVA)}.png" /> -->
+						</h:commandButton>
+
+						<h:commandButton value="Ordenar"
+							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_ORDENACAO)}"
+							disabled= "#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_ORDENACAO)}">
+							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
+<!-- 							<h:graphicImage library="imagens" -->
+<!-- 								name="ordenar_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_ORDENACAO)}.png" /> -->
+						</h:commandButton>
+
+						<h:commandButton value="Relação"
+							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_RELACAO)}"
+							disabled = "#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_RELACAO)}" >
+							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
+<!-- 							<h:graphicImage library="imagens" -->
+<!-- 								name="relacionar_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_RELACAO)}.png" /> -->
+						</h:commandButton>
+
+						<h:commandButton value="V ou F"
+							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_VF)}" 
+							disabled="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_VF)}"  >
+							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
+<!-- 							<h:graphicImage library="imagens" -->
+<!-- 								name="relacionar_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_VF)}.png" /> -->
+						</h:commandButton>
+
+					</h:form>
+				</p:panel>
+
+				<h:form id="formGrauDificuldade">
+					<p:panel header="Grau de Dificuldade"
+						rendered="#{mbQuestao.exibirFormGrauDificuldade()}">
+
+						<h:commandButton value="Facil"
+							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
+							disabled="#{mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+							<p:ajax update="@form :formGrauDificuldade" />
+						</h:commandButton>
+						<h:commandButton value="Moderado"
+							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
+							disabled="#{mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+							<p:ajax update="formGrauDificuldade" />
+						</h:commandButton>
+						<h:commandButton value="Exigente"
+							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
+							disabled="#{mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+							<p:ajax update="formGrauDificuldade" />
+						</h:commandButton>
+						<h:commandButton value="Muito Exigente"
+							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
+							disabled="#{mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+							<p:ajax update="formGrauDificuldade" />
+						</h:commandButton>
+						<h:commandButton value="Extremo"
+							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
+							disabled="mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+							<p:ajax update="formGrauDificuldade" />
+						</h:commandButton>
+
+					</p:panel>
+				</h:form>
+
+
+				<h:form id="formDadosAdicionais" >
+					<p:panel header="Áreas" rendered="#{mbQuestao.exibirFormAreas()}">
+						<h:panelGrid columns="2">
+
+							<p:outputLabel for="disciplina" value="Disciplinas:" rendered="#{mbQuestao.exibirFormAreas()}" />
+							<p:outputLabel for="topicoEstudo" value="Tópicos de Estudo:"  />
+							
+															
+							<h:panelGrid columns="2">
+								<p:selectOneMenu id="disciplina" rendered="#{mbQuestao.exibirFormAreas()}"
+									value="#{mbQuestao.disciplina.idDisciplina}">
+									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
+									<f:selectItems value="#{bbDisciplina.disciplinas}"
+										var="disciplina" itemValue="#{disciplina.idDisciplina}"
+										itemLabel="#{disciplina.dsDisciplina}" size="20" />
+										 <p:ajax  event="change" process="@this" listener="#{mbQuestao.exibirCampoTopicoEstudo()}"  update="topicoEstudo"/>
+										  <p:ajax  />
+								</p:selectOneMenu>
+								<h:commandButton value="+" style="float:right"/>
+							</h:panelGrid>	
+						
+							<h:panelGrid columns="2">
+								<p:selectOneMenu id="topicoEstudo" 
+								value="#{mbQuestao.topicoEstudo.idTopicoEstudo}">
+									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
+									<f:selectItems value="#{mbQuestao.topicosEstudo}"
+										var="topico" itemValue="#{topico.idTopicoEstudo}"
+										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
+										<p:ajax  event="change" process="@this" listener="#{mbQuestao.setaCodTopicoEstudo()}"  update="formBotoes"/>
+								</p:selectOneMenu>		
+								<h:commandButton value="+" style="float:right"/> 
+							</h:panelGrid>	
+
+						</h:panelGrid>
+
+					</p:panel>
+					
+					<h:outputLabel />
+				</h:form>
+
+				
+								<h:outputLabel />
+				<h:outputLabel />
+				<h:form id="formBotoes">
+
+
+				
+				<h:panelGrid rendered="#{mbQuestao.exibirFormAreas()}" columns="2" style="float:right">
+				<p:commandButton value="Gerar Questão"  style="float:right"  >
+					 <p:ajax  listener="#{mbQuestao.iniciaQuestaoComCabecalho}"  update="formQuestao"/>
+				</p:commandButton>
+				
+				<p:commandButton value="Cancelar"  style="float:right" action="/restrito/home.jsf}"
+						immediate="true" icon="ui-icon ui-icon-close" >
+					
+				</p:commandButton>
+				</h:panelGrid>
+				</h:form>
+				
+			</h:panelGrid>
+
+
+
+
+
+	<h:form id="formQuestao" >
+		<p:growl id="msg0" />
+
+				<h:inputHidden value="#{mbQuestao.questao.idQuestao}" />
+				
+
+				<p:outputLabel for="editorPergunta" value="Pergunta:"  />
+				<p:editor id="editorPergunta" widgetVar="editorPergunta" 
+					rendered="#{mbQuestao.vereficaCabecalhoEstaCompleto()}"
+					value="#{mbQuestao.questao.pergunta}" width="1230" height="150"
+					required="true" requiredMessage="O campo [Pergunta] é obrigatório!" />
+
+				<p:separator style="widht:1230; height: 20;" />
+
+				<p:outputLabel for="editorRespostaDissertativa" value="Resposta:"
+					rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}" />
+
+				<p:editor id="editorRespostaDissertativa" widgetVar="editorResposta"
+					value="#{mbQuestao.questao.rDissertativa.dsResposta}" width="1230" height="150"
+					required="true" requiredMessage="O Campo [Resposta] é obrigatório"
+					rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}" />
+
+				<!-- 				<p:inputTextarea rows="4" cols="128" rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}"  -->
+<!-- 					value="#{mbQuestao.questao.rDissertativa.dsResposta}" required="true" -->
+<!-- 					requiredMessage="O campo [Resposta] É OBRITÓTIO!" /> -->
+
+
+				<!--*************************DESENHA OS CAMPOS DE OPÇÕES DAS QUESTÕES ************************ -->
+				<h:panelGrid id="panelGeral" columns="2" rendered="#{mbQuestao.vereficaCabecalhoEstaCompleto()}">
+
+					<h:outputLabel value="Opções" 
+						rendered="#{mbQuestao.desenhaOpcoes()}" />
+					<h:outputLabel value="Respostas"
+						rendered="#{mbQuestao.desenhaOpcoes()}" />
+
+					<h:panelGrid id="panelOpcoes" columns="2"
+						rendered="#{mbQuestao.desenhaOpcoes()}">
+						<h:outputLabel value="Opção 'A'" />
+						<p:inputTextarea rows="4" cols="128"
+							value="#{mbQuestao.questao.opcaoA}" required="true"
+							requiredMessage="O campo [Opção A] é obritótio!" />
+
+						<h:outputLabel value="Opção 'B'" />
+						<p:inputTextarea rows="4" cols="128"
+							value="#{mbQuestao.questao.opcaoB}" required="true"
+							requiredMessage="O campo [Opção B] é obritótio!" />
+
+						<h:outputLabel value="Opção 'C'" />
+						<p:inputTextarea rows="4" cols="128"
+							value="#{mbQuestao.questao.opcaoC}" required="true"
+							requiredMessage="O campo [Opção C] é obritótio!" />
+
+						<h:outputLabel value="Opção 'D'" />
+						<p:inputTextarea rows="4" cols="128"
+							value="#{mbQuestao.questao.opcaoD}" required="true"
+							requiredMessage="O campo [Opção D] é obritótio!" />
+
+						<h:outputLabel value="Opção 'E'" />
+						<p:inputTextarea rows="4" cols="128"
+							value="#{mbQuestao.questao.opcaoE}" required="true"
+							requiredMessage="O campo [Opção E] é obritótio!" />
+
+					</h:panelGrid>
+
+					<h:panelGrid id="panelRespostas" columns="1">
+
+						<h:panelGrid id="respostaObjetiva" cellspacing="12"
+							rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_OBJETIVA)}">
+							
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_true.png" />
+									<p:ajax  listener="#{mbQuestao.questao.rObjetiva.opcaoA}"  update="formQuestao"/>
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+						</h:panelGrid>
+
+
+
+						<h:panelGrid id="respostaOrdenar" cellspacing="12"
+							rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_ORDENACAO)}">
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_true.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+						</h:panelGrid>
+
+
+
+						<h:panelGrid id="respostaVF" cellspacing="12"
+							rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_VF)}">
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_true.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+						</h:panelGrid>
+
+
+
+						<h:panelGrid id="respostaRelacionar" cellspacing="12"
+							rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_RELACAO)}">
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_true.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:ajax update="formGrauDificuldade" />
+								<h:graphicImage library="imagens"
+									name="questao_correta_false.png" />
+							</h:commandLink>
+
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+
+
+				<p:panelGrid id="panenlBotoes"  >
+					<p:commandButton value="Salvar" action="#{mbQuestao.addQuestao()}"
+						icon="ui-icon-disk" update="@form">
+						<p:ajax  listener="#{mbQuestao.setaUsuarioQuestao(request.getUserPrincipal().getName())}"/>						
+					</p:commandButton>
+					<p:commandButton value="Encerrar" action="/restrito/home.jsf}"
+						immediate="true" icon="ui-icon ui-icon-close">
+					</p:commandButton>
+				</p:panelGrid>
+
+
+			</h:form>
+
+
+
+
+
+		</p:fieldset>
+
+	</ui:define>
+
+</ui:composition>

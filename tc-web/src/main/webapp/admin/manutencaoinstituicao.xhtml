@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" template="/templates/principal.xhtml">
+
+<ui:define name="tarefas">
+        <p:fieldset legend="Manutenção de Instituição">
+            <br/>
+            <p:tabView id="tbv1" dynamic="true" cache="true">
+                <p:tab title="Área de Inserção/Edição">
+                    <h:form prependId="false" id="formInstituicao">
+                        <p:growl id="msg0"/>
+                        <h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid" id="grid0">
+                            
+                            <h:outputLabel/>
+                            <h:inputHidden id="idInstituicao" value="#{mbCadastroInstiuicao.instituicao.idInstituicao}"/> 
+                            
+                            <h:outputLabel for="nomecidade" value="Nome.:"/>
+                            <p:inputText id="nomecidade" size="40" value="#{mbCadastroInstiuicao.instituicao.dsNomeInstituicao}"
+                                onkeyup="this.value = this.value.toUpperCase()" required="true"
+                                requiredMessage="O campo [Nome] é obrigatório."/>
+                           
+                            <h:outputLabel for="nomediretor" value="Diretor(a).:"/>
+                            <p:inputText id="nomediretor" size="40" value="#{mbCadastroInstiuicao.instituicao.dsNomeDiretor}"
+                                onkeyup="this.value = this.value.toUpperCase()" />                           
+  
+								<h:outputLabel for="fone1" value="Telefone 1.:" />
+								<p:inputMask id="fone1" size="15" mask="(99) 9999-9999"
+								value="#{mbCadastroInstiuicao.instituicao.dsFone1}" required="true"
+								requiredMessage="O campo [Telefone] é obrigatório"
+								onkeyup="this.value = this.value.toUpperCase()" />
+                            
+                            	<h:outputLabel for="fone1" value="Telefone 2.:" />
+								<p:inputMask id="fone2" size="15" mask="(99) 9999-9999"
+								value="#{mbCadastroInstiuicao.instituicao.dsFone2}" required="true"
+								requiredMessage="O campo [Telefone] é obrigatório"
+								onkeyup="this.value = this.value.toUpperCase()" />
+								
+								<h:outputLabel for="fone3" value="Telefone 3.:" />
+								<p:inputMask id="fone3" size="15" mask="(99) 9999-9999"
+								value="#{mbCadastroInstiuicao.instituicao.dsFone3}" required="true"
+								requiredMessage="O campo [Telefone] é obrigatório"
+								onkeyup="this.value = this.value.toUpperCase()" />
+                            
+                            <h:outputLabel />
+                            
+                            <p:panel>
+                                <p:commandButton value="Salvar" action="#{mbCadastroInstiuicao.addCidade}"
+                                    icon="ui-icon-disk" update="@form :formtable"/>
+                                <p:commandButton value="Cancelar" actionListener="#{mbCadastroInstiuicao.limpInstituicao()}" 
+                                    icon="ui-icon ui-icon-close" update="@form"/>
+                            </p:panel>
+                        </h:panelGrid>
+                    </h:form>
+                </p:tab>
+            </p:tabView>
+            
+            <h:form id="formtable">
+                <p:growl id="msg1"/>
+                <p:dataTable id="idTabela" var="instituicao" value="#{mbCadastroInstiuicao.instituicoes}"
+                             paginator="true" rows="10" emptyMessage="Nenhum registro encontrado"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+                
+                    <f:facet name="header">Lista de Instituições</f:facet>
+                    
+                    <p:column width="35%">
+                        <f:facet name="header">
+                            <h:outputText value="Nome"/>
+                        </f:facet>
+                        <h:outputText value="#{instituicao.dsNomeInstituicao}"/>
+                    </p:column>
+                    
+                    <p:column width="25%">
+                        <f:facet name="header">
+                            <h:outputText value="Nome Diretor"/>
+                        </f:facet>
+                        <h:outputText value="#{instituicao.dsNomeDiretor}"/>
+                    </p:column>
+
+                    <p:column width="110">
+                        <f:facet name="header">
+                            <h:outputText value="Fone 1"/>
+                        </f:facet>
+                        <h:outputText value="#{instituicao.dsFone1}"/>
+                    </p:column>
+
+                    <p:column width="110">
+                        <f:facet name="header">
+                            <h:outputText value="Fone 2"/>
+                        </f:facet>
+                        <h:outputText value="#{instituicao.dsFone2}"/>
+                    </p:column>
+
+                    <p:column width="110">
+                        <f:facet name="header">
+                            <h:outputText value="Fone 3"/>
+                        </f:facet>
+                        <h:outputText value="#{instituicao.dsFone3}"/>
+                    </p:column>    
+                    
+                                    
+                    <p:column width="40">
+                        <f:facet name="header">
+                            <h:outputText value="Ações"/>
+                        </f:facet>
+
+                        <h:commandButton value="Editar" image="/resources/restrict/imagens/editar16.png"
+                                process="@this" update=":tbv1:formInstituicao">
+                            <f:setPropertyActionListener target="#{mbCadastroInstiuicao.instituicao}"
+                                value="#{instituicao}" />
+                        </h:commandButton>
+                        
+                        <h:commandButton value="Remover" action="#{mbCadastroInstiuicao.deleteInstituicao}"
+                                image="/resources/restrict/imagens/excluir16.png" update="formtable">
+                            <f:setPropertyActionListener target="#{mbCadastroInstiuicao.instituicao}"
+                                value="#{instituicao}"/>
+                        </h:commandButton>
+                        
+                    </p:column>
+                    
+                </p:dataTable>
+                
+            </h:form>
+            
+        </p:fieldset>
+    </ui:define>
+
+</ui:composition>

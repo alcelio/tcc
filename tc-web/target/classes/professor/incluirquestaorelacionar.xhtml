@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+		<br />
+		<h1>Formulário de questão Relacionar</h1>
+		<br />
+		<p:fieldset>
+			<h:panelGrid columns="2" id="panelGridCabecalho">
+
+				<h:form id="formGrauDificuldade">
+					<p:panel header="Grau de Dificuldade">
+
+						<h:panelGrid id="gridGrauDificuldade" columns="5" cellspacing="3"
+							render="true">
+
+							<h:outputLabel value="Escolha" />
+							<h:outputLabel />
+							<h:outputLabel />
+							<h:outputLabel />
+							<h:outputLabel />
+
+							<p:commandButton value="Fácil"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
+								update="@form"
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+							</p:commandButton>
+							<p:commandButton value="Moderado"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
+								update="@form"
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+							</p:commandButton>
+							<p:commandButton value="Exigente"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
+								update="@form"
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+							</p:commandButton>
+							<p:commandButton value="Muito Exigente"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
+								update="@form"
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+							</p:commandButton>
+							<p:commandButton value="Extremo"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
+								update="@form"
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+							</p:commandButton>
+						</h:panelGrid>
+
+					</p:panel>
+				</h:form>
+
+				<h:form id="formDadosAdicionais">
+					<p:panel header="Áreas" rendered="true">
+						<h:panelGrid columns="2">
+							<p:outputLabel for="disciplina" value="Disciplinas:"
+								rendered="true" />
+							<p:outputLabel for="topicoEstudo" value="Tópicos de Estudo:" />
+
+
+							<h:panelGrid columns="2">
+								<p:selectOneMenu id="disciplina" style="width:240px"
+									value="#{mbQuestaoRelacionar.disciplina.idDisciplina}">
+									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
+									<f:selectItems value="#{bbDisciplina.disciplinas}"
+										var="disciplina" itemValue="#{disciplina.idDisciplina}"
+										itemLabel="#{disciplina.dsDisciplina}" size="20" />
+									<p:ajax event="change" process="@this"
+										listener="#{mbQuestaoRelacionar.carregaDadosTopicoEstudo()}"
+										update="topicoEstudo" />
+								</p:selectOneMenu>
+								<p:commandButton id="adicionarDisciplina" value="+"
+									style="float:right" immediate="true"
+									action="incluirdisciplina.jsf" update="@all">
+									<p:ajax
+										listener="#{mbCadastroDisciplina.setaCaminhoOrigem('incluirquestaorelacionar.jsf')}" />
+								</p:commandButton>
+							</h:panelGrid>
+
+
+							<h:panelGrid columns="2">
+								<p:selectOneMenu id="topicoEstudo" style="width:240px"
+									value="#{mbQuestaoRelacionar.topicoEstudo.idTopicoEstudo}">
+									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
+									<f:selectItems value="#{mbQuestaoRelacionar.topicosEstudo}"
+										var="topico" itemValue="#{topico.idTopicoEstudo}"
+										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
+									<p:ajax event="change" process="@this"
+										listener="#{mbQuestaoRelacionar.setaCodTopicoEstudo()}" />
+
+								</p:selectOneMenu>
+								<p:commandButton id="adicionarTopicoEstudo" value="+"
+									style="float:right" immediate="true"
+									action="incluirtopicoestudo.jsf" update="@all">
+									<p:ajax
+										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem('incluirquestaorelacionar.jsf')}" />
+								</p:commandButton>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+				<h:outputLabel />
+			</h:panelGrid>
+			<h:form id="formQuestao">
+				<p:growl id="msg0" />
+
+				<h:panelGrid id="gridQuestao">
+					<h:panelGrid id="panenlBotoes" style="float:right; margin-top:10;"
+						columns="3" cellpadding="20">
+
+						<h:panelGrid style="float:left; margin-right:20" columns="2">
+							<h:outputText value="Questão Pública: " />
+							<p:selectBooleanCheckbox selected="true"
+								value="#{mbQuestaoRelacionar.questao.publica}" />
+						</h:panelGrid>
+
+						<p:commandButton value="Salvar"
+							action="#{mbQuestaoRelacionar.addQuestao()}" icon="ui-icon-disk"
+							update="formQuestao :formGrauDificuldade :formDadosAdicionais">
+							<p:ajax
+								listener="#{mbQuestaoRelacionar.setaUsuarioQuestao(request.getUserPrincipal().getName())}" />
+							<p:ajax update="formGrauDificuldade" />
+						</p:commandButton>
+
+						<p:commandButton value="Encerrar" action="/restrito/home.jsf"
+							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
+						</p:commandButton>
+					</h:panelGrid>
+
+
+					<h:outputLabel for="editorPergunta" value="Pergunta:" />
+					<p:editor id="editorPergunta" widgetVar="editorPergunta"
+						value="#{mbQuestaoRelacionar.questao.pergunta}" width="1230"
+						height="150" required="true"
+						requiredMessage="O campo [Pergunta] é obrigatório!" />
+					<p:separator style="widht:1230; height: 20;" />
+					<br />
+
+
+					<h:panelGrid id="panelResposta" columns="2">
+
+						<h:panelGrid id="panelOpcoes" columns="1">
+
+							<h:panelGrid columns="2">
+								<h:outputLabel value="Opção 'A'" />
+								<h:outputLabel value="Resposta Correspondente opção 'A'"
+									style="margin-left:15" />
+								<p:inputTextarea rows="4" cols="64"
+									value="#{mbQuestaoRelacionar.questao.opcaoA}" required="true"
+									requiredMessage="O campo [Opção A] é obritótio!" />
+								<p:inputTextarea rows="4" cols="64" style="margin-left:15"
+									value="#{mbQuestaoRelacionar.questao.respRelOpcaoA}"
+									required="true"
+									requiredMessage="O campo [Resposta Correspondente opção 'A'] é obritótio!" />
+							</h:panelGrid>
+
+							<h:panelGrid columns="2" style="margin-top:10">
+								<h:outputLabel value="Opção 'B'" />
+								<h:outputLabel value="Resposta Correspondente opção 'B'"
+									style="margin-left:15" />
+								<p:inputTextarea rows="4" cols="64"
+									value="#{mbQuestaoRelacionar.questao.opcaoB}" required="true"
+									requiredMessage="O campo [Opção B] é obritótio!" />
+								<p:inputTextarea rows="4" cols="64" style="margin-left:15"
+									value="#{mbQuestaoRelacionar.questao.respRelOpcaoB}"
+									required="true"
+									requiredMessage="O campo [Resposta Correspondente opção 'B'] é obritótio!" />
+							</h:panelGrid>
+
+							<h:panelGrid columns="2" style="margin-top:10">
+								<h:outputLabel value="Opção 'C'" />
+								<h:outputLabel value="Resposta Correspondente opção 'C'"
+									style="margin-left:15" />
+								<p:inputTextarea rows="4" cols="64"
+									value="#{mbQuestaoRelacionar.questao.opcaoC}" required="true"
+									requiredMessage="O campo [Opção A] é obritótio!" />
+								<p:inputTextarea rows="4" cols="64" style="margin-left:15"
+									value="#{mbQuestaoRelacionar.questao.respRelOpcaoC}"
+									required="true"
+									requiredMessage="O campo [Resposta Correspondente opção 'C'] é obritótio!" />
+							</h:panelGrid>
+
+							<h:panelGrid columns="2" style="margin-top:10">
+								<h:outputLabel value="Opção 'D'" />
+								<h:outputLabel value="Resposta Correspondente opção 'D'"
+									style="margin-left:15" />
+								<p:inputTextarea rows="4" cols="64"
+									value="#{mbQuestaoRelacionar.questao.opcaoA}" required="true"
+									requiredMessage="O campo [Opção A] é obritótio!" />
+								<p:inputTextarea rows="4" cols="64" style="margin-left:15"
+									value="#{mbQuestaoRelacionar.questao.respRelOpcaoD}"
+									required="true"
+									requiredMessage="O campo [Resposta Correspondente opção 'D'] é obritótio!" />
+							</h:panelGrid>
+
+							<h:panelGrid columns="2" style="margin-top:10">
+								<h:outputLabel value="Opção 'E'" />
+								<h:outputLabel value="Resposta Correspondente opção 'E'"
+									style="margin-left:15" />
+								<p:inputTextarea rows="4" cols="64"
+									value="#{mbQuestaoRelacionar.questao.opcaoA}" required="true"
+									requiredMessage="O campo [Opção A] é obritótio!" />
+								<p:inputTextarea rows="4" cols="64" style="margin-left:15"
+									value="#{mbQuestaoRelacionar.questao.respRelOpcaoE}"
+									required="true"
+									requiredMessage="O campo [Resposta Correspondente opção 'E'] é obritótio!" />
+							</h:panelGrid>
+
+						</h:panelGrid>
+
+
+					</h:panelGrid>
+
+
+				</h:panelGrid>
+			</h:form>
+
+
+		</p:fieldset>
+	</ui:define>
+
+</ui:composition>

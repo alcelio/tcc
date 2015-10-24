@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+		<br />
+		<h1>Formulário de Questão Ordenar</h1>
+		<br />
+		<p:fieldset>
+			<h:panelGrid columns="2" id="panelGridCabecalho">
+
+				<h:form id="formGrauDificuldade">
+					<p:panel header="Grau de Dificuldade">
+
+						<h:panelGrid id="gridGrauDificuldade" columns="5" cellspacing="3"
+							render="true">
+
+							<h:outputLabel value="Escolha" />
+							<h:outputLabel />
+							<h:outputLabel />
+							<h:outputLabel />
+							<h:outputLabel />
+
+							<p:commandButton value="Fácil"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
+								update="@form"
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+							</p:commandButton>
+							<p:commandButton value="Moderado"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
+								update="@form"
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+							</p:commandButton>
+							<p:commandButton value="Exigente"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
+								update="@form"
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+							</p:commandButton>
+							<p:commandButton value="Muito Exigente"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
+								update="@form"
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+							</p:commandButton>
+							<p:commandButton value="Extremo"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
+								update="@form"
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+							</p:commandButton>
+						</h:panelGrid>
+
+					</p:panel>
+				</h:form>
+
+				<h:form id="formDadosAdicionais">
+					<p:panel header="Áreas" rendered="true">
+						<h:panelGrid columns="2">
+							<p:outputLabel for="disciplina" value="Disciplinas:"
+								rendered="true" />
+							<p:outputLabel for="topicoEstudo" value="Tópicos de Estudo:" />
+
+
+							<h:panelGrid columns="2">
+								<p:selectOneMenu id="disciplina" style="width:240px"
+									value="#{mbQuestaoOrdenar.disciplina.idDisciplina}">
+									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
+									<f:selectItems value="#{bbDisciplina.disciplinas}"
+										var="disciplina" itemValue="#{disciplina.idDisciplina}"
+										itemLabel="#{disciplina.dsDisciplina}" size="20" />
+									<p:ajax event="change" process="@this"
+										listener="#{mbQuestaoOrdenar.carregaDadosTopicoEstudo()}"
+										update="topicoEstudo" />
+								</p:selectOneMenu>
+								<p:commandButton id="adicionarDisciplina" value="+"
+									style="float:right" immediate="true"
+									action="incluirdisciplina.jsf" update="@all">
+									<p:ajax
+										listener="#{mbCadastroDisciplina.setaCaminhoOrigem('incluirquestaoordenar.jsf')}" />
+								</p:commandButton>
+							</h:panelGrid>
+
+
+							<h:panelGrid columns="2">
+								<p:selectOneMenu id="topicoEstudo" style="width:240px"
+									value="#{mbQuestaoOrdenar.topicoEstudo.idTopicoEstudo}">
+									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
+									<f:selectItems value="#{mbQuestaoOrdenar.topicosEstudo}"
+										var="topico" itemValue="#{topico.idTopicoEstudo}"
+										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
+									<p:ajax event="change" process="@this"
+										listener="#{mbQuestaoOrdenar.setaCodTopicoEstudo()}" />
+
+								</p:selectOneMenu>
+								<p:commandButton id="adicionarTopicoEstudo" value="+"
+									style="float:right" immediate="true"
+									action="incluirtopicoestudo.jsf" update="@all">
+									<p:ajax
+										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem('incluirquestaoordenar.jsf')}" />
+								</p:commandButton>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+
+				<h:outputLabel />
+			</h:panelGrid>
+
+
+			<h:form id="formQuestao">
+				<p:growl id="msg0" />
+
+				<h:panelGrid id="gridQuestao">
+					<h:panelGrid id="panenlBotoes" style="float:right; margin-top:10;"
+						columns="3" cellpadding="20">
+
+						<h:panelGrid style="float:left; margin-right:20" columns="2">
+							<h:outputText value="Questão Pública: " />
+							<p:selectBooleanCheckbox selected="true"
+								value="#{mbQuestaoOrdenar.questao.publica}" />
+						</h:panelGrid>
+
+						<p:commandButton value="Salvar"
+							action="#{mbQuestaoOrdenar.addQuestao()}" icon="ui-icon-disk"
+							update="formQuestao :formGrauDificuldade :formDadosAdicionais">
+							<p:ajax
+								listener="#{mbQuestaoOrdenar.setaUsuarioQuestao(request.getUserPrincipal().getName())}" />
+							<p:ajax update="formGrauDificuldade" />
+						</p:commandButton>
+
+						<p:commandButton value="Encerrar" action="/restrito/home.jsf"
+							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
+						</p:commandButton>
+					</h:panelGrid>
+
+
+					<h:outputLabel for="editorPergunta" value="Pergunta:" />
+					<p:editor id="editorPergunta" widgetVar="editorPergunta"
+						value="#{mbQuestaoOrdenar.questao.pergunta}" width="1230" height="150"
+						required="true"
+						requiredMessage="O campo [Pergunta] é obrigatório!" />
+					<p:separator style="widht:1230; height: 20;" />
+					<br />
+
+
+					<h:panelGrid id="panelResposta" columns="2">
+
+						<h:panelGrid id="panelOpcoes" columns="3">
+							<h:outputLabel value="Opção 'A'" />
+							<p:inputTextarea rows="4" cols="116"
+								value="#{mbQuestaoOrdenar.questao.opcaoA}" required="true"
+								requiredMessage="O campo [Opção A] é obritótio!" />
+
+							<h:panelGrid>
+								<h:outputLabel value="Ordem" />
+								<p:spinner value="#{mbQuestaoOrdenar.questao.respOrPrimeira}"
+									min="1" max="5" size="3" rendered="true"/>
+							</h:panelGrid>
+
+
+
+							<h:outputLabel value="Opção 'B'" />
+							<p:inputTextarea rows="4" cols="116"
+								value="#{mbQuestaoOrdenar.questao.opcaoB}" required="true"
+								requiredMessage="O campo [Opção B] é obritótio!" />
+
+							<h:panelGrid>
+								<h:outputLabel value="Ordem" />
+								<p:spinner value="#{mbQuestaoOrdenar.questao.respOrSegunda}"
+									min="1" max="5" size="3" />
+							</h:panelGrid>
+
+
+							<h:outputLabel value="Opção 'C'" />
+							<p:inputTextarea rows="4" cols="116"
+								value="#{mbQuestaoOrdenar.questao.opcaoC}" required="true"
+								requiredMessage="O campo [Opção C] é obritótio!" />
+							<h:panelGrid>
+								<h:outputLabel value="Ordem" />
+								<p:spinner value="#{mbQuestaoOrdenar.questao.respOrTerceira}"
+									min="1" max="5" size="3" />
+							</h:panelGrid>
+
+							<h:outputLabel value="Opção 'D'" />
+							<p:inputTextarea rows="4" cols="116"
+								value="#{mbQuestaoOrdenar.questao.opcaoD}" required="true"
+								requiredMessage="O campo [Opção D] é obritótio!" />
+							<h:panelGrid>
+								<h:outputLabel value="Ordem" />
+								<p:spinner value="#{mbQuestaoOrdenar.questao.respOrQuarta}"
+									min="1" max="5" size="3" />
+							</h:panelGrid>
+
+
+							<h:outputLabel value="Opção 'E'" />
+							<p:inputTextarea rows="4" cols="116"
+								value="#{mbQuestaoOrdenar.questao.opcaoE}" required="true"
+								requiredMessage="O campo [Opção E] é obritótio!" />
+							<h:panelGrid>
+								<h:outputLabel value="Ordem" />
+								<p:spinner value="#{mbQuestaoOrdenar.questao.respOrQuinta}"
+									min="1" max="5" size="3" />
+							</h:panelGrid>
+
+
+						</h:panelGrid>
+
+
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:form>
+		</p:fieldset>
+
+
+	</ui:define>
+
+</ui:composition>

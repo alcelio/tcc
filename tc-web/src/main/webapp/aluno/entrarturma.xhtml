@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+		<p:fieldset legend="TURMAS GRUPOS OU CURSOS">
+
+			<h:form>
+			<p:growl id="msg0" />
+				<br />
+				<h1>Minhas Turmas</h1>
+				<p:dataTable id="turmasAtivasAluno" var="td" value="#{mbAlunosTurma.turmasAluno}" paginator="true" rows="5"
+					emptyMessage="Nenhum registro encontrado"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+
+					<!-- 					<f:facet name="header">Listagem de de turmas disponíveis</f:facet> -->
+					<p:column style="width:300;">
+						<f:facet name="header">
+							<h:outputText value="Nome da turma" />
+						</f:facet>
+						<h:outputText value="#{td.turma.dsTurma}" />
+					</p:column>
+
+					<p:column style="width:300;">
+						<f:facet name="header">
+							<h:outputText value="Série/grupo ou curso" />
+						</f:facet>
+						<h:outputText value="#{td.turma.serie.dsSerie}" />
+					</p:column>
+
+					<p:column style="width:300;">
+						<f:facet name="header">
+							<h:outputText value="Instituição" />
+						</f:facet>
+						<h:outputText value="#{td.turma.instituicao.dsNomeInstituicao}" />
+					</p:column>
+
+
+					<p:column style="width:20;">
+						<f:facet name="header">
+							<h:outputText value="Ano" />
+						</f:facet>
+						<h:outputText value="#{td.turma.anoLetivo}" />
+					</p:column>
+
+<!-- 					<p:column style="width:80;"> -->
+<!-- 						<f:facet name="header"> -->
+<!-- 							<h:outputText value="Ações" /> -->
+<!-- 						</f:facet> -->
+<!-- 						<p:commandButton value="Retirar-se" image="ui-icon ui-icon-add" -->
+<!-- 							process="@this" update="@form"> -->
+<!-- 							<f:setPropertyActionListener target="#{mbCadastroCidade.cidade}" -->
+<!-- 								value="#{cidade}" /> -->
+<!-- 						</p:commandButton> -->
+<!-- 					</p:column> -->
+
+				</p:dataTable>
+
+		
+				<br /> <br />
+				<h1>Turmas Disponíveis</h1>
+
+				<p:dataTable id="idTurmasDisponíveis" var="td"
+					value="#{bbTurmas.turmas}" paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+
+					<!-- 					<f:facet name="header">Listagem de de turmas disponíveis</f:facet> -->
+					<p:column style="width:250;">
+						<f:facet name="header">
+							<h:outputText value="Nome da turma" />
+						</f:facet>
+						<h:outputText value="#{td.dsTurma}" />
+					</p:column>
+
+					<p:column style="width:200;">
+						<f:facet name="header">
+							<h:outputText value="Série/grupo ou curso" />
+						</f:facet>
+						<h:outputText value="#{td.serie.dsSerie}" />
+					</p:column>
+
+					<p:column style="width:250;">
+						<f:facet name="header">
+							<h:outputText value="Instituição" />
+						</f:facet>
+						<h:outputText value="#{td.instituicao.dsNomeInstituicao}" />
+					</p:column>
+
+					<p:column style="width:20;">
+						<f:facet name="header">
+							<h:outputText value="Ano" />
+						</f:facet>
+						<h:outputText value="#{td.anoLetivo}" />
+					</p:column>
+
+					<p:column style="width:90;">
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+						<p:commandButton value="Participar" image="ui-icon ui-icon-add"
+							action= "#{mbAlunosTurma.addAlunoTurma()}"  update="@form">
+							<f:setPropertyActionListener target="#{mbAlunosTurma.turma}" value="#{td}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+		</p:fieldset>
+	</ui:define>
+
+</ui:composition>

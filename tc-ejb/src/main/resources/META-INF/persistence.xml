@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="2.1"
+   xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+        http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+   <persistence-unit name="tccDS">
+      
+      <jta-data-source>java:jboss/datasources/tcc-ds</jta-data-source>
+      <class>com.tc.model.Acao</class>
+      <class>com.tc.model.Acesso</class>
+      <class>com.tc.model.Aluno</class>
+      <class>com.tc.model.Avaliacao</class>
+      <class>com.tc.model.Disciplina</class>
+      <class>com.tc.model.Endereco</class>
+      <class>com.tc.model.Historico</class>
+      <class>com.tc.model.Instituicao</class>
+      <class>com.tc.model.Member</class>
+      <class>com.tc.model.Permissao</class>
+      <class>com.tc.model.Professor</class>
+      <class>com.tc.model.Questao</class>
+      <class>com.tc.model.QuestaoDissertativa</class>
+      <class>com.tc.model.QuestaoObjetiva</class>
+      <class>com.tc.model.QuestaoOrdenar</class>
+      <class>com.tc.model.QuestaoRelacionar</class>
+      <class>com.tc.model.QuestaoVF</class>
+      <class>com.tc.model.QuestoesAvaliacao</class>
+      <class>com.tc.model.Serie</class>
+      <class>com.tc.model.Sexo</class>
+      <class>com.tc.model.StatusAvaliacao</class>
+      <class>com.tc.model.TopicoEstudo</class>
+      <class>com.tc.model.Turma</class>
+      <class>com.tc.model.Turno</class>
+      <class>com.tc.model.Usuario</class>
+      <properties>
+         <!-- Properties for Hibernate -->
+         <property name="hibernate.hbm2ddl.auto" value="update" />
+         <property name="hibernate.show_sql" value="true" />
+      </properties>
+   </persistence-unit>
+</persistence>

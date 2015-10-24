@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<!-- xmlns:sec="http://www.springframework.org/security/facelets/tags" -->
+
+<h:head>
+	<title>iAvaliar - Avaliação da Aprendizagem</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css"
+		rel="stylesheet" type="text/css" />
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/recursos/restrito/imagens/favicon.ico"
+		rel="shortcut icon" type="image/x-icon" />
+</h:head>
+
+<h:body>
+
+	<div id="topo">
+		<a href="http://www.agsolutio.com.br/"><h:graphicImage
+				library="imagens" name="logoBicolor.png"
+				style="margin-left:50px; margin-top:10px;" /> </a>
+	</div>
+	
+
+
+	<div id="tarefas">
+		<ui:insert name="tarefas"></ui:insert>
+	</div>
+
+	<ui:insert name="rodape">
+		<ui:include src="/templates/rodape.xhtml" />
+	</ui:insert>
+
+</h:body>
+
+</html>

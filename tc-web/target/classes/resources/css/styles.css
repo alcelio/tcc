@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+
+.ui-panelgrid>tr td, .ui-panelgrid>tr{
+	border-style: nome !important
+}
+
+.companyHeaderGrid.ui-panelgrid>*>tr,
+.companyHeaderGrid.ui-panelgrid .ui-panelgrid-cell{
+	border: none;
+}
+
+h5 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	/*font-weight:bold;*/
+	letter-spacing: 1px;
+	color: #FCEB8D;
+}

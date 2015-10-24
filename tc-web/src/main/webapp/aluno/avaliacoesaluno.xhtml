@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+		<p:fieldset legend="AVALIAÇÕES DO ALUNO">
+
+			<h:form id="form">
+				<p:growl id="msg0" />
+				
+				<p:dataTable var="avaliacao" value="#{dtFtAvaliacao.avaliacoes}"
+					widgetVar="carsTable"
+					emptyMessage="Nenhuma questão encontrada com os determinados critérios"
+					filteredValue="#{dtFtAvaliacao.filtroAvaliacao}">
+					
+
+					<p:column filterBy="#{avaliacao.disciplina.dsDisciplina}"
+						headerText="Disciplinas" footerText="Disciplina"
+						filterMatchMode="exact" style="width:280;">
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('carsTable').filter()">
+								<f:selectItem itemLabel="Todos" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{dtFtAvaliacao.disciplinas}" />
+							</p:selectOneMenu>
+						</f:facet>
+						<h:outputText value="#{avaliacao.disciplina.dsDisciplina}" />
+					</p:column>
+
+
+					<p:column filterBy="#{avaliacao.turma.dsTurma}"
+						headerText="Turmas" footerText="Turma"
+						filterMatchMode="exact" style="width:300;">
+						<f:facet name="filter">
+							<p:selectOneMenu onchange="PF('carsTable').filter()">
+								<f:selectItem itemLabel="Todos" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{dtFtAvaliacao.turmas}" />
+							</p:selectOneMenu>
+						</f:facet>
+							<h:outputText value="#{avaliacao.turma.dsTurma}" />
+					</p:column>
+
+					<p:column width="220"
+					headerText="Status da Avaliação" footerText="Status da Avaliação">
+						<h:outputText value="#{avaliacao.statusAvaliacao.dsStatusAvaliacao}" />
+					</p:column>
+					
+					<p:column width="180"
+					headerText="Data Limite" footerText="Encerramento">
+						<h:outputText value="#{avaliacao.dataFimAvaliacao}" 
+						pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR"/>
+					</p:column>
+
+
+					<p:column style="width:130;text-align: center">
+						<p:commandButton icon="ui-icon-add" value="Responder"
+							action="#{dtFtAvaliacao.responderAvaliacao()}" update="@all"
+							title="Responder Avaliação">
+							<f:setPropertyActionListener target="#{dtFtAvaliacao.avaliacao}"
+								value="#{avaliacao}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+
+		</p:fieldset>
+	</ui:define>
+
+</ui:composition>

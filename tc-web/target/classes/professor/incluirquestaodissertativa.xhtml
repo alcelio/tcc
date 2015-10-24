@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+	<br />	<h1>Formulário de Questão Dissertativa</h1> <br />
+		<p:fieldset>
+			<h:panelGrid columns="2" id="panelGridCabecalho">
+
+				<h:form id="formGrauDificuldade">
+					<p:panel header="Grau de Dificuldade">
+
+						<h:panelGrid id="gridGrauDificuldade" columns="5" cellspacing="3"
+							render="true">
+
+							<h:outputLabel value="Escolha" />
+							<h:outputLabel />
+							<h:outputLabel />
+							<h:outputLabel />
+							<h:outputLabel />
+
+							<p:commandButton value="Fácil"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
+								update="@form"
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+							</p:commandButton>
+							<p:commandButton value="Moderado"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
+								update="@form"
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+							</p:commandButton>
+							<p:commandButton value="Exigente"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
+								update="@form"
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+							</p:commandButton>
+							<p:commandButton value="Muito Exigente"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
+								update="@form"
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+							</p:commandButton>
+							<p:commandButton value="Extremo"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
+								update="@form"
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+							</p:commandButton>
+						</h:panelGrid>
+
+					</p:panel>
+				</h:form>
+
+				<h:form id="formDadosAdicionais">
+					<p:panel header="Áreas" rendered="true">
+						<h:panelGrid columns="2">
+							<p:outputLabel for="disciplina" value="Disciplinas:"
+								rendered="true" />
+							<p:outputLabel for="topicoEstudo" value="Tópicos de Estudo:" />
+
+
+							<h:panelGrid columns="2">
+								<p:selectOneMenu id="disciplina" style="width:240px"
+									value="#{mbQuestaoDissertativa.disciplina.idDisciplina}">
+									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
+									<f:selectItems value="#{bbDisciplina.disciplinas}"
+										var="disciplina" itemValue="#{disciplina.idDisciplina}"
+										itemLabel="#{disciplina.dsDisciplina}" size="20" />
+									<p:ajax event="change" process="@this"
+										listener="#{mbQuestaoDissertativa.carregaDadosTopicoEstudo()}"
+										update="topicoEstudo" />
+								</p:selectOneMenu>
+								<p:commandButton id="adicionarDisciplina" value="+" style="float:right" immediate="true" 
+								action="incluirdisciplina.jsf" update="@all">
+								<p:ajax listener="#{mbCadastroDisciplina.setaCaminhoOrigem('incluirquestaodissertativa.jsf')}"/>
+								</p:commandButton>
+							</h:panelGrid>
+
+
+							<h:panelGrid columns="2">
+								<p:selectOneMenu id="topicoEstudo" style="width:240px"
+									value="#{mbQuestaoDissertativa.topicoEstudo.idTopicoEstudo}">
+									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
+									<f:selectItems value="#{mbQuestaoDissertativa.topicosEstudo}"
+										var="topico" itemValue="#{topico.idTopicoEstudo}"
+										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
+									<p:ajax event="change" process="@this"
+										listener="#{mbQuestaoDissertativa.setaCodTopicoEstudo()}" />
+								
+								</p:selectOneMenu>
+								<p:commandButton id="adicionarTopicoEstudo" value="+" style="float:right" immediate="true" 
+								action="incluirtopicoestudo.jsf" update="@all">
+								<p:ajax listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem('incluirquestaodissertativa.jsf')}"/>
+								</p:commandButton>
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+
+				<h:outputLabel />
+
+			</h:panelGrid>
+
+			<h:form id="formQuestao">
+				<h:panelGrid id="gridQuestao">
+
+					<h:panelGrid id="panenlBotoes"
+						style="float:right; margin-top:10;"
+						columns="3" cellpadding="20">
+						
+						<h:panelGrid style="float:left; margin-right:20"   columns="2">
+						<h:outputText value="Questão Pública: " />
+						<p:selectBooleanCheckbox selected="true"
+							value="#{mbQuestaoDissertativa.questao.publica}" />
+						</h:panelGrid>
+						
+						<p:commandButton value="Salvar"
+							action="#{mbQuestaoDissertativa.addQuestao()}"
+							icon="ui-icon-disk"
+							update="formQuestao :formGrauDificuldade :formDadosAdicionais">
+							<p:ajax
+								listener="#{mbQuestaoDissertativa.setaUsuarioQuestao(request.getUserPrincipal().getName())}" />
+							<p:ajax update="formGrauDificuldade" />
+						</p:commandButton>
+
+						<p:commandButton value="Encerrar" action="/restrito/home.jsf"
+							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
+						</p:commandButton>
+					</h:panelGrid>
+
+					<p:growl id="msg0" />
+					<h:outputLabel for="editorPergunta" value="Pergunta:" />
+					<p:editor id="editorPergunta" widgetVar="editorPergunta"
+						value="#{mbQuestaoDissertativa.questao.pergunta}" width="1230"
+						height="150" required="true"
+						requiredMessage="O campo [Pergunta] é obrigatório!" />
+					<p:separator style="widht:1230; height: 20;" />
+					<br />
+					<h:outputLabel for="editorRespostaDissertativa" value="Resposta:" />
+
+					<p:editor id="editorRespostaDissertativa"
+						widgetVar="editorResposta"
+						value="#{mbQuestaoDissertativa.questao.dsRespDissertativa}"
+						width="1230" height="150" required="true"
+						requiredMessage="O Campo [Resposta] é obrigatório" rendered="true" />
+					<p:separator style="widht:1230; height: 20;" />
+					<h:inputHidden value="#{mbQuestaoDissertativa.questao.idQuestao}" />
+
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Sim" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+							actionListener="#{mbQuestao.questao.publica}" />
+					</p:confirmDialog>
+				</h:panelGrid>
+			</h:form>
+		</p:fieldset>
+	</ui:define>
+
+</ui:composition>

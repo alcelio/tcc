@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+
+		<div id="conteudo" title="Área Restrita">
+			<h:form>
+				<p:growl id="msg" rendered="#{param.erro}">#{msgs.erro_message}</p:growl>
+			</h:form>
+
+			<p:dialog header="Inclusão de Disciplina" id="dialog" modal="true"
+				minWidth="500" width="500" height="200" closable="false"
+				position="center" widgetVar="modalDisciplina" showEffect="slide"
+				draggable="false" resizable="false" visible="true">
+
+
+				<h:form prependId="false" id="formDisciplina">
+					<p:growl id="msg0" />
+					<h:panelGrid columns="2" cellpadding="20" cellspacing="10"
+						styleClass="panelGrid" id="grid0">
+
+						<h:outputLabel />
+						<h:inputHidden id="iddisciplina"
+							value="#{mbCadastroDisciplina.disciplina.idDisciplina}" />
+
+						<h:outputLabel for="nomecidade" value="Nome.:" />
+						<p:inputText id="nomecidade" size="40"
+							value="#{mbCadastroDisciplina.disciplina.dsDisciplina}"
+							onkeyup="this.value = this.value.toUpperCase()" required="true"
+							requiredMessage="O campo [Dsiciplina] é obrigatório." />
+						<h:outputLabel />
+						<p:panel>
+							<p:commandButton value="Salvar"
+								action="#{mbCadastroDisciplina.addDisciplina()}"
+								icon="ui-icon-disk" update="@form" />
+							<p:commandButton value="Voltar" immediate="true"
+								action="#{mbCadastroDisciplina.goBack()}"
+								icon="ui-icon ui-icon-close" update="@all">
+
+							</p:commandButton>
+						</p:panel>
+					</h:panelGrid>
+				</h:form>
+				
+			</p:dialog>
+		</div>
+
+
+
+	</ui:define>
+
+</ui:composition>

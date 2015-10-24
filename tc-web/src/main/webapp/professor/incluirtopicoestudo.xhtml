@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+	
+	        <div id="conteudo" title="Área Restrita">
+            <h:form>
+                <p:growl id="msg" rendered="#{param.erro}">#{msgs.erro_message}</p:growl>
+            </h:form>
+
+            <p:dialog header="Inclusão de Disciplina"
+                      id="dialog"  
+                      modal="true"
+                      minWidth="500"
+                      width="500"
+                      height="200"
+                      closable="false"
+                      position="center"
+                      widgetVar="modalDisciplina"
+                      showEffect="slide" 
+                      draggable="false"
+                      resizable="false"
+                      visible="true">
+
+
+                    					<h:form prependId="false" id="formTipoQuestao">
+						<p:growl id="msg0" />
+						<h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid"
+							id="grid0">
+
+							<h:outputLabel for="disciplina" value="Disciplina:" />
+
+							<h:panelGrid columns="1">
+								<p:selectOneMenu id="disciplina" rendered="true"
+									value="#{mbCadastroTopicoEstudo.topico.disciplina.idDisciplina}"
+									                                                                                                                                                        >
+									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
+									<f:selectItems value="#{bbDisciplina.disciplinas}"
+										var="disciplina" itemValue="#{disciplina.idDisciplina}"
+										itemLabel="#{disciplina.dsDisciplina}" size="20" 
+										requiredMessage="O campo [Disciplina] é obrigatório."/>
+								</p:selectOneMenu>
+								
+							</h:panelGrid>
+
+
+							<h:inputHidden id="idtipoquestao"
+								value="#{mbCadastroTopicoEstudo.topico.idTopicoEstudo}" />
+							<h:outputLabel />
+
+							<h:outputLabel for="tipoquestao" value="Descrição Tópico Estudo:" />
+							<p:inputText id="tipoquestao" size="40"
+								value="#{mbCadastroTopicoEstudo.topico.dsTopicoEstudo}"
+								onkeyup="this.value = this.value.toUpperCase()" required="true"
+								requiredMessage="O campo [Descrição] é obrigatório." />
+							
+							<h:outputLabel />
+
+							<p:panel>
+								<p:commandButton value="Salvar"
+									action="#{mbCadastroTopicoEstudo.addTopico()}"
+									icon="ui-icon-disk" update="@form" >
+									<p:ajax listener="#{mbQuestaoDissertativa.setaBeanTopicoEstudo(mbCadastroTopicoEstudo.beanTopico)}"/>
+									</p:commandButton>
+								<p:commandButton value="Voltar" immediate="true"  action="#{mbCadastroTopicoEstudo.goBack()}"
+                                    icon="ui-icon ui-icon-close" update="@all" />
+							</p:panel>
+						</h:panelGrid>
+					</h:form>
+            </p:dialog>  
+        </div>
+
+
+
+	</ui:define>
+
+</ui:composition>
