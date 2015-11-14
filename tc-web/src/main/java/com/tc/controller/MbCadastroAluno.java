@@ -1,8 +1,9 @@
 package com.tc.controller;
 
-import java.io.IOException;
+import static com.tc.util.TcChaves.CAMINHO_HOME;
+import static com.tc.util.TcChaves.PATH_APLICACAO;
+
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Date;
 
 import javax.ejb.EJB;
@@ -11,10 +12,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.tc.data.UsuarioBeanDao;
 import com.tc.model.Aluno;
-import com.tc.model.Usuario;
-import com.tc.util.BuscaCEP;
 import com.tc.util.GeraPermissoes;
 
 @SessionScoped
@@ -22,66 +23,60 @@ import com.tc.util.GeraPermissoes;
 public class MbCadastroAluno implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-
 	@EJB
 	UsuarioBeanDao dao;
 
-	private Aluno aluno = new Aluno();
+	private Aluno aluno;
 	private String confirmaSenha;
-	private String cep;
-	BuscaCEP buscaCep = new BuscaCEP();
-
-	public MbCadastroAluno() {
-
+	private String caminhoOrigem;
+	
+	public Aluno getAluno(){
+		if(aluno == null){
+			aluno = new Aluno();
+		}
+		return aluno;
 	}
-	public String novoAluno(){
-		aluno = new Aluno();
-		return "publico/cadastroaluno.jsf";
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
 	}
-
-	public String encerraCadastro(){
-		return "/restrito/home.jsf";
+	public String getConfirmaSenha() {
+		return confirmaSenha;
+	}
+	public void setConfirmaSenha(String confirmaSenha) {
+		this.confirmaSenha = confirmaSenha;
+	}
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
+	}
+	public void setCaminhoOrigem(String vaminhoOrigem) {
+		this.caminhoOrigem = vaminhoOrigem;
 	}
 	
-	public void addUsuario() {
-		if (aluno.getIdUsuario() == null || aluno.getIdUsuario() == 0) {
-			salvar();
-		} else {
-			atualizar();
+	public String goBack() {
+		if(StringUtils.isBlank(caminhoOrigem)){
+			return CAMINHO_HOME;
+		}else{
+			return getCaminhoOrigem();
 		}
 	}
-	
-	/**
-	 * Método para incluir instancia de usuario corrente na base de dados.
-	 */
-	private void salvar() {
-		aluno.setDataCadastro(new Date());
-		aluno.setPermissoes(GeraPermissoes.getPermissaoAluno());
 
-		if (aluno.getSenha() == null ? confirmaSenha == null
-				: aluno.getSenha().equals(confirmaSenha)) {
+	public void addUsuario() {
+		if (getAluno().getSenha() == null ? getConfirmaSenha() == null : getAluno().getSenha().equals(getConfirmaSenha())) {
+
 			try {
-				if(dao.isExisteLogin(aluno.getLogin())){
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, "Usa", ""));
-					
-					
-				}
-//				if (!buscaCep.getBairro(cep).equals(cep)) {
-					//carregaCep();
-					dao.create(aluno);
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
-					encerraCadastro();
-//				} else {
-//					setCep("");
-//					FacesContext.getCurrentInstance().addMessage(null,
-//							new FacesMessage(FacesMessage.SEVERITY_INFO, "CEP inexistente, informe corretamente.", ""));
-//
-//				}
-//
-			} catch (Exception e) {
+				getAluno().setDataCadastro(new Date());
+				getAluno().setPermissoes(GeraPermissoes.getPermissaoAluno());
 
+				if (dao.isExisteLogin(getAluno().getLogin())) {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+							"Este login já esta sendo utilizado, informe outro!", ""));
+				}
+				dao.create(aluno);
+				FacesContext.getCurrentInstance().getExternalContext().redirect(PATH_APLICACAO + CAMINHO_HOME);
+
+			} catch (Exception e) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Erro de gravação no banco de dados, tente novamente", ""));
 			}
 
 		} else {
@@ -90,64 +85,5 @@ public class MbCadastroAluno implements Serializable {
 		}
 	}
 
-	private void atualizar() {
-		dao.update(aluno);
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
-	}
-
-	public void deletar() {
-		dao.remove(aluno);
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
-	}
-
-	public void carregaCep() {
-		try {
-			if (buscaCep.getBairro(cep).equals("-")) {
-				aluno.getEndereco().setDsCidade(buscaCep.getCidade(cep));
-				aluno.getEndereco().setDsEstado(buscaCep.getUF(cep));
-				aluno.getEndereco().setDsCEP(cep);
-			} else {
-				aluno.getEndereco().setDsBairro(buscaCep.getBairro(cep));
-				aluno.getEndereco().setDsCidade(buscaCep.getCidade(cep));
-				aluno.getEndereco().setDsEndereco(buscaCep.getEndereco(cep));
-				aluno.getEndereco().setDsCidade(buscaCep.getCidade(cep));
-				aluno.getEndereco().setDsEstado(buscaCep.getUF(cep));
-				aluno.getEndereco().setDsCEP(cep);
-			}
-			try {
-				String[] values = buscaCep.getLatLong(cep).split(",");
-				aluno.getEndereco().setLatitude(values[0]);
-				aluno.getEndereco().setLongitude(values[1]);
-			} catch (ParseException e) {
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-	public Usuario getAluno() {
-		return aluno;
-	}
-	public String getConfirmaSenha() {
-		return confirmaSenha;
-	}
-	public void setConfirmaSenha(String confirmaSenha) {
-		this.confirmaSenha = confirmaSenha;
-	}
-	public String getCep() {
-		return cep;
-	}
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
-	}
-	
-	
-	
 
 }

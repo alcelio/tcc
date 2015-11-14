@@ -74,7 +74,7 @@
     <realm-name>jdbc-security-domain</realm-name>
     <form-login-config>
       <form-login-page>/publico/login.jsf</form-login-page>
-      <form-error-page>/publico/login.jsf</form-error-page>
+      <form-error-page>/publico/loginError.jsf</form-error-page>
     </form-login-config>
   </login-config>
   <security-role>

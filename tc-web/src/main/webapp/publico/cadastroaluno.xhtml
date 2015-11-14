@@ -18,89 +18,131 @@
 					<h:form prependId="false" id="formUsuario">
 						<p:growl id="msg0" />
 
-						<h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid"
+						<h:panelGrid columns="3" cellpadding="10" cellspacing="10" styleClass="panelGrid"
 							id="grid0">
 
 							<h:inputHidden id="idUsuario"
 								value="#{mbCadastroUsuario.usuario.idUsuario}" />
-
+							<h:outputLabel />
 							<h:outputLabel />
 
-							<h:outputLabel for="usuario" value="Login:" />
-							<p:inputText id="usuario" validator="loginValidator"
-								value="#{mbCadastroAluno.aluno.login}" size="20" 
-								required="true" requiredMessage="O campo [Login] é obrigatório" >
-								</p:inputText>
+							<h:outputLabel for="usuario" value="Login:" style="float:right;" />
+							<p:inputText 
+								id="usuario" 
+								validator="loginValidator"
+								value="#{mbCadastroAluno.aluno.login }" 
+								size="20" 
+								required="true" 
+								requiredMessage="O campo [Login] é obrigatório!" />
+							<p:messages for="usuario" />
 
-							<h:outputLabel for="senha" value="Senha.:" />
-							<p:password id="senha" size="20" maxlength="22"
+							<h:outputLabel for="senha" value="Senha.:" style="float:right;"/>
+							<p:password 
+								id="senha" size="20" 
+								maxlength="22"
 								promptLabel="Digite sua Senha"
 								value="#{mbCadastroAluno.confirmaSenha}"
-								weakLabel="Senha Fraca" goodLabel="Senha Boa"
-								strongLabel="Senha Forte" feedback="true" required="true"
-								requiredMessage="O campo [Senha] é obrigatório" />
+								weakLabel="Senha Fraca" 
+								goodLabel="Senha Boa"
+								strongLabel="Senha Forte" 
+								feedback="true" 
+								required="true"
+								requiredMessage="O campo [Senha] é obrigatório!" />
+							<p:messages for="senha" />
 
-							<h:outputLabel for="senhaconf2" value="Confirmar Senha:" />
-							<p:password id="senhaconf2" size="20"
-								value="#{mbCadastroAluno.aluno.senha}" maxlength="22"
-								promptLabel="Confirme sua Senha" required="true"
-								requiredMessage="O campo [Confirma Senha] é obrigatório">
+							<h:outputLabel for="senhaconf2" value="Confirmar Senha:" style="float:right;"/>
+							<p:password 
+								id="senhaconf2" size="20"
+								value="#{mbCadastroAluno.aluno.senha}" 
+								maxlength="22"
+								promptLabel="Confirme sua Senha" 
+								required="true"
+								requiredMessage="O campo [Confirma Senha] é obrigatório!">
 							</p:password>
+							<p:messages for="senhaconf2" />
 
-
-							<h:outputLabel for="sexo" value="Sexo:" request="true" 
-							requestMessage="O campo [Sexo] é obrigatório"/>
-							<p:selectOneMenu id="sexo"
+							<h:outputLabel for="sexo" value="Sexo:" style="float:right;"/>
+							<p:selectOneMenu 
+								id="sexo" 
+								style="width: 180px;"
+								converterMessage="O campo [Sexo] é obrigatório!"
 								value="#{mbCadastroAluno.aluno.sexo.idSexo}">
-								<f:selectItems value="#{bbSexo.sexos}" var="sexo"
-									itemValue="#{sexo.idSexo}" itemLabel="#{sexo.dsSexo}" size="20" />
+									<f:selectItem 
+										itemLabel="" 
+										itemValue="null" />
+									<f:selectItems
+										value="#{bbSexo.sexos}" 
+										var="sexo"
+										itemValue="#{sexo.idSexo}" 
+										itemLabel="#{sexo.dsSexo}" 
+										size="20" />
 							</p:selectOneMenu>
-
-							<h:outputLabel for="nomePessoa" value="Nome:" />
-							<p:inputText id="nomePessoa" size="40"
-								value="#{mbCadastroAluno.aluno.nome}" required="true"
-								requiredMessage="O campo [Nome] é obrigatório"
+							
+							<h:outputLabel />
+							
+							<h:outputLabel for="nomePessoa" value="Nome:" style="float:right;"/>
+							<p:inputText 
+								id="nomePessoa" 
+								size="60"
+								value="#{mbCadastroAluno.aluno.nome}" 
+								required="true"
+								requiredMessage="O campo [Nome] é obrigatório!"
 								onkeyup="this.value = this.value.toUpperCase()" />
+							<p:messages for="nomePessoa" />
 
-							<h:outputLabel for="telefone" value="Telefone:" />
-							<p:inputMask id="telefone" size="40" mask="(99) 9999-9999"
-								value="#{mbCadastroAluno.aluno.foneCel}" required="true"
-								requiredMessage="O campo [Telefone] é obrigatório"
-								onkeyup="this.value = this.value.toUpperCase()" />
-
-							<h:outputLabel for="email" value="E-mail:" />
-							<p:inputText id="email" size="40"
-								value="#{mbCadastroAluno.aluno.email}" required="true"
-								requiredMessage="O campo [E-mail] é obrigatório">
+							
+							<h:outputLabel for="email" value="E-mail:" style="float:right;"/>
+							<p:inputText 
+								id="email" 
+								size="60"
+								value="#{mbCadastroAluno.aluno.email}" 
+								required="true"
+								requiredMessage="O campo [E-mail] é obrigatório!">
 								<f:validator validatorId="emailValidator" />
 							</p:inputText>
+							<p:messages for="email" />
+							
+							<h:outputLabel for="telefone" value="Telefone:" style="float:right;"/>
+							<p:inputMask id="telefone" 
+								value="#{mbCadastroAluno.aluno.foneCel}" 
+								size="12" 
+								mask="(99) 9999-9999"
+								required="true"
+								requiredMessage="O campo [Telefone] é obrigatório!" />
+							<p:messages for="telefone" />
 
-							<h:outputLabel for="dataNascimento" value="Data de Nasc:" />
-							<p:calendar id="dataNascimento" yearRange="c-100:c-7"
+							<h:outputLabel for="dataNascimento" value="Data de Nascimento:" style="float:right;" />
+							<p:calendar id="dataNascimento" 
+								size="12"
+								yearRange="c-100:c-7"
 								value="#{mbCadastroAluno.aluno.dataNascimento}"
 								required="true"
-								requiredMessage="O campo [Data de Nascimento] é obrigatório"
+								requiredMessage="O campo [Data de Nascimento] é obrigatório!"
 								locale="pt_BR" navigator="true" effect="explode"
 								pattern="dd/MM/yyyy" />
+							<p:messages for="dataNascimento" />
 
-
-							<h:outputLabel for="cep" value="CEP.:" />
-							<p:inputMask id="cep" size="10" value="#{mbCadastroAluno.aluno.endereco.dsCEP}"
+							<h:outputLabel for="cep" value="CEP:" style="float:right;"/>
+							<p:inputMask 
+								id="cep" size="12" 
+								value="#{mbCadastroAluno.aluno.endereco.dsCEP}"
 								mask="99999-999" required="true"
-								requiredMessage="É obrigatório o preenchimento do campo [CEP]" />
-
+								requiredMessage="O campo [CEP] é obrigatório!" />
+							<p:messages for="cep" />
+								
 								<h:outputLabel />
 	
-							<p:panel>
+							<h:panelGrid columns="2" style="float:right;"> 
 								<p:commandButton value="Salvar"
 									action="#{mbCadastroAluno.addUsuario()}" icon="ui-icon-disk"
-									update="@all">
+									update="@form"> 
+									<p:ajax listener="#{mbCadastroAluno.goBack()}"/>
+								</p:commandButton>
 
+								<p:commandButton value="Encerrar" action="#{mbCadastroAluno.goBack()}"
+									immediate="true" icon="ui-icon ui-icon-close" >
 								</p:commandButton>
-								<p:commandButton value="Encerrar" action="/restrito/home.jsf}"
-									immediate="true" icon="ui-icon ui-icon-close">
-								</p:commandButton>
-							</p:panel>
+							</h:panelGrid>
 								
 						</h:panelGrid>
 					</h:form>

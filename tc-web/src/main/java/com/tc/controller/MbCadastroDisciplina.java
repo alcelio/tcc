@@ -85,10 +85,4 @@ public class MbCadastroDisciplina implements Serializable {
 		return dao.listarDisciplina();
 	}
 
-//	public void setDisciplinas(List<Disciplina> disciplinas) {
-//		this.disciplinas = disciplinas;
-//	}
-
-	
-
 }

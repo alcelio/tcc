@@ -80,7 +80,6 @@ public class MbAlunosTurma implements Serializable {
 		try {
 			turmasAluno = dao.listarTurmasPorAluno(BeanUsuarioLogado.usualioLogado);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return turmasAluno;

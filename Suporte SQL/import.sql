@@ -33,7 +33,7 @@ INSERT INTO `Turno` (`idTurno`,`dsTurno`) VALUES
 (10,'INDEFINIDO');
 
 
-INSERT INTO `StatusAvaliacao` (`idStatusAvaliacao`,`dsStatusAvliacao`) VALUES
+INSERT INTO `StatusAvaliacao` (`idStatusAvaliacao`,`dsStatusAvaliacao`) VALUES
 (1,'CORRIGIDA'),
 (2,'PENDENTE_CORRECAO'),
 (3,'AGUARDANDO_INICIO');
