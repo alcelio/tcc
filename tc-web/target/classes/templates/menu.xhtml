@@ -14,7 +14,7 @@
 			
 				
 
-				<p:submenu label="Manutenção">
+				<p:submenu label="Manutenção" rendered="#{mbLoginController.admin}">
 					<p:menuitem value="Usuarios" url="/admin/manutencaousuario.jsf"
 						ajax="false" />
 
@@ -36,12 +36,12 @@
 
 				</p:submenu>
 				
-				<p:submenu label="Questões">
+				<p:submenu label="Questões" rendered="#{mbLoginController.professor}">
 					<p:menuitem value="Consultar Questões públicas" url="/restrito/atualizacadastro.jsf" /> 
 					<p:menuitem value="Buscador de Questão" url="/professor/pesquisaquestao.jsf" />
 				</p:submenu>
 
-				<p:submenu label="Professor">
+				<p:submenu label="Professor" rendered="#{mbLoginController.professor}">
 
 					<p:menuitem value="Criar Avaliação"	url="/professor/criaravaliacao.jsf" />
 					<p:menuitem value="Corrigir Avaliação" url="/professor/correcaoavaliacao.jsf" />
@@ -56,7 +56,7 @@
 					</p:submenu>
 				</p:submenu>
 
-				<p:submenu label="Aluno">
+				<p:submenu label="Aluno" rendered="#{mbLoginController.aluno}">
 				<p:menuitem value="Minhas Avaliações" url="/aluno/avaliacoesaluno.jsf" />
 				<p:menuitem value="Responder Avaliação" url="/aluno/responderavaliacao.jsf" />
 				<p:menuitem value="Estatísticas/Informações" url="/aluno/estatisticasaluno.jsf" />

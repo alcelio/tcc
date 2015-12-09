@@ -86,12 +86,9 @@ public class MbCadastroUsuario implements Serializable {
 	 */
 	private void salvar() {
 		
-		//usuario.setSenha(ConverterSHA1.cipher(usuario.getSenha()));
 		usuario.setDataCadastro(new Date());
 		usuario.setPermissoes(GeraPermissoes.getPermissaoAdmin());
-		
-		if (usuario.getSenha() == null ? confirmaSenha == null
-				: usuario.getSenha().equals(confirmaSenha)) {
+		usuario.setSenha("iavaliar");
 
 			
 			try {
@@ -114,10 +111,6 @@ public class MbCadastroUsuario implements Serializable {
 				e.printStackTrace();
 			}
 
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "As senhas não conferem.", ""));
-		}
 	}
 
 	private void atualizar() {

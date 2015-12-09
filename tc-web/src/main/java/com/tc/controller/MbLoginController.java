@@ -27,7 +27,8 @@ public class MbLoginController implements Serializable {
 	private Usuario usuarioLogado;
 	private boolean professor;
 	private boolean aluno;
-	private boolean admin; 
+	private boolean admin;
+	
 
 	public MbLoginController() {
 
@@ -44,14 +45,20 @@ public class MbLoginController implements Serializable {
 	}
 
 	private void verificaTipoUsuario(Usuario usuarioLogado) {
-		if(usuarioLogado instanceof Aluno){
+		if(usuarioLogado instanceof Usuario){
 			setAluno(true);
+			setProfessor(true);
+			setAdmin(true);
 		}
 		if(usuarioLogado instanceof Professor){
 			setProfessor(true);
+			setAdmin(false);
+			setAluno(false);
 		}
-		if(usuarioLogado instanceof Usuario){
-			setAdmin(true);
+		if(usuarioLogado instanceof Aluno){
+			setProfessor(false);
+			setAdmin(false);
+			setAluno(true);
 		}
 		
 	}
@@ -91,6 +98,7 @@ public class MbLoginController implements Serializable {
 	}
 
 	public boolean isAdmin() {
+		
 		return admin;
 	}
 
