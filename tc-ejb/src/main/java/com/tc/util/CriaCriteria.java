@@ -2,6 +2,9 @@ package com.tc.util;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+
+import tc.common.exceptions.DatabaseException;
+
 import org.hibernate.FetchMode;
 
 public final class CriaCriteria {
@@ -17,7 +20,7 @@ public final class CriaCriteria {
 	 *            Seleção de quais joins a consulta deverá executar
 	 * @return Uma isntância de {@link Criteria}
 	 */
-	public static Criteria createCriteria(Class<?> clazz, Session session, String... joins) throws Exception {
+	public static Criteria createCriteria(Class<?> clazz, Session session, String... joins) throws DatabaseException {
 		try {
 			final Criteria crit = session.createCriteria(clazz).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
@@ -27,7 +30,7 @@ public final class CriaCriteria {
 
 			return crit;
 		} catch (final Exception e) {
-			throw new Exception("Erro ao criar critério de consulta. Endidade: " + clazz.getSimpleName(), e);
+			throw new DatabaseException("Erro ao criar critério de consulta. Endidade: " + clazz.getSimpleName(), e);
 		}
 	}
 

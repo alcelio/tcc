@@ -19,7 +19,12 @@
       <class>com.tc.model.Instituicao</class>
       <class>com.tc.model.Member</class>
       <class>com.tc.model.PK.AlunosTurmaPK</class>
+      <class>com.tc.model.PK.ParametrosUsuarioPK</class>
       <class>com.tc.model.PK.QuestoesAvaliacaoPK</class>
+      <class>com.tc.model.Parametros</class>
+      <class>com.tc.model.ParametrosAgentes</class>
+      <class>com.tc.model.ParametrosSistema</class>
+      <class>com.tc.model.ParametrosUsuario</class>
       <class>com.tc.model.Permissao</class>
       <class>com.tc.model.Professor</class>
       <class>com.tc.model.Questao</class>
