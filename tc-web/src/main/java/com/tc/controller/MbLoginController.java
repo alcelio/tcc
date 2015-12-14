@@ -98,7 +98,6 @@ public class MbLoginController implements Serializable {
 	}
 
 	public boolean isAdmin() {
-		
 		return admin;
 	}
 

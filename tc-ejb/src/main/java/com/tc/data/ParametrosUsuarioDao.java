@@ -15,19 +15,22 @@ import org.hibernate.criterion.Restrictions;
 import com.tc.model.ParametrosUsuario;
 import com.tc.model.PK.ParametrosUsuarioPK;
 import com.tc.util.CriaCriteria;
-
-import tc.common.exceptions.DatabaseException;
+/**
+ * Session Bean implementation class UsuarioBeanDao
+ */
 @Stateless
 @LocalBean
 @Remote
 public class ParametrosUsuarioDao implements Serializable {
-
 	private static final long serialVersionUID = 1L;
-	
+
 	@PersistenceContext
 	private EntityManager em;
-	
-	public ParametrosUsuario buscarPorChave(Integer idParametro, Integer idUsuario) throws DatabaseException {
+
+	public ParametrosUsuarioDao() {
+	}
+
+	public ParametrosUsuario buscarPorChave(Integer idParametro, Integer idUsuario) throws Exception {
 
 		final Session session = em.unwrap(Session.class);
 
@@ -41,6 +44,5 @@ public class ParametrosUsuarioDao implements Serializable {
 		return (ParametrosUsuario) crit.uniqueResult();
 
 	}
-
 
 }

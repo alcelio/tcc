@@ -19,7 +19,6 @@ public class Parametros implements Serializable {
 	private Integer idParametro;
 	private String desParametro;
 	private String desFuncaoParametro;
-	private String vlrPadrao;
 
 	public Parametros() {
 		super();
@@ -49,14 +48,6 @@ public class Parametros implements Serializable {
 		this.desFuncaoParametro = desFuncaoParametro;
 	}
 
-	public String getVlrPadrao() {
-		return vlrPadrao;
-	}
-
-	public void setVlrPadrao(String vlrPadrao) {
-		this.vlrPadrao = vlrPadrao;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -64,7 +55,6 @@ public class Parametros implements Serializable {
 		result = prime * result + ((desFuncaoParametro == null) ? 0 : desFuncaoParametro.hashCode());
 		result = prime * result + ((desParametro == null) ? 0 : desParametro.hashCode());
 		result = prime * result + ((idParametro == null) ? 0 : idParametro.hashCode());
-		result = prime * result + ((vlrPadrao == null) ? 0 : vlrPadrao.hashCode());
 		return result;
 	}
 
@@ -91,11 +81,6 @@ public class Parametros implements Serializable {
 			if (other.idParametro != null)
 				return false;
 		} else if (!idParametro.equals(other.idParametro))
-			return false;
-		if (vlrPadrao == null) {
-			if (other.vlrPadrao != null)
-				return false;
-		} else if (!vlrPadrao.equals(other.vlrPadrao))
 			return false;
 		return true;
 	}

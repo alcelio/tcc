@@ -5,8 +5,9 @@
     <artifactId>tc</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
+
   <artifactId>tc-common</artifactId>
-  
+
   	<dependencies>
 		<!-- LOGFJ LOGGER APACHE -->
 		<dependency>

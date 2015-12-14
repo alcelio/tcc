@@ -66,6 +66,8 @@ public class MbCadastroAluno implements Serializable {
 			try {
 				getAluno().setDataCadastro(new Date());
 				getAluno().setPermissoes(GeraPermissoes.getPermissaoAluno());
+				getAluno().setAtivo(true);
+				getAluno().setPrimeiroAcesso(true);
 
 				if (dao.isExisteLogin(getAluno().getLogin())) {
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,

@@ -66,6 +66,8 @@ public class MbCadastroProfessor implements Serializable {
 			try {
 				getProfessor().setDataCadastro(new Date());
 				getProfessor().setPermissoes(GeraPermissoes.getPermissaoProfessor());
+				getProfessor().setAtivo(true);
+				getProfessor().setPrimeiroAcesso(true);
 
 				if (dao.isExisteLogin(getProfessor().getLogin())) {
 					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,

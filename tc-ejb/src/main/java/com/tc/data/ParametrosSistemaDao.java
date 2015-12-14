@@ -29,7 +29,7 @@ public class ParametrosSistemaDao implements Serializable{
 	 * @throws DatabaseException 
 	 * 
 	 */
-	public ParametrosSistema buscarPorChave(Integer idParametro)throws DatabaseException {
+	public ParametrosSistema buscarPorChave(Integer idParametro)throws Exception {
 		
 		final Session session = em.unwrap(Session.class);
 		

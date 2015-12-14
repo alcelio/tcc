@@ -35,7 +35,6 @@ public class ParametrosUsuario implements Serializable {
 	private String desValorParametro;
 
 	public ParametrosUsuario() {
-		super();
 	}
 
 	public ParametrosUsuarioPK getId() {

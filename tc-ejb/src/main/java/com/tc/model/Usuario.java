@@ -84,12 +84,22 @@ public class Usuario implements Serializable {
 
 	private String permissao;
 
+	private boolean primeiroAcesso;
+	
+
 	public Usuario() {
 		sexo = new Sexo();
 		endereco = new Endereco();
 		historico = new ArrayList<Historico>();
 	}
 
+	public boolean isPrimeiroAcesso() {
+		return primeiroAcesso;
+	}
+	
+	public void setPrimeiroAcesso(boolean primeiroAcesso) {
+		this.primeiroAcesso = primeiroAcesso;
+	}
 	public Integer getIdUsuario() {
 		return idUsuario;
 	}
