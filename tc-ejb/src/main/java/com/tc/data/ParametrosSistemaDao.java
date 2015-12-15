@@ -12,8 +12,6 @@ import org.hibernate.criterion.Restrictions;
 import com.tc.model.ParametrosSistema;
 import com.tc.util.CriaCriteria;
 
-import tc.common.exceptions.DatabaseException;
-
 public class ParametrosSistemaDao implements Serializable{
 
 	private static final long serialVersionUID = 1L;

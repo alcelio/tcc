@@ -1,4 +1,4 @@
-package tc.common.exceptions;
+package tc.common.exceptionsss;
 
 import static tc.common.util.IavaliarUtil.brakeLineChar;
 import static tc.common.util.IavaliarUtil.removerAcentos;

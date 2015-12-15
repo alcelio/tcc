@@ -3,10 +3,10 @@ package com.tc.configuracoes;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.tc.exceptions.ScreenException;
 import com.tc.regras.ParametrosSistemaRN;
 import com.tc.regras.ParametrosUsuarioRN;
 
-import tc.common.exceptions.ScreenException;
 import tc.common.logger.ALogger;
 
 public class ParametrosIavaliar {
@@ -136,32 +136,32 @@ public class ParametrosIavaliar {
 		Object retorno = null;
 
 		if (clazz.equals(Integer.class)) {
-			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaIntegerNoLru((String[]) parametro,
+			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaInteger((String[]) parametro,
 					defaultValue == null ? null : (Integer) defaultValue);
 		} else
 
 		if (clazz.equals(Long.class)) {
-			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaLongNoLru((String[]) parametro,
+			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaLong((String[]) parametro,
 					defaultValue == null ? null : (Long) defaultValue);
 		} else
 
 		if (clazz.equals(BigDecimal.class)) {
-			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaBigDecimalNoLru((String[]) parametro,
+			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaBigDecimal((String[]) parametro,
 					defaultValue == null ? null : (BigDecimal) defaultValue);
 		} else
 
 		if (clazz.equals(Date.class)) {
-			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaDateNoLru((String[]) parametro,
+			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaDate((String[]) parametro,
 					(Date) defaultValue == null ? null : (Date) defaultValue);
 		} else
 
 		if (clazz.equals(String.class)) {
-			retorno = getParametrosUsuarioRN().buscarValorParametroUsuarioStringNoLru((String[]) parametro,
+			retorno = getParametrosUsuarioRN().buscarValorParametroUsuarioString((String[]) parametro,
 					defaultValue == null ? null : (String) defaultValue);
 		} else
 
 		if (clazz.equals(Boolean.class)) {
-			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaBooleanNoLru((String[]) parametro,
+			retorno = getParametrosUsuarioRN().buscarValorParametroSistemaBoolean((String[]) parametro,
 					defaultValue == null ? null : (Boolean) defaultValue);
 		}
 

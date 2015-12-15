@@ -1,4 +1,4 @@
-package tc.common.exceptions;
+package tc.common.exceptionsss;
 
 /**
  * Lan�ada quando ocorrem erros no processamento das regras de neg�cios

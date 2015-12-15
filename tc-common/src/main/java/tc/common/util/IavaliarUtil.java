@@ -17,8 +17,8 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import tc.common.exceptions.ScreenException;
-import tc.common.logger.ALogger;
+import tc.common.exceptionsss.ScreenException;
+import tc.common.loggerrrrr.ALogger;
 
 /**
  * Classe com m�todos est�ticos para auxiliar o desenvolmento de forma geral

@@ -1,9 +1,9 @@
-package tc.common.logger;
+package tc.common.loggerrrrr;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import tc.common.logger.ALogger.LogType;
+import tc.common.loggerrrrr.ALogger.LogType;
 
 /**
  * Armazena o log identificando o tipo

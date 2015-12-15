@@ -18,11 +18,16 @@ import com.tc.util.CriaCriteria;
 /**
  * Session Bean implementation class UsuarioBeanDao
  */
+
+import tc.common.logger.ALogger;
+
 @Stateless
 @LocalBean
 @Remote
 public class UsuarioBeanDao implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	private static ALogger log = ALogger.getLogger(UsuarioBeanDao.class);
 
 	@PersistenceContext
 	private EntityManager em;
@@ -31,15 +36,15 @@ public class UsuarioBeanDao implements Serializable {
 	}
 
 	public void create(Usuario entidade) throws Exception {
-		if(entidade == null){
+		if (entidade == null) {
 			throw new Exception("Usuario enviado é inválido.");
 		}
-		try{
+		try {
 			em.persist(entidade);
-		}catch( Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void update(Usuario entidade) {
@@ -53,8 +58,8 @@ public class UsuarioBeanDao implements Serializable {
 	public List<Usuario> listarUsuarios() {
 		return em.createNamedQuery("Usuario.findAll", Usuario.class).getResultList();
 	}
-	
-	public Usuario buscaUsuarioPorLogin(String login) throws Exception{
+
+	public Usuario buscaUsuarioPorLogin(String login) throws Exception {
 		final Session session = em.unwrap(Session.class);
 		Usuario usuario = null;
 		try {
@@ -65,12 +70,12 @@ public class UsuarioBeanDao implements Serializable {
 			throw new Exception("Erro ao carregar dados da tabela.", e);
 		}
 		return usuario;
-    }
-	
-	public Usuario buscaUsuarioPorId(Integer id) throws Exception{
+	}
+
+	public Usuario buscaUsuarioPorId(Integer id) throws Exception {
 		final Session session = em.unwrap(Session.class);
 		Usuario usuario = null;
-		
+		log.debug("Buscando usuario [" + id + "]");
 		try {
 			final Criteria crit = CriaCriteria.createCriteria(Usuario.class, session);
 			crit.add(Restrictions.eq("idUsuario", id));
@@ -79,22 +84,22 @@ public class UsuarioBeanDao implements Serializable {
 			throw new Exception("Erro ao carregar dados da tabela.", e);
 		}
 		return usuario;
-    }
-	
-	public boolean isExisteLogin(String login) throws Exception{
+	}
+
+	public boolean isExisteLogin(String login) throws Exception {
 		final Session session = em.unwrap(Session.class);
 		Usuario usuario = null;
 		try {
 			final Criteria crit = CriaCriteria.createCriteria(Usuario.class, session);
 			crit.add(Restrictions.eq("login", login));
 			usuario = (Usuario) crit.uniqueResult();
-			if(usuario != null){
+			if (usuario != null) {
 				return true;
-			}else{
+			} else {
 				return false;
 			}
 		} catch (final Exception e) {
 			throw new Exception("Erro ao carregar dados da tabela.", e);
 		}
-    } 
+	}
 }
