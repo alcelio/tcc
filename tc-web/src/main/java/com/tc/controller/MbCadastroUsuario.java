@@ -113,6 +113,27 @@ public class MbCadastroUsuario implements Serializable {
 
 	}
 
+//	public String ativar(){
+//		if(getUsuario().getIsAtivo()){
+//			getUsuario().setIsAtivo(FALSE);
+//			getUsuario().setSenha(ConverterSHA1.cipher(getUsuario().getSenha()));
+//		}else{
+//			getUsuario().setIsAtivo(TRUE);
+//			getUsuario().setSenha(SENHA_PADRAO);
+//			getUsuario().setPrimeiroAcesso(TRUE);
+//		}
+//		try {
+//			dao.update(getUsuario());
+//			FacesContext.getCurrentInstance().addMessage(null,
+//					new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso.", ""));
+//		} catch (Exception e) {
+//			FacesContext.getCurrentInstance().addMessage(null,
+//					new FacesMessage(FacesMessage.SEVERITY_INFO, "Erro inespedo ao realizar a operação.", ""));
+//
+//		}
+//		return null;
+//	}
+	
 	private void atualizar() {
 		usuarioDao.update(usuario);
 		FacesContext.getCurrentInstance().addMessage(null,

@@ -11,10 +11,9 @@ import javax.ejb.EJB;
 import org.apache.commons.lang3.StringUtils;
 
 import com.tc.data.ParametrosUsuarioDao;
+import com.tc.logger.ALogger;
 import com.tc.model.ParametrosUsuario;
 import com.tc.util.StringUtil;
-
-import tc.common.logger.ALogger;
 
 /**
  * Classe implementação de regras para busca de parametros de Usuários 

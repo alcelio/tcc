@@ -4,10 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.tc.exceptions.ScreenException;
+import com.tc.logger.ALogger;
 import com.tc.regras.ParametrosSistemaRN;
 import com.tc.regras.ParametrosUsuarioRN;
-
-import tc.common.logger.ALogger;
 
 public class ParametrosIavaliar {
 

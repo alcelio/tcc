@@ -21,7 +21,7 @@
         <module>tc-ejb</module>
         <module>tc-web</module>
         <module>tc-ear</module>
-        <module>tc-common</module>
+        <module>tc-comum</module>
     </modules>
 
     <properties>

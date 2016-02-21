@@ -13,11 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.tc.data.ParametrosSistemaDao;
 import com.tc.exceptions.RegrasException;
+import com.tc.logger.ALogger;
 import com.tc.model.ParametrosSistema;
 import com.tc.util.BigDecimalUtil;
 import com.tc.util.IntegerUtil;
-
-import tc.common.logger.ALogger;
 
 /**
  * Classe de implementação das regras de negócio para parametros de Usuários;

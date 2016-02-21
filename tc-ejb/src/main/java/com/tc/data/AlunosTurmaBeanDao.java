@@ -16,9 +16,8 @@ import org.hibernate.criterion.Restrictions;
 import com.tc.model.AlunosTurma;
 import com.tc.model.Turma;
 import com.tc.model.Usuario;
-import com.tc.util.CriaCriteria;
-
 import com.tc.model.PK.AlunosTurmaPK;
+import com.tc.util.CriaCriteria;
 
 /**
  * Session Bean implementation class EnderecoBeanDao

@@ -15,19 +15,16 @@ import org.hibernate.criterion.Restrictions;
 
 import com.tc.model.Usuario;
 import com.tc.util.CriaCriteria;
+
 /**
  * Session Bean implementation class UsuarioBeanDao
  */
-
-import tc.common.logger.ALogger;
 
 @Stateless
 @LocalBean
 @Remote
 public class UsuarioBeanDao implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	private static ALogger log = ALogger.getLogger(UsuarioBeanDao.class);
 
 	@PersistenceContext
 	private EntityManager em;
@@ -75,7 +72,7 @@ public class UsuarioBeanDao implements Serializable {
 	public Usuario buscaUsuarioPorId(Integer id) throws Exception {
 		final Session session = em.unwrap(Session.class);
 		Usuario usuario = null;
-		log.debug("Buscando usuario [" + id + "]");
+		//log.debug("Buscando usuario [" + id + "]");
 		try {
 			final Criteria crit = CriaCriteria.createCriteria(Usuario.class, session);
 			crit.add(Restrictions.eq("idUsuario", id));

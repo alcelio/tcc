@@ -100,6 +100,21 @@
 					rowsPerPageTemplate="5,10,15" >
 
 					<f:facet name="header" >Lista de Usuários</f:facet>
+					
+<!-- 					<p:column width="50"> -->
+<!-- 						<f:facet name="header"> -->
+<!-- 							<h:outputText value="Ativo" /> -->
+<!-- 						</f:facet> -->
+<!-- 						<div align="center"> -->
+<!-- 							<p:commandLink action="#{mbCadastroUsuario.ativar()}" update="@form" > -->
+<!-- 								<h:graphicImage library="imagens" -->
+<!-- 									name="user_#{usuario.isAtivo}.png" /> -->
+<!-- 								<p:ajax update="@this"/> -->
+<!-- 								<f:setPropertyActionListener target="#{mbCadastroUsuario.usuario}" value="#{usuario}" /> -->
+<!-- 							</p:commandLink> -->
+<!-- 						</div> -->
+<!-- 					</p:column> -->
+					
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="Nome" />
@@ -107,22 +122,34 @@
 						<h:outputText value="#{usuario.nome}" />
 					</p:column>
 
-					<p:column>
+					<p:column width="50">
 						<f:facet name="header">
-							<h:outputText value="Ações" />
+							<h:outputText value="Editar" />
 						</f:facet>
-						<p:commandButton value="Editar" image="ui-icon ui-icon-pencil"
-							process="@this" update=":tbv1:formUsuario">
-							<f:setPropertyActionListener
-								target="#{mbCadastroUsuario.usuario}" value="#{usuario}" />
-						</p:commandButton>
-						<p:commandButton value="Remover"
-							action="#{mbCadastroUsuario.deletar}"
-							image="ui-icon ui-icon-close" update="@form">
-							<f:setPropertyActionListener
-								target="#{mbCadastroUsuario.usuario}" value="#{usuario}" />
-						</p:commandButton>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formUsuario">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroUsuario.usuario}" value="#{usuario}" />
+							</p:commandLink>
+						</div>
+					</p:column>
 
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroUsuario.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão do usuário #{usuario.nome}?')) return false;"
+								update="@form"> 
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroUsuario.usuario}" value="#{usuario}" />
+							</p:commandLink>
+						</div>
 					</p:column>
 
 				</p:dataTable>

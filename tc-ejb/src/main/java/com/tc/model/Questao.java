@@ -43,9 +43,7 @@ public abstract class Questao implements Serializable {
 	private String opcaoC;
 	private String opcaoD;
 	private String opcaoE;
-	// bi-directional many-to-one association to Questoesavaliacao
-	// @OneToMany
-	// private List<QuestoesAvaliacao> questoesAvaliacao;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "idProfessor")

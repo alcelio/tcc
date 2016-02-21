@@ -1,7 +1,7 @@
 package com.tc.controller;
 
-import static com.tc.util.TcChaves.CAMINHO_HOME;
-import static com.tc.util.TcChaves.PATH_APLICACAO;
+import static com.tc.util.WebGlobals.PAGINA_HOME;
+import static com.tc.util.WebGlobals.PATH_APLICACAO;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -69,7 +69,7 @@ public class MbLoginController implements Serializable {
 		session.invalidate();
 
 		try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect(PATH_APLICACAO + CAMINHO_HOME);
+			FacesContext.getCurrentInstance().getExternalContext().redirect(PATH_APLICACAO + PAGINA_HOME);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

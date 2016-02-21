@@ -1,7 +1,7 @@
 package com.tc.controller;
 
-import static com.tc.util.TcChaves.CAMINHO_HOME;
-import static com.tc.util.TcChaves.PATH_APLICACAO;
+import static com.tc.util.WebGlobals.PAGINA_HOME;
+import static com.tc.util.WebGlobals.PATH_APLICACAO;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -54,7 +54,7 @@ public class MbCadastroAluno implements Serializable {
 	
 	public String goBack() {
 		if(StringUtils.isBlank(caminhoOrigem)){
-			return CAMINHO_HOME;
+			return PAGINA_HOME;
 		}else{
 			return getCaminhoOrigem();
 		}
@@ -74,7 +74,7 @@ public class MbCadastroAluno implements Serializable {
 							"Este login já esta sendo utilizado, informe outro!", ""));
 				}
 				dao.create(aluno);
-				FacesContext.getCurrentInstance().getExternalContext().redirect(PATH_APLICACAO + CAMINHO_HOME);
+				FacesContext.getCurrentInstance().getExternalContext().redirect(PATH_APLICACAO + PAGINA_HOME);
 
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,

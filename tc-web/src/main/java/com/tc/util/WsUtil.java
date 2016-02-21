@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * @author Tiago Colleoni Zaro Classe Utilitaria para WebServices
+ * @author Alcélio Gomes Classe Utilitaria para WebServices
  */
 public final class WsUtil {
 
