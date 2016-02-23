@@ -1,4 +1,4 @@
-package com.tc.suport;
+package com.tc.beans;
 
 public class BeanTopicoEstudo {
 	
