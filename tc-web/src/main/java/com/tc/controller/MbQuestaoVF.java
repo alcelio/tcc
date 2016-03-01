@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.tc.beans.BeanTopicoEstudo;
 import com.tc.data.DisciplinaBeanDao;
 import com.tc.data.QuestaoBeanDao;
 import com.tc.data.TopicoEstudoBeanDao;
@@ -18,7 +19,6 @@ import com.tc.model.Disciplina;
 import com.tc.model.QuestaoVF;
 import com.tc.model.TopicoEstudo;
 import com.tc.model.Usuario;
-import com.tc.suport.BeanTopicoEstudo;
 
 @SessionScoped
 @ManagedBean
@@ -54,8 +54,8 @@ public class MbQuestaoVF implements Serializable {
 		if(bean == null){
 			return;
 		}
-		this.codDisciplina = bean.getIdDisciplina();
-		this.codTopicoEstudo = bean.getIdTopicoEstudo();
+		this.codDisciplina = bean.getDisciplina().getIdDisciplina();
+		this.codTopicoEstudo = bean.getTopicoEstudo().getIdTopicoEstudo();
 		
 	}
 	public void informaTipoQuestao(String tipoQuestao) {

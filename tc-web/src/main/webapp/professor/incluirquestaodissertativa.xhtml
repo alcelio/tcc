@@ -26,29 +26,29 @@
 							<h:outputLabel />
 
 							<p:commandButton value="Fácil"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_FACIL)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_FACIL)}">
 							</p:commandButton>
 							<p:commandButton value="Moderado"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_MODERADA)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_MODERADA)}">
 							</p:commandButton>
 							<p:commandButton value="Exigente"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_EXIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_EXIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Muito Exigente"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_MUITO_EGIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_MUITO_EGIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Extremo"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_EXTREMA)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_EXTREMA)}">
 							</p:commandButton>
 						</h:panelGrid>
 
@@ -65,7 +65,7 @@
 
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="disciplina" style="width:240px"
-									value="#{mbQuestaoDissertativa.disciplina.idDisciplina}">
+									value="#{mbQuestaoDissertativa.beanCabecalhoQuestao.disciplina.idDisciplina}">
 									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
 									<f:selectItems value="#{bbDisciplina.disciplinas}"
 										var="disciplina" itemValue="#{disciplina.idDisciplina}"
@@ -83,13 +83,13 @@
 
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="topicoEstudo" style="width:240px"
-									value="#{mbQuestaoDissertativa.topicoEstudo.idTopicoEstudo}">
+									value="#{mbQuestaoDissertativa.beanCabecalhoQuestao.topicoEstudo.idTopicoEstudo}">
 									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
 									<f:selectItems value="#{mbQuestaoDissertativa.topicosEstudo}"
 										var="topico" itemValue="#{topico.idTopicoEstudo}"
 										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
-									<p:ajax event="change" process="@this"
-										listener="#{mbQuestaoDissertativa.setaCodTopicoEstudo()}" />
+<!-- 									<p:ajax event="change" process="@this" -->
+<!-- 										listener="#{mbQuestaoDissertativa.setaCodTopicoEstudo()}" /> -->
 								
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarTopicoEstudo" value="+" style="float:right" immediate="true" 

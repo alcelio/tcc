@@ -1,20 +1,28 @@
 package com.tc.beans;
 
+import com.tc.model.Disciplina;
+import com.tc.model.TopicoEstudo;
+/**
+ * Classe para informar disciplina e grau de dificuldade
+ * @author Alcélio Gomes
+ *
+ */
 public class BeanTopicoEstudo {
 	
-	private Integer idDisciplina;
-	private Integer idTopicoEstudo;
-	public Integer getIdDisciplina() {
-		return idDisciplina;
+	private Disciplina disciplina;
+	private TopicoEstudo  topicoEstudo;
+	
+	public Disciplina getDisciplina() {
+		return disciplina;
 	}
-	public void setIdDisciplina(Integer idDisciplina) {
-		this.idDisciplina = idDisciplina;
+	public void setDisciplina(Disciplina disciplina) {
+		this.disciplina = disciplina;
 	}
-	public Integer getIdTopicoEstudo() {
-		return idTopicoEstudo;
+	public TopicoEstudo getTopicoEstudo() {
+		return topicoEstudo;
 	}
-	public void setIdTopicoEstudo(Integer idTopicoEstudo) {
-		this.idTopicoEstudo = idTopicoEstudo;
+	public void setTopicoEstudo(TopicoEstudo topicoEstudo) {
+		this.topicoEstudo = topicoEstudo;
 	}
 	
 }

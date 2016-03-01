@@ -1,5 +1,9 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -10,15 +14,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.tc.beans.BeanCabecalhoQuestoes;
 import com.tc.data.DisciplinaBeanDao;
 import com.tc.data.QuestaoBeanDao;
 import com.tc.data.TopicoEstudoBeanDao;
 import com.tc.data.UsuarioBeanDao;
-import com.tc.model.Disciplina;
 import com.tc.model.QuestaoDissertativa;
 import com.tc.model.TopicoEstudo;
 import com.tc.model.Usuario;
-import com.tc.suport.BeanTopicoEstudo;
 
 @SessionScoped
 @ManagedBean
@@ -38,33 +41,18 @@ public class MbQuestaoDissertativa implements Serializable {
 
 	private List<TopicoEstudo> topicosEstudo;
 
-	private String grauDificuldade ="";
-	private TopicoEstudo topicoEstudo = new TopicoEstudo();
-	private Disciplina disciplina = new Disciplina();
-	private Integer codTopicoEstudo;
-	private Integer codDisciplina;
+	private BeanCabecalhoQuestoes beanCabecalhoQuestao = new BeanCabecalhoQuestoes();
 
-	public BeanTopicoEstudo beanTopico;
-	
 	public MbQuestaoDissertativa() {
 	}
 
-	public void setaBeanTopicoEstudo(BeanTopicoEstudo bean){
-		beanTopico = new BeanTopicoEstudo();
-		if(bean == null){
-			return;
-		}
-		this.codDisciplina = bean.getIdDisciplina();
-		this.codTopicoEstudo = bean.getIdTopicoEstudo();
-		
-	}
 	public void informaTipoQuestao(String tipoQuestao) {
-		questao.setTipoQuestao(tipoQuestao);
+		getQuestao().setTipoQuestao(tipoQuestao);
 	}
 
 	public boolean qualTipoQuestao(String tipoQuestao) {
 		boolean tem = false;
-		if (questao.getTipoQuestao() != null && questao.getTipoQuestao().equals(tipoQuestao)) {
+		if (getQuestao().getTipoQuestao() != null && getQuestao().getTipoQuestao().equals(tipoQuestao)) {
 			tem = true;
 		}
 		return tem;
@@ -74,19 +62,15 @@ public class MbQuestaoDissertativa implements Serializable {
 		Usuario usuario = new Usuario();
 		try {
 			usuario = daoUsuario.buscaUsuarioPorLogin(login);
-			questao.setProfessor(usuario);
+			getQuestao().setProfessor(usuario);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void setaGrauDificuldade(String grauDificuldade) {
-		this.setGrauDificuldade(grauDificuldade);
-	}
-
 	public boolean testaGrauDificuldade(String grauDificuldade) {
 		boolean is = false;
-		if (this.getGrauDificuldade().equals(grauDificuldade)) {
+		if (getBeanCabecalhoQuestao() != null && getBeanCabecalhoQuestao().getGrauDificuldade().equals(grauDificuldade)) {
 			is = true;
 		}
 		return is;
@@ -97,16 +81,16 @@ public class MbQuestaoDissertativa implements Serializable {
 	}
 
 	public String novaQuestao() {
-		questao = new QuestaoDissertativa();
-		return "professor/incluirquestaodissertativa.jsf";
+		setQuestao(new QuestaoDissertativa());
+		return PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
 	}
 
 	public String encerraCadastro() {
-		return "restrito/home.jsf";
+		return PAGINA_HOME;
 	}
 
 	public void addQuestao() {
-		if (questao.getIdQuestao() == null || questao.getIdQuestao() == 0) {
+		if (getQuestao().getIdQuestao() == null || questao.getIdQuestao() == 0) {
 			salvar();
 		} else {
 			atualizar();
@@ -114,13 +98,15 @@ public class MbQuestaoDissertativa implements Serializable {
 
 	}
 
+	public void setGrauDificuldade(String grauDificuldadade) {
+		this.beanCabecalhoQuestao.setGrauDificuldade(grauDificuldadade);
+	}
+	
 	public void carregaDadosTopicoEstudo() {
 
-		if (this.getDisciplina().getIdDisciplina() != null) {
+		if (this.beanCabecalhoQuestao.getDisciplina() != null) {
 			try {
-				topicoEstudo = new TopicoEstudo();
-				topicosEstudo = daoTopicoEstudo.listarTopicoEstudoDisciplina(disciplina);
-				codDisciplina = disciplina.getIdDisciplina();
+				topicosEstudo = daoTopicoEstudo.listarTopicoEstudoDisciplina(beanCabecalhoQuestao.getDisciplina());
 			} catch (Exception e) {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Erro ao gerar listagens de tópicos de estudo desta discsiplina", ""));
@@ -129,54 +115,43 @@ public class MbQuestaoDissertativa implements Serializable {
 
 	}
 
-	public void setaCodTopicoEstudo() {
-		this.codTopicoEstudo = topicoEstudo.getIdTopicoEstudo();
-	}
-
 	public void setIsQuestaoPublica(boolean isPublica) {
-		questao.setPublica(isPublica);
+		getQuestao().setPublica(isPublica);
 	}
 
 	private void salvar() {
 
-		if (getCodDisciplina() == null || getCodDisciplina() == 0) {
+		if (getBeanCabecalhoQuestao() == null || getBeanCabecalhoQuestao().getDisciplina() == null) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "É obrigatório informar o campo [Discplina].", ""));
 			return;
 		}
-		if (getCodTopicoEstudo() == null || getCodTopicoEstudo() == 0) {
+		if (getBeanCabecalhoQuestao() == null || getBeanCabecalhoQuestao().getTopicoEstudo() == null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"É obrigatório informar o  campo [Tópco de Estudo].", ""));
 			return;
 		}
 
-		if (getGrauDificuldade() == "" || getGrauDificuldade().isEmpty()) {
+		if (isBlank(getBeanCabecalhoQuestao().getGrauDificuldade())) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"É obrigatório informar o [Grau de Deficuldade] da questão.", ""));
 			return;
 		}
 
-		questao.setDataInclusao(new Date());
+		getQuestao().setDataInclusao(new Date());
 
 		try {
-			questao.setDisciplina(daoDisciplina.buscaPorId(getCodDisciplina()));
-			questao.setTopicoEstudo(daoTopicoEstudo.buscaPorId(getCodTopicoEstudo()));
-			questao.setTipoQuestao("DISSERTATIVA");
-			questao.setGrauDificuldade(getGrauDificuldade());
+			getQuestao().setDisciplina(getBeanCabecalhoQuestao().getDisciplina());
+			getQuestao().setTopicoEstudo(getBeanCabecalhoQuestao().getTopicoEstudo());
+			getQuestao().setTipoQuestao(getBeanCabecalhoQuestao().getTipoQuestao());
+			getQuestao().setGrauDificuldade(getBeanCabecalhoQuestao().getGrauDificuldade());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		dao.create(questao);
-//novaQuestao();
-		
-		topicoEstudo = new TopicoEstudo();
-		disciplina = new Disciplina();
-		grauDificuldade = "";
-		codDisciplina = 0;
-		codTopicoEstudo = 0;
-		
-		questao = new QuestaoDissertativa();
+		dao.create(getQuestao());
+		setBeanCabecalhoQuestao(new BeanCabecalhoQuestoes());
+		setQuestao(new QuestaoDissertativa());
 
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
@@ -184,19 +159,18 @@ public class MbQuestaoDissertativa implements Serializable {
 	}
 
 	private void atualizar() {
-		dao.update(questao);
+		dao.update(getQuestao());
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
 	}
 
 	public void deletar() {
-		dao.remove(questao);
+		dao.remove(getQuestao());
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
 	}
 
-	// ****************************************** GETTERS E SETTERS
-	// **************************************************
+	// ****************GETTERS E SETTERS *********************************
 
 	public QuestaoDissertativa getQuestao() {
 		return questao;
@@ -214,44 +188,13 @@ public class MbQuestaoDissertativa implements Serializable {
 		this.topicosEstudo = topicosEstudo;
 	}
 
-	public String getGrauDificuldade() {
-		return grauDificuldade;
+	public BeanCabecalhoQuestoes getBeanCabecalhoQuestao() {
+		return beanCabecalhoQuestao;
 	}
 
-	public void setGrauDificuldade(String grauDificuldadade) {
-		this.grauDificuldade = grauDificuldadade;
+	public void setBeanCabecalhoQuestao(BeanCabecalhoQuestoes beanCabecalhoQuestao) {
+		this.beanCabecalhoQuestao = beanCabecalhoQuestao;
 	}
-
-	public TopicoEstudo getTopicoEstudo() {
-		return topicoEstudo;
-	}
-
-	public void setTopicoEstudo(TopicoEstudo topicoEstudo) {
-		this.topicoEstudo = topicoEstudo;
-	}
-
-	public Disciplina getDisciplina() {
-		return disciplina;
-	}
-
-	public void setDisciplina(Disciplina disciplina) {
-		this.disciplina = disciplina;
-	}
-
-	public Integer getCodTopicoEstudo() {
-		return codTopicoEstudo;
-	}
-
-	public void setCodTopicoEstudo(Integer codTopicoEstudo) {
-		this.codTopicoEstudo = codTopicoEstudo;
-	}
-
-	public Integer getCodDisciplina() {
-		return codDisciplina;
-	}
-
-	public void setCodDisciplina(Integer codDisciplina) {
-		this.codDisciplina = codDisciplina;
-	}
+	
 
 }

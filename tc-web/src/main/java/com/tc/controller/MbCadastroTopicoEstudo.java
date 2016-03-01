@@ -1,5 +1,9 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_CADASTRO_TOPICOS_ESTUDOS;
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,11 +13,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.tc.beans.BeanTopicoEstudo;
 import com.tc.data.DisciplinaBeanDao;
 import com.tc.data.TopicoEstudoBeanDao;
 import com.tc.model.Disciplina;
 import com.tc.model.TopicoEstudo;
-import com.tc.suport.BeanTopicoEstudo;
 
 @SessionScoped
 @ManagedBean
@@ -36,11 +40,11 @@ public class MbCadastroTopicoEstudo implements Serializable {
 
 	public String novoTopico() {
 		topico = new TopicoEstudo();
-		return "cadastrotopicoestudo.jsf";
+		return PAGINA_CADASTRO_TOPICOS_ESTUDOS;
 	}
 
 	public String encerraCadastro() {
-		return "publico/login.jsf";
+		return PAGINA_HOME;
 	}
 
 	public void addTopico() {
@@ -64,10 +68,10 @@ public class MbCadastroTopicoEstudo implements Serializable {
 	 */
 	private void salvar() {
 		dao.create(topico);
-		if(getCaminhoOrigem().equals("incluirquestaodissertativa.jsf")){
+		if(getCaminhoOrigem().equals(PAGINA_INCLUI_QUESTAO_DISSERTATIVA)){
 			beanTopico = new BeanTopicoEstudo();
-			beanTopico.setIdDisciplina(topico.getDisciplina().getIdDisciplina());
-			beanTopico.setIdTopicoEstudo(topico.getIdTopicoEstudo());
+			beanTopico.setDisciplina(topico.getDisciplina());
+			beanTopico.setTopicoEstudo(topico);
 		}
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));

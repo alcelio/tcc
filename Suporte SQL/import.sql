@@ -72,7 +72,7 @@ VALUES
 (1, 3),
 (1, 4);
 
-INSERT INTO `disciplina` (`idDisciplina`, `dsDisciplina`)
+INSERT INTO `Disciplina` (`idDisciplina`, `dsDisciplina`)
 VALUES 
 (1, 'BIOLOGIA'),
 (2, 'MATEMÁTICA'),
@@ -82,7 +82,7 @@ VALUES
 (6, 'HISTÓRIA')
 ;
 
-INSERT INTO `topicoestudo` (`idTopicoEstudo`, `dsTopicoEstudo`, `idDisciplina`) 
+INSERT INTO `TopicoEstudo` (`idTopicoEstudo`, `dsTopicoEstudo`, `idDisciplina`) 
 VALUES 
 (1, 'REINO MONERA', 1),
 (2, 'MAMÍFEROS', 1),

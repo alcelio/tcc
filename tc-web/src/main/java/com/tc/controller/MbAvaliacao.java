@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.tc.beans.BeanTopicoEstudo;
 import com.tc.data.AvaliacaoBeanDao;
 import com.tc.data.QuestoesAvaliacaoBeanDao;
 import com.tc.data.StatuAvaliacaoDao;
@@ -20,7 +21,6 @@ import com.tc.model.Questao;
 import com.tc.model.QuestoesAvaliacao;
 import com.tc.model.Usuario;
 import com.tc.model.PK.QuestoesAvaliacaoPK;
-import com.tc.suport.BeanTopicoEstudo;
 
 @SessionScoped
 @ManagedBean

@@ -11,13 +11,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.tc.beans.BeanUsuarioLogado;
 import com.tc.data.AlunosTurmaBeanDao;
 import com.tc.data.TurmaBeanDao;
 import com.tc.data.UsuarioBeanDao;
 import com.tc.model.AlunosTurma;
 import com.tc.model.Turma;
 import com.tc.model.PK.AlunosTurmaPK;
-import com.tc.suport.BeanUsuarioLogado;
 
 @SessionScoped
 @ManagedBean
