@@ -19,7 +19,7 @@ import com.tc.util.BigDecimalUtil;
 import com.tc.util.IntegerUtil;
 
 /**
- * Classe de implementação das regras de negócio para parametros de Usuários;
+ * Classe de implementação das regras de sstema para parametros de Usuários;
  * 
  * @author Alcélio Gomes
  */
