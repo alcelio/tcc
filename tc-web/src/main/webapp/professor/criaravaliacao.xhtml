@@ -13,58 +13,57 @@
 
 		<p:fieldset legend="Criação de Avaliação">
 			<h:form>
-			<p:growl id="msg0" />
+				<p:growl id="msg0" />
 				<h:panelGrid columns='1'>
 
 					<h:panelGrid columns='4' cellspacing="5">
 						<h:outputLabel for="datein" value="Data início da Avaliação:" />
 						<h:outputLabel for="dateout" value="Término da avaliação:" />
-						<h:outputLabel value="Turma/grupo ou curso:" style="margin-left:20px;" />
-						<h:outputLabel value="Disciplina" style="margin-left:20px;"/>
+						<h:outputLabel value="Turma/grupo ou curso:"
+							style="margin-left:20px;" />
+						<h:outputLabel value="Disciplina" style="margin-left:20px;" />
 
 						<p:calendar id="datein"
 							value="#{mbAvaliacao.avaliacao.dataAvaliacao}"
-							pattern="MM/dd/yyyy HH:mm:ss" locale="pt_BR" 
-							required="true"
-							requiredMessage="O campo [Data de Início da avaliação] é obrigatório."/>
+							pattern="MM/dd/yyyy HH:mm:ss" locale="pt_BR" required="false"
+							requiredMessage="O campo [Data de Início da avaliação] é obrigatório." />
 
 						<p:calendar id="dateout"
 							value="#{mbAvaliacao.avaliacao.dataFimAvaliacao}"
-							pattern="MM/dd/yyyy HH:mm:ss" locale="pt_BR" 
-							required="true"
-							requiredMessage="O campo [Término da avaliação] é obrigatório."/>
+							pattern="MM/dd/yyyy HH:mm:ss" locale="pt_BR" required="false"
+							requiredMessage="O campo [Término da avaliação] é obrigatório." />
 
 						<h:panelGrid columns="2" style="margin-left:20px;">
 							<p:selectOneMenu id="turma" style="width:240px"
-								value="#{mbAvaliacao.avaliacao.turma.idTurma}"
-								required="true"
+								value="#{mbAvaliacao.avaliacao.turma.idTurma}" required="false"
 								requiredMessage="O campo [Turma/grupo ou curso] é obrigatório.">
 								<f:selectItem itemLabel="Selecione uma turma" itemValue="" />
 								<f:selectItems value="#{bbTurmas.turmas}" var="turma"
 									itemValue="#{turma.idTurma}" itemLabel="#{turma.dsTurma}"
 									size="20" />
 							</p:selectOneMenu>
-							<p:commandButton id="adicionarTurma" value="+"
-								style="float:right" immediate="true" action="cadastroturma.jsf"
-								update="@all">
-								<p:ajax
-									listener="#{mbCadastroTurma.setaCaminhoOrigem('criaravaliacao.jsf')}" />
+							<p:commandButton 
+							id="adicionarTurma" value="+"
+								action="cadastroturma.jsf"
+								style = "float:right" 
+								update = "@form">
+								<p:ajax listener="#{mbCadastroTurma.setaCaminhoOrigem(bbGlobal.PAGINA_CRIAR_AVALIACAO)}" />
 							</p:commandButton>
 						</h:panelGrid>
-						
+
 						<h:panelGrid columns="2" style="margin-left:20px;">
 							<p:selectOneMenu id="disciplina" style="width:240px"
 								value="#{mbAvaliacao.avaliacao.disciplina.idDisciplina}"
-								required="true"
+								required="false"
 								requiredMessage="O campo [Turma/grupo ou curso] é obrigatório.">
 								<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
-								<f:selectItems value="#{bbDisciplina.disciplinas}" var="disciplina"
-									itemValue="#{disciplina.idDisciplina}" itemLabel="#{disciplina.dsDisciplina}"
-									size="20" />
+								<f:selectItems value="#{bbDisciplina.disciplinas}"
+									var="disciplina" itemValue="#{disciplina.idDisciplina}"
+									itemLabel="#{disciplina.dsDisciplina}" size="20" />
 							</p:selectOneMenu>
 							<p:commandButton id="incluirdisciplina" value="+"
-								style="float:right" immediate="true" action="incluirdisciplina.jsf"
-								update="@all">
+								style="float:right"
+								action="incluirdisciplina.jsf" update="@all">
 								<p:ajax
 									listener="#{mbCadastroDisciplina.setaCaminhoOrigem('criaravaliacao.jsf')}" />
 							</p:commandButton>
@@ -72,38 +71,45 @@
 
 					</h:panelGrid>
 
-					<h:panelGrid columns='1' >
-							<h:panelGrid id="panenlBotoes" style="float:right; margin-top:20px;" columns="4" 	cellpadding="20" >
-							
-							<p:commandButton value="Salvar" 
+					<h:panelGrid columns='1'>
+						<h:panelGrid id="panenlBotoes"
+							style="float:right; margin-top:20px;" columns="4"
+							cellpadding="20">
+
+							<p:commandButton value="Salvar"
 								action="#{mbAvaliacao.addAvaliacao}" icon="ui-icon-disk"
 								update="@form">
-								<p:ajax	listener="#{mbAvaliacao.setaProfessorAvalicao(request.getUserPrincipal().getName())}" />
+								<p:ajax
+									listener="#{mbAvaliacao.setaProfessorAvalicao(request.getUserPrincipal().getName())}" />
 								<!-- 							<p:ajax update="formGrauDificuldade" /> -->
 							</p:commandButton>
 
-							<p:commandButton value="Encerrar" action="/restrito/home.jsf"
-								style="float:right" immediate="true"
-								icon="ui-icon ui-icon-close">
+							<p:commandButton value="Encerrar"
+								action="#{mbAvaliacao.encerraCadastro()}" style="float:right"
+								immediate="true" icon="ui-icon ui-icon-close">
 							</p:commandButton>
 
-							<p:commandButton id="adicionarQuestao" value="Adicionar Questão"
-								style="float:right" immediate="true"
-								action="pesquisaquestao.jsf" update="@form">
-								<p:ajax	listener="#{dtFilterView.setaCaminhoOrigem('criaravaliacao.jsf')}" />
+							<p:commandButton 
+								id="adicionarQuestao"
+								value="Adicionar Questão"
+								style="float:right" 
+								action="pesquisaquestao.jsf" 
+								update="@form">
+								<p:ajax
+									listener="#{dtFilterView.setaCaminhoOrigem(bbGlobal.PAGINA_CRIAR_AVALIACAO)}" />
 							</p:commandButton>
 						</h:panelGrid>
-					
-					
+
+
 						<h:outputLabel value="Título:" />
 						<p:inputTextarea rows="2" cols="133"
-							value="#{mbAvaliacao.avaliacao.tituloAvaliacao}" required="true"
+							value="#{mbAvaliacao.avaliacao.tituloAvaliacao}" required="false"
 							requiredMessage="O campo [Título] é obritótio!" />
 
 						<h:outputLabel value="Orientações:" />
 						<p:inputTextarea rows="2" cols="133"
 							value="#{mbAvaliacao.avaliacao.orientacoes}" />
-                         <br /> 
+						<br />
 						<p:dataTable id="tblQuestoes" var="lq"
 							value="#{mbAvaliacao.questoesAvaliacao}" paginator="true"
 							rows="10" emptyMessage="Nenhum registro encontrado"
@@ -119,7 +125,7 @@
 								<h:outputText value="#{lq.tipoQuestao}" />
 							</p:column>
 
-							<p:column style="width:170;" >
+							<p:column style="width:170;">
 								<f:facet name="header">
 									<h:outputText value="Grau de Dificuldade" />
 								</f:facet>
@@ -133,20 +139,21 @@
 								<h:outputText value="#{lq.pergunta}" />
 							</p:column>
 
-							<p:column style="width:50;" >
+							<p:column style="width:50;">
 								<f:facet name="header">
 									<h:outputText value="Pontos" />
 								</f:facet>
 								<h:outputText value="" />
 							</p:column>
-							<p:column style="width:120;" >
-								<f:facet name="header" >
+							<p:column style="width:120;">
+								<f:facet name="header">
 									<h:outputText value="Ações" />
 								</f:facet>
 
 								<p:commandButton value="Remover"
-									action="#{mbAvaliacao.excluiQuestaoListaAvaliacao}" immediate="true"
-									image="ui-icon ui-icon-close" update="tblQuestoes">
+									action="#{mbAvaliacao.excluiQuestaoListaAvaliacao}"
+									immediate="true" image="ui-icon ui-icon-close"
+									update="tblQuestoes">
 									<f:setPropertyActionListener target="#{mbAvaliacao.questao}"
 										value="#{lq}" />
 								</p:commandButton>

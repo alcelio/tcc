@@ -9,7 +9,9 @@
 	template="/templates/principal.xhtml">
 
 	<ui:define name="tarefas">
-	<br />	<h1>Formulário de Questão Dissertativa</h1> <br />
+		<br />
+		<h1>Formulário de Questão Dissertativa</h1>
+		<br />
 		<p:fieldset>
 			<h:panelGrid columns="2" id="panelGridCabecalho">
 
@@ -26,29 +28,29 @@
 							<h:outputLabel />
 
 							<p:commandButton value="Fácil"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_FACIL)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_FACIL)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}">
 							</p:commandButton>
 							<p:commandButton value="Moderado"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_MODERADA)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_MODERADA)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}">
 							</p:commandButton>
 							<p:commandButton value="Exigente"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_EXIGENTE)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_EXIGENTE)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Muito Exigente"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_MUITO_EGIGENTE)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_MUITO_EGIGENTE)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Extremo"
-								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobais.DIFICULDADE_EXTREMA)}"
+								action="#{mbQuestaoDissertativa.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}"
 								update="@form"
-								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobais.DIFICULDADE_EXTREMA)}">
+								disabled="#{mbQuestaoDissertativa.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}">
 							</p:commandButton>
 						</h:panelGrid>
 
@@ -74,27 +76,36 @@
 										listener="#{mbQuestaoDissertativa.carregaDadosTopicoEstudo()}"
 										update="topicoEstudo" />
 								</p:selectOneMenu>
-								<p:commandButton id="adicionarDisciplina" value="+" style="float:right" immediate="true" 
-								action="incluirdisciplina.jsf" update="@all">
-								<p:ajax listener="#{mbCadastroDisciplina.setaCaminhoOrigem('incluirquestaodissertativa.jsf')}"/>
+								<p:commandButton id="adicionarDisciplina" value="+"
+									style="float:right" immediate="true"
+									action="#{mbQuestaoDissertativa.incluiNovaDisciplina()}"
+									update="@all">
+									<p:ajax
+										listener="#{mbCadastroDisciplina.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
 
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="topicoEstudo" style="width:240px"
-									value="#{mbQuestaoDissertativa.beanCabecalhoQuestao.topicoEstudo.idTopicoEstudo}">
+									value="#{mbQuestaoDissertativa.topico.idTopicoEstudo}">
 									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
 									<f:selectItems value="#{mbQuestaoDissertativa.topicosEstudo}"
 										var="topico" itemValue="#{topico.idTopicoEstudo}"
 										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
-<!-- 									<p:ajax event="change" process="@this" -->
-<!-- 										listener="#{mbQuestaoDissertativa.setaCodTopicoEstudo()}" /> -->
-								
+									<p:ajax event="change" process="@this"
+										listener="#{mbQuestaoDissertativa.selecionaTopicoEstudo()}" />
+
 								</p:selectOneMenu>
-								<p:commandButton id="adicionarTopicoEstudo" value="+" style="float:right" immediate="true" 
-								action="incluirtopicoestudo.jsf" update="@all">
-								<p:ajax listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem('incluirquestaodissertativa.jsf')}"/>
+								<p:commandButton id="adicionarTopicoEstudo" value="+"
+									style="float:right" immediate="true"
+									action="#{mbQuestaoDissertativa.incluiTopicoDeEstudo()}"
+									update="@all">
+									<p:ajax
+										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA)}" />
+									<f:setPropertyActionListener
+										target="#{mbCadastroTopicoEstudo.beanCabecalho}"
+										value="#{mbQuestaoDissertativa.beanCabecalhoQuestao}" />
 								</p:commandButton>
 							</h:panelGrid>
 						</h:panelGrid>
@@ -108,16 +119,15 @@
 			<h:form id="formQuestao">
 				<h:panelGrid id="gridQuestao">
 
-					<h:panelGrid id="panenlBotoes"
-						style="float:right; margin-top:10;"
+					<h:panelGrid id="panenlBotoes" style="float:right; margin-top:10;"
 						columns="3" cellpadding="20">
-						
-						<h:panelGrid style="float:left; margin-right:20"   columns="2">
-						<h:outputText value="Questão Pública: " />
-						<p:selectBooleanCheckbox selected="true"
-							value="#{mbQuestaoDissertativa.questao.publica}" />
+
+						<h:panelGrid style="float:left; margin-right:20" columns="2">
+							<h:outputText value="Questão Pública: " />
+							<p:selectBooleanCheckbox selected="true"
+								value="#{mbQuestaoDissertativa.questao.publica}" />
 						</h:panelGrid>
-						
+
 						<p:commandButton value="Salvar"
 							action="#{mbQuestaoDissertativa.addQuestao()}"
 							icon="ui-icon-disk"
@@ -127,7 +137,8 @@
 							<p:ajax update="formGrauDificuldade" />
 						</p:commandButton>
 
-						<p:commandButton value="Encerrar" action="/restrito/home.jsf"
+						<p:commandButton value="Encerrar"
+							action="#{mbQuestaoDissertativa.encerraCadastro()}"
 							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
 						</p:commandButton>
 					</h:panelGrid>
@@ -136,18 +147,30 @@
 					<h:outputLabel for="editorPergunta" value="Pergunta:" />
 					<p:editor id="editorPergunta" widgetVar="editorPergunta"
 						value="#{mbQuestaoDissertativa.questao.pergunta}" width="1230"
-						height="150" required="true"
+						height="100" required="true"
 						requiredMessage="O campo [Pergunta] é obrigatório!" />
 					<p:separator style="widht:1230; height: 20;" />
+
 					<br />
 					<h:outputLabel for="editorRespostaDissertativa" value="Resposta:" />
-
 					<p:editor id="editorRespostaDissertativa"
 						widgetVar="editorResposta"
 						value="#{mbQuestaoDissertativa.questao.dsRespDissertativa}"
-						width="1230" height="150" required="true"
+						width="1230" height="100" required="true"
 						requiredMessage="O Campo [Resposta] é obrigatório" rendered="true" />
 					<p:separator style="widht:1230; height: 20;" />
+
+					<br />
+					<h:outputLabel for="editorRecomendacaoErro"
+						value="Recomendação para Resposta errada:" />
+					<p:editor id="editorRecomendacao" widgetVar="editorRecomendacao"
+						value="#{mbQuestaoDissertativa.questao.recomendacaoErro}"
+						width="1230" height="100" required="false"
+						requiredMessage="O Campo [Recomedação] é obrigatório"
+						rendered="true" />
+					<p:separator style="widht:1230; height: 20;" />
+
+
 					<h:inputHidden value="#{mbQuestaoDissertativa.questao.idQuestao}" />
 
 					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

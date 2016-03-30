@@ -9,53 +9,105 @@
 	template="/templates/principal.xhtml">
 
 	<ui:define name="tarefas">
-	
-	        <div id="conteudo" title="Incluir Série/grupo ou Curso">
-            <h:form>
-                <p:growl id="msg" rendered="#{param.erro}">#{msgs.erro_message}</p:growl>
-            </h:form>
+		<p:fieldset legend="Manutenção de Séries">
+			<br />
+			<p:tabView id="tbv1" dynamic="true" cache="true">
+				<p:tab title="Área de Inserção/Edição">
+					<h:form prependId="false" id="formSerie">
+						<p:growl id="msg0" />
+						<h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid"
+							id="grid0">
 
-            <p:dialog header="Série/grupo ou Curso"
-                      id="dialog"  
-                      modal="true"
-                      minWidth="500"
-                      width="500"
-                      height="200"
-                      closable="false"
-                      position="center"
-                      widgetVar="modalTurno"
-                      showEffect="slide" 
-                      draggable="false"
-                      resizable="false"
-                      visible="true">
+							<h:outputLabel />
+							<h:inputHidden id="idserie"
+								value="#{mbCadastroSerie.serie.idSerie}" />
 
+							<h:outputLabel for="nomeserie" value="Nome.:" />
+							<p:inputText id="nomeserie" size="40"
+								value="#{mbCadastroSerie.serie.dsSerie}"
+								onkeyup="this.value = this.value.toUpperCase()" required="true"
+								requiredMessage="O campo [Nome] é obrigatório." />
+							<h:outputLabel />
+							<p:panel>
+								<p:commandButton value="Salvar"
+									action="#{mbCadastroSerie.addSerie}" icon="ui-icon-disk"
+									update="@form :formtable" />
+								<p:commandButton value="Voltar" immediate="true"
+									action="#{mbCadastroSerie.goBack()}"
+									icon="ui-icon ui-icon-close" update="@all">
+								</p:commandButton>
+							</p:panel>
 
-                    <h:form prependId="false" id="formSerie">
-                        <p:growl id="msg0"/>
-                        <h:panelGrid columns="1" cellpadding="20" cellspacing="10" styleClass="panelGrid" id="grid0">
-                            
-                            <h:outputLabel/>
-                            <h:inputHidden id="idTurno" value="#{mbCadastroSerie.serie.idSerie}"/> 
-                            
-                            <h:outputLabel for="serie" value="Descrição série/grupo ou Curso"/>
-                            <p:inputText id="serie" size="40" value="#{mbCadastroSerie.serie.dsSerie}"
-                                onkeyup="this.value = this.value.toUpperCase()" required="true"
-                                requiredMessage="O campo [Descrição do Série] é obrigatório."/>
-                            <h:outputLabel />
-                            <p:panel>
-                                <p:commandButton value="Salvar" action="#{mbCadastroSerie.addSerie()}"
-                                    icon="ui-icon-disk" update="@all"/>
-                                <p:commandButton value="Voltar" immediate="true"  action="#{mbCadastroSerie.goBack()}"
-                                    icon="ui-icon ui-icon-close" update="@all">
-                                    </p:commandButton>
-                            </p:panel>
-                        </h:panelGrid>
-                    </h:form>
-            </p:dialog>  
-        </div>
+						</h:panelGrid>
+					</h:form>
+				</p:tab>
+			</p:tabView>
 
+			<h:form id="formtable">
+				<p:growl id="msg1" />
+				<p:dataTable id="idTabela" var="serie"
+					value="#{mbCadastroSerie.series}" paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
 
+					<f:facet name="header">Lista de Séries</f:facet>
+					<p:column width="910">
+						<f:facet name="header">
+							<h:outputText value="Série" />
+						</f:facet>
+						<h:outputText value="#{serie.dsSerie}" />
+					</p:column>
 
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Editar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formSerie">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener target="#{mbCadastroSerie.serie}"
+									value="#{serie}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroSerie.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão da série #{serie.dsSerie}?')) return false;"
+								update="@form">
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener target="#{mbCadastroSerie.serie}"
+									value="#{serie}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+						<p:commandButton value="Selecionar" image="ui-icon ui-icon-select"
+							process="@this" update="@all"
+							action="#{mbCadastroSerie.goBack()}">
+							<f:setPropertyActionListener
+								target="#{mbCadastroTurma.turma.serie}" value="#{serie}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+
+		</p:fieldset>
 	</ui:define>
 
 </ui:composition>

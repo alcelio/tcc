@@ -1,5 +1,9 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_CADASTRO_SERIE;
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,33 +32,26 @@ public class MbCadastroSerie implements Serializable {
 	public MbCadastroSerie() {
 
 	}
+	/**
+	 * Método que orienta qual pagina deverá ser retornada
+	 * @return
+	 */
 	public String goBack(){
-		return camingoOrigem;
-	}
-	public void setaCaminhoOrigem(String caminho){
-		this.camingoOrigem = caminho;
+		if(isBlank(getCamingoOrigem())){
+			return PAGINA_HOME;
+		}
+		return getCamingoOrigem();
 	}
 	
-	
-	public String limpCidade() {
-		serie = new Serie();
-		return editSerie();
-	}
-
-	public String editSerie() {
-		return "admin/cadastroserie.jsf";
-	}
-
-	public String limpSerie() {
-		serie = new Serie();
-		return editSerie();
-	}
-
+	/**
+	 * Método que retorna uma nova página para cadastrar as séries
+	 * @return
+	 */
 	public String novaSerie() {
-		serie = new Serie();
-		return "incluirserie";
+		setSerie(new Serie());
+		return PAGINA_CADASTRO_SERIE;
 	}
-
+	
 	public void addSerie() {
 		if (serie.getIdSerie() == null || serie.getIdSerie() == 0) {
 
@@ -66,7 +63,7 @@ public class MbCadastroSerie implements Serializable {
 		} else {
 			updateSerie();
 		}
-		limpSerie();
+		novaSerie();
 	}
 
 	private void insertSerie() {
@@ -81,9 +78,9 @@ public class MbCadastroSerie implements Serializable {
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualização efetuada com sucesso", ""));
 	}
 
-	public void deleteSerie() {
+	public void deletar() {
 		dao.remove(serie);
-		editSerie();
+		novaSerie();
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro excluido com sucesso", ""));
 	}
@@ -109,8 +106,8 @@ public class MbCadastroSerie implements Serializable {
 		return camingoOrigem;
 	}
 
-	public void setCamingoOrigem(String camingoOrigem) {
-		this.camingoOrigem = camingoOrigem;
+	public void setaCaminhoOrigem(String caminho){
+		this.camingoOrigem = caminho;
 	}
 
 }

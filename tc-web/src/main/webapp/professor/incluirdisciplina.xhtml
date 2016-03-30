@@ -10,50 +10,122 @@
 
 	<ui:define name="tarefas">
 
-		<div id="conteudo" title="Área Restrita">
-			<h:form>
-				<p:growl id="msg" rendered="#{param.erro}">#{msgs.erro_message}</p:growl>
+		<p:fieldset legend="Cadastro de Disciplinas">
+			<br />
+
+			<p:tabView id="tbv1" dynamic="true" cache="true">
+				<p:tab title="Área de Inserção">
+
+					<h:form>
+						<p:growl id="msg" rendered="#{param.erro}">#{msgs.erro_message}</p:growl>
+					</h:form>
+
+					<h:form prependId="false" id="formDisciplina">
+
+						<p:growl id="msg0" />
+
+						<h:panelGrid columns="2" cellpadding="20" cellspacing="10"
+							styleClass="panelGrid" id="grid0">
+							<h:outputLabel />
+							<h:inputHidden id="iddisciplina"
+								value="#{mbCadastroDisciplina.disciplina.idDisciplina}" />
+
+							<h:outputLabel for="nomecidade" value="Nome.:" />
+							<p:inputText id="nomecidade" size="40"
+								value="#{mbCadastroDisciplina.disciplina.dsDisciplina}"
+								onkeyup="this.value = this.value.toUpperCase()" required="true"
+								requiredMessage="O campo [Dsiciplina] é obrigatório." />
+							<h:outputLabel />
+							<p:panel>
+								<p:commandButton value="Salvar"
+									action="#{mbCadastroDisciplina.addDisciplina()}"
+									icon="ui-icon-disk" update="@form">
+								</p:commandButton>
+
+								<p:commandButton value="Voltar" immediate="true"
+									action="#{mbCadastroDisciplina.goBack()}"
+									icon="ui-icon ui-icon-close" update="@all">
+								</p:commandButton>
+							</p:panel>
+						</h:panelGrid>
+					</h:form>
+
+				</p:tab>
+			</p:tabView>
+
+			<h:form id="formtable">
+				<p:growl id="msg1" />
+				<p:dataTable id="idTabela" var="disciplina"
+					value="#{mbCadastroDisciplina.disciplinas}" paginator="true"
+					rows="10" emptyMessage="Nenhum registro encontrado"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+
+					<f:facet name="header">Lista de Disciplinas Cadastradas</f:facet>
+					<p:column width="910">
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						<h:outputText value="#{disciplina.dsDisciplina}" />
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Editar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formDisciplina">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroDisciplina.disciplina}"
+									value="#{disciplina}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroUsuario.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão do usuário #{disciplina.dsDisciplina}?')) return false;"
+								update="@form">
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroDisciplina.disciplina}" value="#{disciplina}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+						<p:commandButton value="Selecionar" image="ui-icon ui-icon-select"
+							process="@this" update="@all"
+							action="#{mbCadastroDisciplina.goBack()}">
+							<f:setPropertyActionListener target="#{mbAvaliacao.avaliacao.disciplina}" value="#{disciplina}" />
+							
+							<f:setPropertyActionListener target="#{mbQuestaoDissertativa.beanCabecalhoQuestao.disciplina}" 	value="#{disciplina}" />
+							<f:setPropertyActionListener target="#{mbQuestaoObjetiva.beanCabecalhoQuestao.disciplina}" value="#{disciplina}" />
+							<f:setPropertyActionListener target="#{mbQuestaoOrdenar.beanCabecalhoQuestao.disciplina}" value="#{disciplina}" />
+							<f:setPropertyActionListener target="#{mbQuestaoRelacionar.beanCabecalhoQuestao.disciplina}" value="#{disciplina}" />
+							<f:setPropertyActionListener target="#{mbQuestaoVF.beanCabecalhoQuestao.disciplina}" value="#{disciplina}" />
+							<f:setPropertyActionListener target="#{mbCadastroTopicoEstudo.topico.disciplina}" value="#{disciplina}" />
+						</p:commandButton>
+
+					</p:column>
+
+
+				</p:dataTable>
+
 			</h:form>
 
-			<p:dialog header="Inclusão de Disciplina" id="dialog" modal="true"
-				minWidth="500" width="500" height="200" closable="false"
-				position="center" widgetVar="modalDisciplina" showEffect="slide"
-				draggable="false" resizable="false" visible="true">
-
-
-				<h:form prependId="false" id="formDisciplina">
-					<p:growl id="msg0" />
-					<h:panelGrid columns="2" cellpadding="20" cellspacing="10"
-						styleClass="panelGrid" id="grid0">
-
-						<h:outputLabel />
-						<h:inputHidden id="iddisciplina"
-							value="#{mbCadastroDisciplina.disciplina.idDisciplina}" />
-
-						<h:outputLabel for="nomecidade" value="Nome.:" />
-						<p:inputText id="nomecidade" size="40"
-							value="#{mbCadastroDisciplina.disciplina.dsDisciplina}"
-							onkeyup="this.value = this.value.toUpperCase()" required="true"
-							requiredMessage="O campo [Dsiciplina] é obrigatório." />
-						<h:outputLabel />
-						<p:panel>
-							<p:commandButton value="Salvar"
-								action="#{mbCadastroDisciplina.addDisciplina()}"
-								icon="ui-icon-disk" update="@form" />
-							<p:commandButton value="Voltar" immediate="true"
-								action="#{mbCadastroDisciplina.goBack()}"
-								icon="ui-icon ui-icon-close" update="@all">
-
-							</p:commandButton>
-						</p:panel>
-					</h:panelGrid>
-				</h:form>
-				
-			</p:dialog>
-		</div>
-
-
-
+		</p:fieldset>
 	</ui:define>
 
 </ui:composition>

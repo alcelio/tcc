@@ -19,44 +19,44 @@
 				<p:panel header="Tipo de Questão">
 					<h:form id="formTipoQuestao">
 						<h:commandButton value="Dissertativa"
-							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}"
-							disabled="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}" >
+							action="#{mbQuestao.informaTipoQuestao(bbGlobal.QUESTAO_DISSERTATIVA)}"
+							disabled="#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_DISSERTATIVA)}" >
 							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
 
 <!-- 							<h:graphicImage library="imagens" -->
-<!-- 								name="dissertativa_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}.png" /> -->
+<!-- 								name="dissertativa_#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_DISSERTATIVA)}.png" /> -->
 						</h:commandButton>
 
 						<h:commandButton value="Objetiva"
-							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_OBJETIVA)}"
-							disabled="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_OBJETIVA)}" >
+							action="#{mbQuestao.informaTipoQuestao(bbGlobal.QUESTAO_OBJETIVA)}"
+							disabled="#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_OBJETIVA)}" >
 							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
 <!-- 							<h:graphicImage library="imagens" -->
-<!-- 								name="objetiva_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_OBJETIVA)}.png" /> -->
+<!-- 								name="objetiva_#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_OBJETIVA)}.png" /> -->
 						</h:commandButton>
 
 						<h:commandButton value="Ordenar"
-							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_ORDENACAO)}"
-							disabled= "#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_ORDENACAO)}">
+							action="#{mbQuestao.informaTipoQuestao(bbGlobal.QUESTAO_ORDENACAO)}"
+							disabled= "#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_ORDENACAO)}">
 							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
 <!-- 							<h:graphicImage library="imagens" -->
-<!-- 								name="ordenar_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_ORDENACAO)}.png" /> -->
+<!-- 								name="ordenar_#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_ORDENACAO)}.png" /> -->
 						</h:commandButton>
 
 						<h:commandButton value="Relação"
-							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_RELACAO)}"
-							disabled = "#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_RELACAO)}" >
+							action="#{mbQuestao.informaTipoQuestao(bbGlobal.QUESTAO_RELACAO)}"
+							disabled = "#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_RELACAO)}" >
 							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
 <!-- 							<h:graphicImage library="imagens" -->
-<!-- 								name="relacionar_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_RELACAO)}.png" /> -->
+<!-- 								name="relacionar_#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_RELACAO)}.png" /> -->
 						</h:commandButton>
 
 						<h:commandButton value="V ou F"
-							action="#{mbQuestao.informaTipoQuestao(bbConstantes.QUESTAO_VF)}" 
-							disabled="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_VF)}"  >
+							action="#{mbQuestao.informaTipoQuestao(bbGlobal.QUESTAO_VF)}" 
+							disabled="#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_VF)}"  >
 							<p:ajax update="formTipoQuestao :formGrauDificuldade" />
 <!-- 							<h:graphicImage library="imagens" -->
-<!-- 								name="relacionar_#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_VF)}.png" /> -->
+<!-- 								name="relacionar_#{mbQuestao.qualTipoQuestao(bbGlobal.QUESTAO_VF)}.png" /> -->
 						</h:commandButton>
 
 					</h:form>
@@ -67,28 +67,28 @@
 						rendered="#{mbQuestao.exibirFormGrauDificuldade()}">
 
 						<h:commandButton value="Facil"
-							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
-							disabled="#{mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+							action="#{mbQuestao.setaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}"
+							disabled="#{mbQuestao.testaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}">
 							<p:ajax update="@form :formGrauDificuldade" />
 						</h:commandButton>
 						<h:commandButton value="Moderado"
-							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
-							disabled="#{mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+							action="#{mbQuestao.setaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}"
+							disabled="#{mbQuestao.testaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}">
 							<p:ajax update="formGrauDificuldade" />
 						</h:commandButton>
 						<h:commandButton value="Exigente"
-							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
-							disabled="#{mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+							action="#{mbQuestao.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}"
+							disabled="#{mbQuestao.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}">
 							<p:ajax update="formGrauDificuldade" />
 						</h:commandButton>
 						<h:commandButton value="Muito Exigente"
-							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
-							disabled="#{mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+							action="#{mbQuestao.setaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}"
+							disabled="#{mbQuestao.testaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}">
 							<p:ajax update="formGrauDificuldade" />
 						</h:commandButton>
 						<h:commandButton value="Extremo"
-							action="#{mbQuestao.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
-							disabled="mbQuestao.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+							action="#{mbQuestao.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}"
+							disabled="mbQuestao.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}">
 							<p:ajax update="formGrauDificuldade" />
 						</h:commandButton>
 
@@ -176,12 +176,12 @@
 				<p:separator style="widht:1230; height: 20;" />
 
 				<p:outputLabel for="editorRespostaDissertativa" value="Resposta:"
-					rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}" />
+					rendered="#{mbQuestao.qualTipoQuestao(bbGlobais.QUESTAO_DISSERTATIVA)}" />
 
 				<p:editor id="editorRespostaDissertativa" widgetVar="editorResposta"
 					value="#{mbQuestao.questao.rDissertativa.dsResposta}" width="1230" height="150"
 					required="true" requiredMessage="O Campo [Resposta] é obrigatório"
-					rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}" />
+					rendered="#{mbQuestao.qualTipoQuestao(bbGlobais.QUESTAO_DISSERTATIVA)}" />
 
 				<!-- 				<p:inputTextarea rows="4" cols="128" rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_DISSERTATIVA)}"  -->
 <!-- 					value="#{mbQuestao.questao.rDissertativa.dsResposta}" required="true" -->
@@ -228,7 +228,7 @@
 					<h:panelGrid id="panelRespostas" columns="1">
 
 						<h:panelGrid id="respostaObjetiva" cellspacing="12"
-							rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_OBJETIVA)}">
+							rendered="#{mbQuestao.qualTipoQuestao(bbGlobais.QUESTAO_OBJETIVA)}">
 							
 							<h:commandLink>
 								<p:ajax update="formGrauDificuldade" />
@@ -265,7 +265,7 @@
 
 
 						<h:panelGrid id="respostaOrdenar" cellspacing="12"
-							rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_ORDENACAO)}">
+							rendered="#{mbQuestao.qualTipoQuestao(bbGlobais.QUESTAO_ORDENACAO)}">
 							<h:commandLink>
 								<p:ajax update="formGrauDificuldade" />
 								<h:graphicImage library="imagens"
@@ -300,7 +300,7 @@
 
 
 						<h:panelGrid id="respostaVF" cellspacing="12"
-							rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_VF)}">
+							rendered="#{mbQuestao.qualTipoQuestao(bbGlobais.QUESTAO_VF)}">
 
 							<h:commandLink>
 								<p:ajax update="formGrauDificuldade" />
@@ -337,7 +337,7 @@
 
 
 						<h:panelGrid id="respostaRelacionar" cellspacing="12"
-							rendered="#{mbQuestao.qualTipoQuestao(bbConstantes.QUESTAO_RELACAO)}">
+							rendered="#{mbQuestao.qualTipoQuestao(bbGlobais.QUESTAO_RELACAO)}">
 							<h:commandLink>
 								<p:ajax update="formGrauDificuldade" />
 								<h:graphicImage library="imagens"

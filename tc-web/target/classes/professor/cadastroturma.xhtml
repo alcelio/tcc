@@ -28,12 +28,12 @@
 
 							<p:inputText id="nometurma" size="50" style="margin-bottom:20"
 								value="#{mbCadastroTurma.turma.dsTurma}"
-								onkeyup="this.value = this.value.toUpperCase()" required="true"
+								onkeyup="this.value = this.value.toUpperCase()" required="false"
 								requiredMessage="O campo [Nome da Turma] é obrigatório." />
 
 
 							<h:panelGrid columns="2" style="margin-bottom:20">
-								<p:selectOneMenu id="serie" style="width:400px" required="true"
+								<p:selectOneMenu id="serie" style="width:400px" required="false"
 									requiredMessage="O campo [Série/Ano/Curso/Módulo] é obrigatório."
 									value="#{mbCadastroTurma.turma.serie.idSerie}">
 									<f:selectItem itemLabel="Selecione" itemValue="" />
@@ -42,11 +42,13 @@
 										size="20" />
 								</p:selectOneMenu>
 
-								<p:commandButton id="adicionarSerie" value="+"
-									style="float:right" immediate="true"
-									action="incluirserie.jsf" update="@all">
+								<p:commandButton 
+									id="inluirserie" value="+"
+									style="float:right" 
+									action="#{mbCadastroTurma.adicionarSerie()}"
+									update="@all">
 									<p:ajax
-										listener="#{mbCadastroSerie.setaCaminhoOrigem('cadastroturma.jsf')}" />
+										listener="#{mbCadastroSerie.setaCaminhoOrigem(bbGlobal.PAGINA_CADASTRO_TURMA)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
@@ -56,7 +58,7 @@
 
 
 							<h:panelGrid columns="2" style="margin-bottom:20">
-								<p:selectOneMenu id="turno" style="width:400px" required="true"
+								<p:selectOneMenu id="turno" style="width:400px" required="false"
 									requiredMessage="O campo [Turno] é obrigatório."
 									value="#{mbCadastroTurma.turma.turno.idTurno}">
 									<f:selectItem itemLabel="Selecione" itemValue="" />
@@ -65,10 +67,10 @@
 								</p:selectOneMenu>
 
 								<p:commandButton id="adicionarTurno" value="+"
-									style="float:right" immediate="true"
-									action="incluirturno.jsf" update="@all">
+									style="float:right" 
+									action="#{mbCadastroTurma.adicionarTurno()}" update="@all">
 									<p:ajax
-										listener="#{mbCadastroTurno.setaCaminhoOrigem('cadastroturma.jsf')}" />
+										listener="#{mbCadastroTurno.setaCaminhoOrigem(bbGlobal.PAGINA_CADASTRO_TURMA)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
@@ -84,9 +86,9 @@
 								</p:selectOneMenu>
 
 								<p:commandButton id="adicionarInstituicao" value="+"
-									style="float:right" immediate="true" 
-									action="incluirinstituicao.jsf" update="@all">
-									<p:ajax listener="#{mbCadastroInstituicao.setaCaminhoOrigem('cadastroturma.jsf')}" />
+									style="float:right"  
+									action="#{mbCadastroTurma.adicionarInstituicao()}" update="@all">
+									<p:ajax listener="#{mbCadastroInstituicao.setaCaminhoOrigem(bbGlobal.PAGINA_CADASTRO_TURMA)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
@@ -94,7 +96,7 @@
 								<h:outputLabel value="Ano Letivo"/>
 								<p:inputText id="anoletivo" size="20" style="margin-bottom:20"
 								value="#{mbCadastroTurma.turma.anoLetivo}"
-								onkeyup="this.value = this.value.toUpperCase()" required="true"
+								onkeyup="this.value = this.value.toUpperCase()" required="false"
 								requiredMessage="O campo [Ano Letivo] é obrigatório." />
 							
 							</h:panelGrid>
@@ -107,7 +109,6 @@
 									image="ui-icon ui-icon-close" update="@form" />
 								 <p:commandButton value="Voltar" immediate="true"  action="#{mbCadastroTurma.goBack()}"
                                     icon="ui-icon ui-icon-close" update="@all">
-                                   
                                     </p:commandButton>
 							</p:panel>
 						</h:panelGrid>
@@ -125,7 +126,7 @@
 					rowsPerPageTemplate="5,10,15">
 
 					<f:facet name="header">Lista de Turmas</f:facet>
-					<p:column>
+					<p:column width = "200">
 						<f:facet name="header">
 							<h:outputText value="Turma" />
 						</f:facet>
@@ -146,7 +147,7 @@
 						<h:outputText value="#{turma.turno.dsTurno}" />
 					</p:column>
 
-					<p:column width="400">
+					<p:column width="305">
 						<f:facet name="header"  >
 							<h:outputText value="Instituição" />
 						</f:facet>
@@ -159,13 +160,43 @@
 						<h:outputText value="#{turma.anoLetivo}" />
 					</p:column>
 					
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Editar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formTurma">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroTurma.turma}" value="#{turma}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroTurma.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão da turma #{turma.dsTurma}?')) return false;"
+								update="@form"> 
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroTurma.turma}" value="#{turma}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+					
 					<p:column>
 						<f:facet name="header" >
 							<h:outputText value="Ações" />
 						</f:facet>
 						<p:commandButton value="Selecionar" image="ui-icon ui-icon-select"
-							process="@this" update=":tbv1:formTurma">
-							<f:setPropertyActionListener target="#{mbCadastroTurma.turma}"
+							process="@this" update="@all" action="#{mbCadastroTurma.goBack()}">
+							<f:setPropertyActionListener target="#{mbAvaliacao.avaliacao.turma}"
 								value="#{turma}" />
 						</p:commandButton>
 						

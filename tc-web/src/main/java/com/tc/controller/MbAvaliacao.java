@@ -1,5 +1,12 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_CRIAR_AVALIACAO;
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IntegerUtil.ONE;
+import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
+import static javax.faces.application.FacesMessage.SEVERITY_INFO;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +18,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import com.tc.beans.BeanTopicoEstudo;
 import com.tc.data.AvaliacaoBeanDao;
 import com.tc.data.QuestoesAvaliacaoBeanDao;
 import com.tc.data.StatuAvaliacaoDao;
@@ -39,10 +45,23 @@ public class MbAvaliacao implements Serializable {
 	private Avaliacao avaliacao = new Avaliacao();
 
 	private Questao questao;
-	public BeanTopicoEstudo beanTopico;
+
 	private List<Questao> questoesAvaliacao;
 
-	public MbAvaliacao() {
+	private String caminhoOrigem;
+
+	/**
+	 * Método resposável por retornar a página que deve ser exibida ao
+	 * selecionar valtar.
+	 * 
+	 * @return
+	 */
+	public String goBack() {
+		if (isBlank(getCaminhoOrigem())) {
+			return PAGINA_HOME;
+		} else {
+			return caminhoOrigem;
+		}
 	}
 
 	public void setaProfessorAvalicao(String login) {
@@ -56,14 +75,14 @@ public class MbAvaliacao implements Serializable {
 	}
 
 	public void adicionaQuestaoListaAvaliacao() {
-		if(questoesAvaliacao == null){
-			questoesAvaliacao =  new ArrayList<Questao>();
+		if (questoesAvaliacao == null) {
+			questoesAvaliacao = new ArrayList<Questao>();
 		}
-		//Somente adiciona se questão não estiver presente na lista
-		if(!questoesAvaliacao.contains(questao)){
-			questoesAvaliacao.add(questao);	
+		// Somente adiciona se questão não estiver presente na lista
+		if (!questoesAvaliacao.contains(questao)) {
+			questoesAvaliacao.add(questao);
 		}
-			
+
 	}
 
 	public void excluiQuestaoListaAvaliacao() {
@@ -71,7 +90,7 @@ public class MbAvaliacao implements Serializable {
 			questoesAvaliacao.remove(questao);
 		}
 	}
-	
+
 	public void setaUsuarioQuestao(String login) {
 		Usuario usuario = new Usuario();
 		try {
@@ -85,64 +104,104 @@ public class MbAvaliacao implements Serializable {
 	public String novaAvalicao() {
 		avaliacao = new Avaliacao();
 		questoesAvaliacao = new ArrayList<Questao>();
-		return "professor/criaravaliacao.jsf";
+		return PAGINA_CRIAR_AVALIACAO;
 	}
 
 	public String encerraCadastro() {
-		return "restrito/home.jsf";
+		return PAGINA_HOME;
 	}
 
 	public void addAvaliacao() {
-		try {
-			if (avaliacao.getIdAvaliacao() == null || avaliacao.getIdAvaliacao() == 0) {
-				// Adicionar datas
-				avaliacao.setDataInclusao(new Date());
-				// Verificar datas
-				if (avaliacao.getDataAvaliacao().after(avaliacao.getDataFimAvaliacao())) {
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, "Data de encerramento da publicação da avaliação deve ser maior que a data de início.",""));
-					return;
-				}
-				// Adiciona um status inicial para a avaliação
-				avaliacao.setStatusAvaliacao(daoStatus.buscaStatusAvaliacaoPorId(3));
-				salvar();
-			}
-		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Erro durante a gravação da avaliação, tente novamente.", ""));
+		if(avaliacao == null){
+			return;
 		}
+		
+		if (avaliacao.getIdAvaliacao() == null || avaliacao.getIdAvaliacao() == 0) {
+			// Adicionar datas
+			avaliacao.setDataInclusao(new Date());
+			// Verificar datas
+			if (avaliacao.getDataAvaliacao().after(avaliacao.getDataFimAvaliacao())) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"Data de encerramento da publicação da avaliação deve ser maior que a data de início.", ""));
+				return;
+			}
+			//Valida turma
+			if(avaliacao.getTurma()!= null && avaliacao.getTurma().getIdTurma() == null){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_INFO,
+						"O campo [Turma] é obrigatório.", ""));
+				return;
+			}
+			//Valida disciplina
+			if(avaliacao.getDisciplina() != null && avaliacao.getDisciplina().getIdDisciplina() == null){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_INFO,
+						"O campo [Disciplina] é obrigatório.", ""));
+				return;
+			}
+			//Valida o campo título da avaliação.
+			if(isBlank(avaliacao.getTituloAvaliacao())){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_INFO,
+						"O campo [Título] é obrigatório.", ""));
+				return;
+			}
+			
+			//Valida o campo Orientações da avaliação.
+			if(isBlank(avaliacao.getOrientacoes())){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_INFO,
+						"O campo [Orientações] é obrigatório.", ""));
+				return;
+			}
+			
+			//Valida se exsiste alguma questão
+			if( questoesAvaliacao != null && questoesAvaliacao.size() < ONE){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_INFO,
+						"Adicione uma questão para prosseguir.", ""));
+				return;
+			}
+			
+			salvar();
+		}else{
+			atualizar();
+		}
+		
 	}
 
+	private void atualizar(){
+		dao.update(avaliacao);
+	}
+	
 	private void salvar() {
-		dao.create(avaliacao);
-		try{
+		try {
+			avaliacao.setStatusAvaliacao(daoStatus.buscaStatusAvaliacaoPorId(3));
+			dao.create(avaliacao);
+		} catch (Exception e1) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR,
+					"Erro ao persistir a avaliação no banco de dados. Ação cancelada!", e1.getMessage()));
+		}
+		try {
 			for (Questao questao : questoesAvaliacao) {
 				QuestoesAvaliacaoPK id = new QuestoesAvaliacaoPK();
 				QuestoesAvaliacao q = new QuestoesAvaliacao();
 				id.setIdAvaliacao(avaliacao.getIdAvaliacao());
 				id.setIdQuestao(questao.getIdQuestao());
 				q.setId(id);
-				try{
+				try {
 					daoQuestoesAvaliacao.create(q);
-				}
-				catch (Exception e){
+				} catch (Exception e) {
 					dao.remove(avaliacao);
-					FacesContext.getCurrentInstance().addMessage(null,
-							new FacesMessage(FacesMessage.SEVERITY_INFO, "Erro ao realizar operação. Ação cancelada", ""));
-					return;
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR,
+							"Erro ao gravar questões da avaliação. Ação cancelada", e.getMessage()));
 				}
 			}
 			novaAvalicao();
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
-			
-		}catch ( Exception e){
+					new FacesMessage(SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
+
+		} catch (Exception e) {
 			dao.remove(avaliacao);
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Erro ao realizar operação. Ação cancelada", ""));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR,
+					"Erro ao gravar avaliação no banco de dados. Ação cancelada!", e.getMessage()));
 		}
-		
-		
+
 	}
 
 	public void deletar() {
@@ -173,6 +232,14 @@ public class MbAvaliacao implements Serializable {
 
 	public void setQuestoesAvaliacao(List<Questao> questoesAvaliacao) {
 		this.questoesAvaliacao = questoesAvaliacao;
+	}
+
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
+	}
+
+	public void setCaminhoOrigem(String caminhoOrigem) {
+		this.caminhoOrigem = caminhoOrigem;
 	}
 
 }

@@ -19,7 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Entity implementation class for Entity: Avaliacao
+ * Classe para implementada para a entidade Avaliacao
  *
  */
 @Entity
@@ -43,15 +43,8 @@ public class Avaliacao implements Serializable {
 	private String tituloAvaliacao;
 	private String orientacoes;
 	private String criteriosCorrecao;
-	private Long nota;
+	private Long notaMaxima;
 	private String conceitoGeral;
-
-	// TODO FAZER A ANOTAÇÃO DE TURMA
-//	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//	@JoinTable(name = "avalaicoesTurma", joinColumns = {
-//			@JoinColumn(name = "idTurma", nullable = false, updatable = false) }, inverseJoinColumns = {
-//					@JoinColumn(name = "idAvaliacao", nullable = false, updatable = false) })
-//	private Set<Turma> turmas;
 
 	@ManyToOne
 	@JoinColumn(name = "idDisciplina")
@@ -142,13 +135,13 @@ public class Avaliacao implements Serializable {
 	public void setCriteriosCorrecao(String criteriosCorrecao) {
 		this.criteriosCorrecao = criteriosCorrecao;
 	}
-
-	public Long getNota() {
-		return nota;
+	
+	public Long getNotaMaxima() {
+		return notaMaxima;
 	}
 
-	public void setNota(Long nota) {
-		this.nota = nota;
+	public void setNotaMaxima(Long notaMaxima) {
+		this.notaMaxima = notaMaxima;
 	}
 
 	public String getConceitoGeral() {
@@ -228,7 +221,7 @@ public class Avaliacao implements Serializable {
 		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((disciplina == null) ? 0 : disciplina.hashCode());
 		result = prime * result + ((idAvaliacao == null) ? 0 : idAvaliacao.hashCode());
-		result = prime * result + ((nota == null) ? 0 : nota.hashCode());
+		result = prime * result + ((notaMaxima == null) ? 0 : notaMaxima.hashCode());
 		result = prime * result + ((orientacoes == null) ? 0 : orientacoes.hashCode());
 		result = prime * result + ((professor == null) ? 0 : professor.hashCode());
 		result = prime * result + ((questoesAvaliacao == null) ? 0 : questoesAvaliacao.hashCode());
@@ -292,10 +285,10 @@ public class Avaliacao implements Serializable {
 				return false;
 		} else if (!idAvaliacao.equals(other.idAvaliacao))
 			return false;
-		if (nota == null) {
-			if (other.nota != null)
+		if (notaMaxima == null) {
+			if (other.notaMaxima != null)
 				return false;
-		} else if (!nota.equals(other.nota))
+		} else if (!notaMaxima.equals(other.notaMaxima))
 			return false;
 		if (orientacoes == null) {
 			if (other.orientacoes != null)
@@ -329,7 +322,6 @@ public class Avaliacao implements Serializable {
 			return false;
 		return true;
 	}
-
-
 	
+
 }

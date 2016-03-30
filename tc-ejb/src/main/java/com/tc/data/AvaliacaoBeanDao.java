@@ -34,7 +34,7 @@ public class AvaliacaoBeanDao implements Serializable{
 	public AvaliacaoBeanDao() {
     }
 	
-    public void create(Avaliacao entidade){
+    public void create(Avaliacao entidade) throws Exception{
     	em.persist(entidade);
     }
     

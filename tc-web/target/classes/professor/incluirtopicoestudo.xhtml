@@ -9,75 +9,121 @@
 	template="/templates/principal.xhtml">
 
 	<ui:define name="tarefas">
-	
-	        <div id="conteudo" title="Área Restrita">
-            <h:form>
-                <p:growl id="msg" rendered="#{param.erro}">#{msgs.erro_message}</p:growl>
-            </h:form>
-
-            <p:dialog header="Inclusão de Disciplina"
-                      id="dialog"  
-                      modal="true"
-                      minWidth="500"
-                      width="500"
-                      height="200"
-                      closable="false"
-                      position="center"
-                      widgetVar="modalDisciplina"
-                      showEffect="slide" 
-                      draggable="false"
-                      resizable="false"
-                      visible="true">
-
-
-                    					<h:form prependId="false" id="formTipoQuestao">
+		<p:fieldset legend="Inclusão de Tópicos de Estudo">
+			<br />
+			<p:tabView id="tbv1" dynamic="true" cache="true">
+				<p:tab title="Área de Inserção/Edição">
+					<h:form prependId="false" id="formTipoQuestao">
 						<p:growl id="msg0" />
-						<h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid"
+						<h:panelGrid columns="1" cellpadding="10" cellspacing = "10" styleClass="panelGrid"
 							id="grid0">
-
-							<h:outputLabel for="disciplina" value="Disciplina:" />
-
-							<h:panelGrid columns="1">
-								<p:selectOneMenu id="disciplina" rendered="true"
-									value="#{mbCadastroTopicoEstudo.topico.disciplina.idDisciplina}"
-									                                                                                                                                                        >
-									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
-									<f:selectItems value="#{bbDisciplina.disciplinas}"
-										var="disciplina" itemValue="#{disciplina.idDisciplina}"
-										itemLabel="#{disciplina.dsDisciplina}" size="20" 
-										requiredMessage="O campo [Disciplina] é obrigatório."/>
-								</p:selectOneMenu>
-								
-							</h:panelGrid>
-
 
 							<h:inputHidden id="idtipoquestao"
 								value="#{mbCadastroTopicoEstudo.topico.idTopicoEstudo}" />
-							<h:outputLabel />
 
-							<h:outputLabel for="tipoquestao" value="Descrição Tópico Estudo:" />
-							<p:inputText id="tipoquestao" size="40"
+							<h:outputLabel for="topicoestudo" value="Descrição Tópico Estudo" />
+							<p:inputText id="topicoestudo" size="40"
 								value="#{mbCadastroTopicoEstudo.topico.dsTopicoEstudo}"
 								onkeyup="this.value = this.value.toUpperCase()" required="true"
 								requiredMessage="O campo [Descrição] é obrigatório." />
-							
-							<h:outputLabel />
 
 							<p:panel>
 								<p:commandButton value="Salvar"
 									action="#{mbCadastroTopicoEstudo.addTopico()}"
-									icon="ui-icon-disk" update="@form" >
-									<p:ajax listener="#{mbQuestaoDissertativa.setaBeanTopicoEstudo(mbCadastroTopicoEstudo.beanTopico)}"/>
-									</p:commandButton>
-								<p:commandButton value="Voltar" immediate="true"  action="#{mbCadastroTopicoEstudo.goBack()}"
-                                    icon="ui-icon ui-icon-close" update="@all" />
+									icon="ui-icon-disk" update="@all">
+								</p:commandButton>
+								<p:commandButton value="Voltar" immediate="true"
+									action="#{mbCadastroTopicoEstudo.goBack()}"
+									icon="ui-icon ui-icon-close" update="@all">
+									<p:ajax listener="#{mbQuestaoDissertativa.carregaDadosTopicoEstudo()}" />
+									<p:ajax listener="#{mbQuestaoObjetiva.carregaDadosTopicoEstudo()}" />
+									<p:ajax listener="#{mbQuestaoRelacionar.carregaDadosTopicoEstudo()}" />
+									<p:ajax listener="#{mbQuestaoVF.carregaDadosTopicoEstudo()}" />
+									<p:ajax listener="#{mbQuestaoOrdenar.carregaDadosTopicoEstudo()}" />
+								</p:commandButton>
 							</p:panel>
 						</h:panelGrid>
 					</h:form>
-            </p:dialog>  
-        </div>
+				</p:tab>
+			</p:tabView>
 
+			<h:form id="formtable">
+				<p:growl id="msg1" />
+				<p:dataTable id="idTabela" var="tp"
+					value="#{mbCadastroTopicoEstudo.topicosEstudo}" paginator="true"
+					rows="10" emptyMessage="Nenhum registro encontrado"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
 
+					<f:facet name="header">Listagem de Tópicos de Estudo</f:facet>
+
+					<p:column width="910">
+						<f:facet name="header">
+							<h:outputText value="Tópico de Estudo" />
+						</f:facet>
+						<h:outputText value="#{tp.dsTopicoEstudo}" />
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Editar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formTipoQuestao">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroTopicoEstudo.topico}"
+									value="#{tp}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroTopicoEstudo.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão do tópico #{tp.dsTopicoEstudo}?')) return false;"
+								update="@form">
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroTopicoEstudo.topico}"
+									value="#{tp}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+						<p:commandButton value="Selecionar" image="ui-icon ui-icon-select"
+							process="@this" update="@all"
+							action="#{mbCadastroTopicoEstudo.goBack()}">
+							<f:setPropertyActionListener target="#{mbQuestaoDissertativa.topico}" value="#{tp}" />
+							<f:setPropertyActionListener target="#{mbQuestaoObjetiva.topico}" value="#{tp}" />
+							<f:setPropertyActionListener target="#{mbQuestaoVF.topico}" value="#{tp}" />
+							<f:setPropertyActionListener target="#{mbQuestaoOrdenar.topico}" value="#{tp}" />
+							<f:setPropertyActionListener target="#{mbQuestaoRelacionar.topico}" value="#{tp}" />
+							
+							<p:ajax listener="#{mbQuestaoDissertativa.carregaDadosTopicoEstudo()}" />
+							<p:ajax listener="#{mbQuestaoObjetiva.carregaDadosTopicoEstudo()}" />
+							<p:ajax listener="#{mbQuestaoRelacionar.carregaDadosTopicoEstudo()}" />
+							<p:ajax listener="#{mbQuestaoVF.carregaDadosTopicoEstudo()}" />
+							<p:ajax listener="#{mbQuestaoOrdenar.carregaDadosTopicoEstudo()}" />
+						</p:commandButton>
+
+					</p:column>
+
+				</p:dataTable>
+
+			</h:form>
+
+		</p:fieldset>
 
 	</ui:define>
 

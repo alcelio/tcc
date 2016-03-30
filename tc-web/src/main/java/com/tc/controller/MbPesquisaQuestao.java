@@ -1,5 +1,7 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -53,7 +55,7 @@ public class MbPesquisaQuestao {
 
 	public String goBack() {
 		if (StringUtils.isBlank(this.caminhoOrigem)) {
-			return "/restrito/home.jsf";
+			return PAGINA_HOME;
 		}
 		return this.caminhoOrigem;
 	}

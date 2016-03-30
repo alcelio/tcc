@@ -28,8 +28,8 @@
                             <p:panel>
                                 <p:commandButton value="Salvar" action="#{mbCadastroTurno.addTurno}"
                                     icon="ui-icon-disk" update="@form :formtable"/>
-                                <p:commandButton value="Cancelar" actionListener="#{mbCadastroTurno.limpTurno()}" 
-                                    icon="ui-icon ui-icon-close" update="@form"/>
+                                <p:commandButton value="Cancelar" actionListener="#{mbCadastroTurno.encerraCadastro()}" 
+                                    icon="ui-icon ui-icon-close" update="@form" immediate="true"/>
                             </p:panel>
                         </h:panelGrid>
                     </h:form>

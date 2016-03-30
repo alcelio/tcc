@@ -30,7 +30,7 @@ public class TopicoEstudo implements Serializable {
 	@JoinColumn(name = "idDisciplina")
 	private Disciplina disciplina;
 
-	@OneToMany(mappedBy = "disciplina")
+	@OneToMany(mappedBy = "topicoEstudo")
 	private List<Questao> questoes;
 
 	public TopicoEstudo() {

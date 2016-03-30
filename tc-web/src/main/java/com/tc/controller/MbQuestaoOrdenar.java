@@ -1,5 +1,15 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_ORDENAR;
+import static com.tc.util.IavaliarGlobal.QUESTAO_DISSERTATIVA;
+import static com.tc.util.IavaliarGlobal.QUESTAO_ORDENACAO;
+import static com.tc.util.WebGlobals.PAGINA_INCLUIR_DISCIPLINA;
+import static com.tc.util.WebGlobals.PAGINA_INCLUIR_TOPICOS_ESTUDOS;
+import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
+import static javax.faces.application.FacesMessage.SEVERITY_INFO;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -12,12 +22,11 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.tc.beans.BeanTopicoEstudo;
+import com.tc.beans.BeanCabecalhoQuestoes;
 import com.tc.data.DisciplinaBeanDao;
 import com.tc.data.QuestaoBeanDao;
 import com.tc.data.TopicoEstudoBeanDao;
 import com.tc.data.UsuarioBeanDao;
-import com.tc.model.Disciplina;
 import com.tc.model.QuestaoOrdenar;
 import com.tc.model.TopicoEstudo;
 import com.tc.model.Usuario;
@@ -38,77 +47,163 @@ public class MbQuestaoOrdenar implements Serializable {
 
 	private QuestaoOrdenar questao = new QuestaoOrdenar();
 
+	private BeanCabecalhoQuestoes beanCabecalhoQuestao = new BeanCabecalhoQuestoes();
+
+	private TopicoEstudo topico = new TopicoEstudo();
+
 	private List<TopicoEstudo> topicosEstudo;
 
-	private String grauDificuldade ="";
-	private TopicoEstudo topicoEstudo = new TopicoEstudo();
-	private Disciplina disciplina = new Disciplina();
-	private Integer codTopicoEstudo;
-	private Integer codDisciplina;
-
-	public BeanTopicoEstudo beanTopico;
-	
 	public MbQuestaoOrdenar() {
 	}
 
-	public void setaBeanTopicoEstudo(BeanTopicoEstudo bean){
-		beanTopico = new BeanTopicoEstudo();
-		if(bean == null){
-			return;
-		}
-		this.codDisciplina = bean.getDisciplina().getIdDisciplina();
-		this.codTopicoEstudo = bean.getTopicoEstudo().getIdTopicoEstudo();
-		
-	}
+	/**
+	 * Método que recebe o tipo de qustão e atualiza o objeto questão com a
+	 * informação
+	 * 
+	 * @param tipoQuestao
+	 */
 	public void informaTipoQuestao(String tipoQuestao) {
-		questao.setTipoQuestao(tipoQuestao);
+		getQuestao().setTipoQuestao(tipoQuestao);
 	}
 
+	/**
+	 * Método que recebe uma string e compara se esta é um tipo de questão e
+	 * retorna se este tipo é igual ao informado na questão
+	 * 
+	 * @param tipoQuestao
+	 */
 	public boolean qualTipoQuestao(String tipoQuestao) {
 		boolean tem = false;
-		if (questao.getTipoQuestao() != null && questao.getTipoQuestao().equals(tipoQuestao)) {
+		if (getQuestao().getTipoQuestao() != null && getQuestao().getTipoQuestao().equals(tipoQuestao)) {
 			tem = true;
 		}
 		return tem;
 	}
 
+	/**
+	 * Método que seta o usuário corrente como autor da questão
+	 * 
+	 * @param login
+	 */
 	public void setaUsuarioQuestao(String login) {
 		Usuario usuario = new Usuario();
 		try {
 			usuario = daoUsuario.buscaUsuarioPorLogin(login);
-			questao.setProfessor(usuario);
+			getQuestao().setProfessor(usuario);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void setaGrauDificuldade(String grauDificuldade) {
-		this.setGrauDificuldade(grauDificuldade);
-	}
-
+	/**
+	 * Método que retorna somente um grau de dificuldade para a questao.
+	 * 
+	 * @param grauDificuldade
+	 */
 	public boolean testaGrauDificuldade(String grauDificuldade) {
-		boolean is = false;
-		if (this.getGrauDificuldade().equals(grauDificuldade)) {
-			is = true;
+		boolean ret = false;
+		if (getBeanCabecalhoQuestao().getGrauDificuldade() != null
+				&& getBeanCabecalhoQuestao().getGrauDificuldade().equals(grauDificuldade)
+				&& !StringUtils.isEmpty(grauDificuldade)) {
+			ret = true;
 		}
-		return is;
+		return ret;
 	}
 
+	/**
+	 * Metodo para inclusão de uma nova disciplina
+	 */
+	public String incluiNovaDisciplina() {
+		return PAGINA_INCLUIR_DISCIPLINA;
+	}
+
+	/**
+	 * Método para inclusão de um novo tópico de estudo
+	 * 
+	 * @return
+	 */
+	public String incluiTopicoDeEstudo() {
+		// Somente permite a inclusão se houver uma disciplina informada
+		if (getBeanCabecalhoQuestao() != null && getBeanCabecalhoQuestao().getDisciplina() != null
+				&& getBeanCabecalhoQuestao().getDisciplina().getIdDisciplina() != null) {
+			return PAGINA_INCLUIR_TOPICOS_ESTUDOS;
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_INFO, "Selecione uma disciplina para prosseguir!", ""));
+			return null;
+		}
+	}
+
+	/**
+	 * Método que controla a visibilidade do formulário do grau de dificuldade
+	 * de uma questão
+	 * 
+	 * @return
+	 */
 	public boolean exibirFormGrauDificuldade() {
 		return true;
 	}
 
+	/**
+	 * Método que seta o grau de dificuldade de uma questão
+	 * 
+	 * @param grauDificuldade
+	 */
+	public void setGrauDificuldade(String grauDificuldadade) {
+		this.beanCabecalhoQuestao.setGrauDificuldade(grauDificuldadade);
+	}
+
+	/**
+	 * Método que cria uma nova página em branco para inclusão de uma nova
+	 * questão
+	 */
 	public String novaQuestao() {
-		questao = new QuestaoOrdenar();
-		return "professor/incluirquestaodissertativa.jsf";
+		setQuestao(new QuestaoOrdenar());
+		setTopico(new TopicoEstudo());
+		topicosEstudo.clear();
+		return PAGINA_INCLUI_QUESTAO_ORDENAR;
 	}
 
+	/**
+	 * Método encerra a edição ou visualização da questão e abre a página
+	 * inicial do sistema.
+	 */
 	public String encerraCadastro() {
-		return "restrito/home.jsf";
+		this.questao = null;
+		return PAGINA_HOME;
 	}
 
+	/**
+	 * Método que faz verificações e envia dados para o salvamento
+	 */
 	public void addQuestao() {
-		if (questao.getIdQuestao() == null || questao.getIdQuestao() == 0) {
+		if (getQuestao().getIdQuestao() == null || questao.getIdQuestao() == 0) {
+			// Exige que seja informada uma disciplina
+			if (getBeanCabecalhoQuestao() == null || getBeanCabecalhoQuestao().getDisciplina() == null) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(SEVERITY_INFO, "É obrigatório informar o campo [Discplina].", ""));
+				return;
+			}
+			// Exige que seja informado um tópico de estudo
+			if (getBeanCabecalhoQuestao() == null || getBeanCabecalhoQuestao().getTopicoEstudo() == null) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(SEVERITY_INFO, "É obrigatório informar o  campo [Tópico de Estudo].", ""));
+				return;
+			}
+
+			// Exige que seja informado um grau de dificuldade para a questão
+			if (isBlank(getBeanCabecalhoQuestao().getGrauDificuldade())) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_INFO,
+						"É obrigatório informar o [Grau de Deficuldade] da questão.", ""));
+				return;
+			}
+			//Não permite ordem repetida
+			if(isOrdemRepetida()){
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_INFO,
+						"Existem opções marcadas com a mesma ordem de sequência.", ""));
+				return;
+			}
+
 			salvar();
 		} else {
 			atualizar();
@@ -116,100 +211,152 @@ public class MbQuestaoOrdenar implements Serializable {
 
 	}
 
-	public void carregaDadosTopicoEstudo() {
+	private boolean isOrdemRepetida() {
+		//Garante que não exista soente uma questão com ordem 1
+		if (getQuestao().getRespOrPrimeira().equals(getQuestao().getRespOrSegunda())
+				|| getQuestao().getRespOrPrimeira().equals(getQuestao().getRespOrTerceira())
+				|| getQuestao().getRespOrPrimeira().equals(getQuestao().getRespOrQuarta())
+				|| getQuestao().getRespOrPrimeira().equals(getQuestao().getRespOrQuinta())) {
+			return true;
+		}
+		//Garante que não exista somente uma questão com ordem 2
+		if (getQuestao().getRespOrSegunda().equals(getQuestao().getRespOrPrimeira())
+				|| getQuestao().getRespOrSegunda().equals(getQuestao().getRespOrTerceira())
+				|| getQuestao().getRespOrSegunda().equals(getQuestao().getRespOrQuarta())
+				|| getQuestao().getRespOrSegunda().equals(getQuestao().getRespOrQuinta())) {
+			return true;
+		}
+		
+		//Garante que não exista somente uma questão com ordem 3
+		if (getQuestao().getRespOrTerceira().equals(getQuestao().getRespOrSegunda())
+				|| getQuestao().getRespOrTerceira().equals(getQuestao().getRespOrPrimeira())
+				|| getQuestao().getRespOrTerceira().equals(getQuestao().getRespOrQuarta())
+				|| getQuestao().getRespOrTerceira().equals(getQuestao().getRespOrQuinta())) {
+			return true;
+		}
+		//Garante que não exista somente uma questão com ordem 4
+		if (getQuestao().getRespOrQuarta().equals(getQuestao().getRespOrSegunda())
+				|| getQuestao().getRespOrQuarta().equals(getQuestao().getRespOrTerceira())
+				|| getQuestao().getRespOrQuarta().equals(getQuestao().getRespOrPrimeira())
+				|| getQuestao().getRespOrQuarta().equals(getQuestao().getRespOrQuinta())) {
+			return true;
+		}
+		
+		//Garante que não exista somente uma questão com ordem 5
+		if (getQuestao().getRespOrQuinta().equals(getQuestao().getRespOrSegunda())
+				|| getQuestao().getRespOrQuinta().equals(getQuestao().getRespOrTerceira())
+				|| getQuestao().getRespOrQuinta().equals(getQuestao().getRespOrQuarta())
+				|| getQuestao().getRespOrQuinta().equals(getQuestao().getRespOrPrimeira())) {
+			return true;
+		}
+		
 
-		if (this.getDisciplina().getIdDisciplina() != null) {
+		return false;
+	}
+
+	/**
+	 * Método que atualiza os tópicos de estudos de uma disciplina previamente
+	 * cadastrada
+	 */
+	public void carregaDadosTopicoEstudo() {
+		if (this.beanCabecalhoQuestao.getDisciplina() != null) {
 			try {
-				topicoEstudo = new TopicoEstudo();
-				topicosEstudo = daoTopicoEstudo.listarTopicoEstudoDisciplina(disciplina);
-				codDisciplina = disciplina.getIdDisciplina();
+				topicosEstudo = daoTopicoEstudo.listarTopicoEstudoDisciplina(beanCabecalhoQuestao.getDisciplina());
 			} catch (Exception e) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Erro ao gerar listagens de tópicos de estudo desta discsiplina", ""));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR,
+						"Erro ao gerar listagem de tópicos de estudo para a disciplina.", e.getMessage()));
 			}
 		}
-
 	}
 
-	public void setaCodTopicoEstudo() {
-		this.codTopicoEstudo = topicoEstudo.getIdTopicoEstudo();
-	}
-
+	/**
+	 * Método que controla se uma questão será pública
+	 * 
+	 * @param isPublica
+	 */
 	public void setIsQuestaoPublica(boolean isPublica) {
 		questao.setPublica(isPublica);
 	}
 
+	/**
+	 * Método usado para controlar o grau de dificuldade de uma questão(Gerencia
+	 * de acordo com o botão pressionado na tela)
+	 * 
+	 * @param grauDificuldade
+	 */
+	public void setaGrauDificuldade(String grauDificuldade) {
+		getBeanCabecalhoQuestao().setGrauDificuldade(grauDificuldade);
+	}
+
+	/**
+	 * Método busca uma instancia e atualiza o tópico de estudos
+	 * 
+	 * @throws Exception
+	 */
+	public void selecionaTopicoEstudo() throws Exception {
+		getBeanCabecalhoQuestao().setTopicoEstudo(daoTopicoEstudo.buscaPorId(getTopico().getIdTopicoEstudo()));
+	}
+
+	/**
+	 * Método que persiste os dados da questão
+	 */
 	private void salvar() {
-
-		if (getCodDisciplina() == null || getCodDisciplina() == 0) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "É obrigatório informar o campo [Discplina].", ""));
-			return;
-		}
-		if (getCodTopicoEstudo() == null || getCodTopicoEstudo() == 0) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"É obrigatório informar o  campo [Tópco de Estudo].", ""));
-			return;
-		}
-
-		if (getGrauDificuldade() == "" || getGrauDificuldade().isEmpty()) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"É obrigatório informar o [Grau de Deficuldade] da questão.", ""));
-			return;
-		}
-		
-		if(StringUtils.isBlank(questao.getRespOrPrimeira()) 
-				|| StringUtils.isBlank(questao.getRespOrSegunda()) 
-				|| StringUtils.isBlank(questao.getRespOrTerceira()) 
-				|| StringUtils.isBlank(questao.getRespOrQuarta())
-				|| StringUtils.isBlank(questao.getRespOrQuinta())){
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"É obrigatório informar a ordem em todas as opções.", ""));
-			return;
-		}
-
-		questao.setDataInclusao(new Date());
-
+		getBeanCabecalhoQuestao().setTopicoEstudo(getTopico());
 		try {
-			questao.setDisciplina(daoDisciplina.buscaPorId(getCodDisciplina()));
-			questao.setTopicoEstudo(daoTopicoEstudo.buscaPorId(getCodTopicoEstudo()));
-			questao.setTipoQuestao("ORDENAR");
-			questao.setGrauDificuldade(getGrauDificuldade());
+			getQuestao().setDataInclusao(new Date());
+			getQuestao().setDisciplina(getBeanCabecalhoQuestao().getDisciplina());
+			getQuestao().setTopicoEstudo(getBeanCabecalhoQuestao().getTopicoEstudo());
+			getQuestao().setTipoQuestao(getBeanCabecalhoQuestao().getTipoQuestao());
+			getQuestao().setGrauDificuldade(getBeanCabecalhoQuestao().getGrauDificuldade());
+			getQuestao().setTipoQuestao(QUESTAO_ORDENACAO);
+			dao.create(getQuestao());
+			setBeanCabecalhoQuestao(new BeanCabecalhoQuestoes());
+			novaQuestao();
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
 		} catch (Exception e) {
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_ERROR, "Erro durante gravação das informações.", e.getMessage()));
 		}
 
-		dao.create(questao);
-//novaQuestao();
-		
-		topicoEstudo = new TopicoEstudo();
-		disciplina = new Disciplina();
-		grauDificuldade = "";
-		codDisciplina = 0;
-		codTopicoEstudo = 0;
-		
-		questao = new QuestaoOrdenar();
-
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
-
 	}
 
+	/**
+	 * Método que efetua edição dos dados de uma questão no banco de dados
+	 */
 	private void atualizar() {
-		dao.update(questao);
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		getBeanCabecalhoQuestao().setTopicoEstudo(getTopico());
+		try {
+			getQuestao().setDisciplina(getBeanCabecalhoQuestao().getDisciplina());
+			getQuestao().setTopicoEstudo(getBeanCabecalhoQuestao().getTopicoEstudo());
+			getQuestao().setTipoQuestao(getBeanCabecalhoQuestao().getTipoQuestao());
+			getQuestao().setGrauDificuldade(getBeanCabecalhoQuestao().getGrauDificuldade());
+			getQuestao().setTipoQuestao(QUESTAO_DISSERTATIVA);
+			dao.update(getQuestao());
+			novaQuestao();
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_ERROR, "Erro durante gravação das informações.", e.getMessage()));
+		}
 	}
 
+	/**
+	 * Método que exclui a questão em uso do banco de dados
+	 */
 	public void deletar() {
-		dao.remove(questao);
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		try {
+			dao.remove(questao);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_ERROR, "Erro durante exclusão das inforamações.", e.getMessage()));
+		}
 	}
 
-	// ****************************************** GETTERS E SETTERS
-	// **************************************************
-
+	// ****************GETTERS E SETTERS *********************************
 	public QuestaoOrdenar getQuestao() {
 		return questao;
 	}
@@ -226,44 +373,20 @@ public class MbQuestaoOrdenar implements Serializable {
 		this.topicosEstudo = topicosEstudo;
 	}
 
-	public String getGrauDificuldade() {
-		return grauDificuldade;
+	public BeanCabecalhoQuestoes getBeanCabecalhoQuestao() {
+		return beanCabecalhoQuestao;
 	}
 
-	public void setGrauDificuldade(String grauDificuldadade) {
-		this.grauDificuldade = grauDificuldadade;
+	public void setBeanCabecalhoQuestao(BeanCabecalhoQuestoes beanCabecalhoQuestao) {
+		this.beanCabecalhoQuestao = beanCabecalhoQuestao;
 	}
 
-	public TopicoEstudo getTopicoEstudo() {
-		return topicoEstudo;
+	public TopicoEstudo getTopico() {
+		return topico;
 	}
 
-	public void setTopicoEstudo(TopicoEstudo topicoEstudo) {
-		this.topicoEstudo = topicoEstudo;
-	}
-
-	public Disciplina getDisciplina() {
-		return disciplina;
-	}
-
-	public void setDisciplina(Disciplina disciplina)	 {
-		this.disciplina = disciplina;
-	}
-
-	public Integer getCodTopicoEstudo() {
-		return codTopicoEstudo;
-	}
-
-	public void setCodTopicoEstudo(Integer codTopicoEstudo) {
-		this.codTopicoEstudo = codTopicoEstudo;
-	}
-
-	public Integer getCodDisciplina() {
-		return codDisciplina;
-	}
-
-	public void setCodDisciplina(Integer codDisciplina) {
-		this.codDisciplina = codDisciplina;
+	public void setTopico(TopicoEstudo topico) {
+		this.topico = topico;
 	}
 
 }

@@ -15,49 +15,47 @@
 				<p:tab title="Área de Inserção/Edição">
 					<h:form prependId="false" id="formTipoQuestao">
 						<p:growl id="msg0" />
-						<h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid"
-							id="grid0">
+						<h:panelGrid columns="1" cellpadding="10" cellspacing="10"
+							styleClass="panelGrid" id="grid0">
 
-							<h:outputLabel for="disciplina" value="Disciplina:" />
+							<h:inputHidden id="idtipoquestao"
+								value="#{mbCadastroTopicoEstudo.topico.idTopicoEstudo}" />
+
+
+							<p:outputLabel for="disciplina" value="Disciplina:" />
 
 							<h:panelGrid columns="2">
-								<p:selectOneMenu id="disciplina" rendered="true"
+								<p:selectOneMenu id="disciplina" style="width:330px"
 									value="#{mbCadastroTopicoEstudo.topico.disciplina.idDisciplina}">
 									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
 									<f:selectItems value="#{bbDisciplina.disciplinas}"
 										var="disciplina" itemValue="#{disciplina.idDisciplina}"
-										itemLabel="#{disciplina.dsDisciplina}" size="20" 
-										requiredMessage="O campo [Disciplina] é obrigatório."/>
+										itemLabel="#{disciplina.dsDisciplina}" size="20" />
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarDisciplina" value="+"
 									style="float:right" immediate="true"
-									action="/professor/incluirdisciplina.jsf"
-									update="adicionarDisciplina">
+									action="#{mbCadastroTopicoEstudo.incluiNovaDisciplina()}"
+									update="@all">
 									<p:ajax
-										listener="#{mbCadastroDisciplina.setaCaminhoOrigem('/admin/cadastrotopicoestudo.jsf')}" />
+										listener="#{mbCadastroDisciplina.setaCaminhoOrigem(bbGlobal.PAGINA_CADASTRO_TOPICOS_ESTUDOS)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
-
-							<h:inputHidden id="idtipoquestao"
-								value="#{mbCadastroTopicoEstudo.topico.idTopicoEstudo}" />
-							<h:outputLabel />
-
-							<h:outputLabel for="tipoquestao" value="Descrição Tópico Estudo:" />
-							<p:inputText id="tipoquestao" size="40"
+							<h:outputLabel for="topicoestudo" value="Descrição Tópico Estudo" />
+							<p:inputText id="topicoestudo" size="40"
 								value="#{mbCadastroTopicoEstudo.topico.dsTopicoEstudo}"
 								onkeyup="this.value = this.value.toUpperCase()" required="true"
 								requiredMessage="O campo [Descrição] é obrigatório." />
-							
-							<h:outputLabel />
 
 							<p:panel>
 								<p:commandButton value="Salvar"
 									action="#{mbCadastroTopicoEstudo.addTopico()}"
-									icon="ui-icon-disk" update="@form :formtable" />
-								<p:commandButton value="Cancelar"
-									actionListener="#{mbCadastroTopicoEstudo.novoTopico()}"
-									icon="ui-icon ui-icon-close" update="@form" />
+									icon="ui-icon-disk" update="@all">
+								</p:commandButton>
+								<p:commandButton value="Voltar" immediate="true"
+									action="#{mbCadastroTopicoEstudo.goBack()}"
+									icon="ui-icon ui-icon-close" update="@all">
+								</p:commandButton>
 							</p:panel>
 						</h:panelGrid>
 					</h:form>
@@ -67,43 +65,58 @@
 			<h:form id="formtable">
 				<p:growl id="msg1" />
 				<p:dataTable id="idTabela" var="tp"
-					value="#{mbCadastroTopicoEstudo.topicoEstudo}" paginator="true"
-					rows="10" emptyMessage="Nenhum registro encontrado"
+					value="#{mbCadastroTopicoEstudo.topicosEstudoGerais}"
+					paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
                              {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15">
 
 					<f:facet name="header">Listagem de Tópicos de Estudo</f:facet>
-					<p:column>
+
+					<p:column width="400">
 						<f:facet name="header">
 							<h:outputText value="Disciplina" />
 						</f:facet>
 						<h:outputText value="#{tp.disciplina.dsDisciplina}" />
 					</p:column>
 
-					<p:column>
+
+					<p:column width="610">
 						<f:facet name="header">
 							<h:outputText value="Tópico de Estudo" />
 						</f:facet>
 						<h:outputText value="#{tp.dsTopicoEstudo}" />
 					</p:column>
 
-					<p:column>
+					<p:column width="50">
 						<f:facet name="header">
-							<h:outputText value="Ações" />
+							<h:outputText value="Editar" />
 						</f:facet>
-						<p:commandButton value="Editar" image="ui-icon ui-icon-pencil"
-							process="@this" update=":tbv1:formTipoQuestao">
-							<f:setPropertyActionListener
-								target="#{mbCadastroTopicoEstudo.topico}" value="#{tp}" />
-						</p:commandButton>
-						<p:commandButton value="Remover"
-							action="#{mbCadastroTopicoEstudo.deletar()}"
-							image="ui-icon ui-icon-close" update="@form">
-							<f:setPropertyActionListener
-								target="#{mbCadastroTopicoEstudo.topico}" value="#{tp}" />
-						</p:commandButton>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formTipoQuestao">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroTopicoEstudo.topico}" value="#{tp}" />
+							</p:commandLink>
+						</div>
+					</p:column>
 
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroTopicoEstudo.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão do tópico #{tp.dsTopicoEstudo}?')) return false;"
+								update="@form">
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroTopicoEstudo.topico}" value="#{tp}" />
+							</p:commandLink>
+						</div>
 					</p:column>
 
 				</p:dataTable>
@@ -111,6 +124,7 @@
 			</h:form>
 
 		</p:fieldset>
+
 	</ui:define>
 
 </ui:composition>

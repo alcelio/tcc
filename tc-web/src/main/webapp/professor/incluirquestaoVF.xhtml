@@ -28,29 +28,29 @@
 							<h:outputLabel />
 
 							<p:commandButton value="Fácil"
-								action="#{mbQuestaoVF.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
+								action="#{mbQuestaoVF.setaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}"
 								update="@form"
-								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}">
 							</p:commandButton>
 							<p:commandButton value="Moderado"
-								action="#{mbQuestaoVF.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
+								action="#{mbQuestaoVF.setaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}"
 								update="@form"
-								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}">
 							</p:commandButton>
 							<p:commandButton value="Exigente"
-								action="#{mbQuestaoVF.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
+								action="#{mbQuestaoVF.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Muito Exigente"
-								action="#{mbQuestaoVF.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
+								action="#{mbQuestaoVF.setaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Extremo"
-								action="#{mbQuestaoVF.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
+								action="#{mbQuestaoVF.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}"
 								update="@form"
-								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+								disabled="#{mbQuestaoVF.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}">
 							</p:commandButton>
 						</h:panelGrid>
 
@@ -67,7 +67,7 @@
 
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="disciplina" style="width:240px"
-									value="#{mbQuestaoVF.disciplina.idDisciplina}">
+									value="#{mbQuestaoVF.beanCabecalhoQuestao.disciplina.idDisciplina}">
 									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
 									<f:selectItems value="#{bbDisciplina.disciplinas}"
 										var="disciplina" itemValue="#{disciplina.idDisciplina}"
@@ -78,29 +78,32 @@
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarDisciplina" value="+"
 									style="float:right" immediate="true"
-									action="incluirdisciplina.jsf" update="@all">
+									action="#{mbQuestaoVF.incluiNovaDisciplina()}" update="@all">
 									<p:ajax
-										listener="#{mbCadastroDisciplina.setaCaminhoOrigem('incluirquestaoVF.jsf')}" />
+										listener="#{mbCadastroDisciplina.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_VF)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
 
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="topicoEstudo" style="width:240px"
-									value="#{mbQuestaoVF.topicoEstudo.idTopicoEstudo}">
+									value="#{mbQuestaoVF.topico.idTopicoEstudo}">
 									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
 									<f:selectItems value="#{mbQuestaoVF.topicosEstudo}"
 										var="topico" itemValue="#{topico.idTopicoEstudo}"
 										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
 									<p:ajax event="change" process="@this"
-										listener="#{mbQuestaoVF.setaCodTopicoEstudo()}" />
+										listener="#{mbQuestaoVF.carregaDadosTopicoEstudo()}"
+										update="topicoEstudo" />
 
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarTopicoEstudo" value="+"
 									style="float:right" immediate="true"
-									action="incluirtopicoestudo.jsf" update="@all">
+									action="#{mbQuestaoVF.incluiTopicoDeEstudo()}" update="@all">
 									<p:ajax
-										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem('incluirquestaoVF.jsf')}" />
+										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_VF)}" />
+									<f:setPropertyActionListener
+										target="#{mbCadastroTopicoEstudo.beanCabecalho}" value="#{mbQuestaoVF.beanCabecalhoQuestao}" />
 								</p:commandButton>
 							</h:panelGrid>
 						</h:panelGrid>
@@ -131,7 +134,7 @@
 							<p:ajax update="formGrauDificuldade" />
 						</p:commandButton>
 
-						<p:commandButton value="Encerrar" action="/restrito/home.jsf"
+						<p:commandButton value="Encerrar" action="#{mbQuestaoVF.encerraCadastro()}"
 							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
 						</p:commandButton>
 					</h:panelGrid>
@@ -139,12 +142,21 @@
 
 					<h:outputLabel for="editorPergunta" value="Pergunta:" />
 					<p:editor id="editorPergunta" widgetVar="editorPergunta"
-						value="#{mbQuestaoVF.questao.pergunta}" width="1230" height="150"
+						value="#{mbQuestaoVF.questao.pergunta}" width="1230" height="100"
 						required="true"
 						requiredMessage="O campo [Pergunta] é obrigatório!" />
 					<p:separator style="widht:1230; height: 20;" />
 					<br />
+					
+					<h:outputLabel for="editorRecomendacaoErro" value="Recomendação para Resposta errada:" />
+					<p:editor id="editorRecomendacao"
+						widgetVar="editorRecomendacao"
+						value="#{mbQuestaoVF.questao.recomendacaoErro}"
+						width="1230" height="100" required="false"
+						requiredMessage="O Campo [Recomendação] é obrigatório" rendered="true" />
+					<p:separator style="widht:1230; height: 20;" />
 
+					<br />
 
 					<h:panelGrid id="panelResposta" columns="2">
 

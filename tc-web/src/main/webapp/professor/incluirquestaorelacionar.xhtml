@@ -27,32 +27,33 @@
 							<h:outputLabel />
 							<h:outputLabel />
 
-							<p:commandButton value="Fácil"
-								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
+														<p:commandButton value="Fácil"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}"
 								update="@form"
-								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}">
 							</p:commandButton>
 							<p:commandButton value="Moderado"
-								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}"
 								update="@form"
-								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}">
 							</p:commandButton>
 							<p:commandButton value="Exigente"
-								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Muito Exigente"
-								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Extremo"
-								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
+								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}"
 								update="@form"
-								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}">
 							</p:commandButton>
 						</h:panelGrid>
+
 
 					</p:panel>
 				</h:form>
@@ -67,7 +68,7 @@
 
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="disciplina" style="width:240px"
-									value="#{mbQuestaoRelacionar.disciplina.idDisciplina}">
+									value="#{mbQuestaoRelacionar.beanCabecalhoQuestao.disciplina.idDisciplina}">
 									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
 									<f:selectItems value="#{bbDisciplina.disciplinas}"
 										var="disciplina" itemValue="#{disciplina.idDisciplina}"
@@ -78,29 +79,29 @@
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarDisciplina" value="+"
 									style="float:right" immediate="true"
-									action="incluirdisciplina.jsf" update="@all">
-									<p:ajax
-										listener="#{mbCadastroDisciplina.setaCaminhoOrigem('incluirquestaorelacionar.jsf')}" />
+									action="#{mbQuestaoRelacionar.incluiNovaDisciplina()}" update="@all">
+									<p:ajax listener="#{mbCadastroDisciplina.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
 
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="topicoEstudo" style="width:240px"
-									value="#{mbQuestaoRelacionar.topicoEstudo.idTopicoEstudo}">
+									value="#{mbQuestaoRelacionar.topico.idTopicoEstudo}">
 									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
 									<f:selectItems value="#{mbQuestaoRelacionar.topicosEstudo}"
 										var="topico" itemValue="#{topico.idTopicoEstudo}"
 										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
-									<p:ajax event="change" process="@this"
-										listener="#{mbQuestaoRelacionar.setaCodTopicoEstudo()}" />
+										<p:ajax event="change" process="@this"
+											listener="#{mbQuestaoObjetiva.selecionaTopicoEstudo()}" />
 
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarTopicoEstudo" value="+"
 									style="float:right" immediate="true"
-									action="incluirtopicoestudo.jsf" update="@all">
-									<p:ajax
-										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem('incluirquestaorelacionar.jsf')}" />
+									action="#{mbQuestaoRelacionar.incluiTopicoDeEstudo()}" update="@all">
+									<p:ajax listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR)}" />
+									<f:setPropertyActionListener
+										target="#{mbCadastroTopicoEstudo.beanCabecalho}" value="#{mbQuestaoObjetiva.beanCabecalhoQuestao}" />
 								</p:commandButton>
 							</h:panelGrid>
 						</h:panelGrid>
@@ -138,11 +139,19 @@
 					<h:outputLabel for="editorPergunta" value="Pergunta:" />
 					<p:editor id="editorPergunta" widgetVar="editorPergunta"
 						value="#{mbQuestaoRelacionar.questao.pergunta}" width="1230"
-						height="150" required="true"
+						height="100" required="true"
 						requiredMessage="O campo [Pergunta] é obrigatório!" />
 					<p:separator style="widht:1230; height: 20;" />
 					<br />
 
+					<h:outputLabel for="editorRecomendacaoErro"
+						value="Recomendação para Resposta errada:" />
+					<p:editor id="editorRecomendacao" widgetVar="editorRecomendacao"
+						value="#{mbQuestaoRelacionar.questao.recomendacaoErro}" width="1230"
+						height="100" required="false"
+						requiredMessage="O Campo [Recomendação] é obrigatório" rendered="true" />
+					<p:separator style="widht:1230; height: 20;" />
+					<br />
 
 					<h:panelGrid id="panelResposta" columns="2">
 
@@ -192,7 +201,7 @@
 								<h:outputLabel value="Resposta Correspondente opção 'D'"
 									style="margin-left:15" />
 								<p:inputTextarea rows="4" cols="64"
-									value="#{mbQuestaoRelacionar.questao.opcaoA}" required="true"
+									value="#{mbQuestaoRelacionar.questao.opcaoD}" required="true"
 									requiredMessage="O campo [Opção A] é obritótio!" />
 								<p:inputTextarea rows="4" cols="64" style="margin-left:15"
 									value="#{mbQuestaoRelacionar.questao.respRelOpcaoD}"
@@ -205,7 +214,7 @@
 								<h:outputLabel value="Resposta Correspondente opção 'E'"
 									style="margin-left:15" />
 								<p:inputTextarea rows="4" cols="64"
-									value="#{mbQuestaoRelacionar.questao.opcaoA}" required="true"
+									value="#{mbQuestaoRelacionar.questao.opcaoE}" required="true"
 									requiredMessage="O campo [Opção A] é obritótio!" />
 								<p:inputTextarea rows="4" cols="64" style="margin-left:15"
 									value="#{mbQuestaoRelacionar.questao.respRelOpcaoE}"

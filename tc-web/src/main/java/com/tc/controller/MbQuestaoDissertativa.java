@@ -2,6 +2,11 @@ package com.tc.controller;
 
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
 import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
+import static com.tc.util.IavaliarGlobal.QUESTAO_DISSERTATIVA;
+import static com.tc.util.WebGlobals.PAGINA_INCLUIR_DISCIPLINA;
+import static com.tc.util.WebGlobals.PAGINA_INCLUIR_TOPICOS_ESTUDOS;
+import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
+import static javax.faces.application.FacesMessage.SEVERITY_INFO;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.Serializable;
@@ -13,6 +18,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.tc.beans.BeanCabecalhoQuestoes;
 import com.tc.data.DisciplinaBeanDao;
@@ -39,17 +46,27 @@ public class MbQuestaoDissertativa implements Serializable {
 
 	private QuestaoDissertativa questao = new QuestaoDissertativa();
 
-	private List<TopicoEstudo> topicosEstudo;
+	private TopicoEstudo topico = new TopicoEstudo();
 
 	private BeanCabecalhoQuestoes beanCabecalhoQuestao = new BeanCabecalhoQuestoes();
+
+	private List<TopicoEstudo> topicosEstudo;
 
 	public MbQuestaoDissertativa() {
 	}
 
+	/**
+	 * Método que recebe o tipo de qustão e atualiza o objeto questão com a informação
+	 * @param tipoQuestao
+	 */
 	public void informaTipoQuestao(String tipoQuestao) {
 		getQuestao().setTipoQuestao(tipoQuestao);
 	}
 
+	/**
+	 * Método que recebe uma string e compara se esta é um tipo de questão e retorna se este tipo é igual ao informado na questão
+	 * @param tipoQuestao
+	 */
 	public boolean qualTipoQuestao(String tipoQuestao) {
 		boolean tem = false;
 		if (getQuestao().getTipoQuestao() != null && getQuestao().getTipoQuestao().equals(tipoQuestao)) {
@@ -57,7 +74,10 @@ public class MbQuestaoDissertativa implements Serializable {
 		}
 		return tem;
 	}
-
+ /**
+  * Método que seta o usuário corrente como autor da questão
+  * @param login
+  */
 	public void setaUsuarioQuestao(String login) {
 		Usuario usuario = new Usuario();
 		try {
@@ -68,29 +88,102 @@ public class MbQuestaoDissertativa implements Serializable {
 		}
 	}
 
+	/**
+	 * Método que retorna somente um grau de dificuldade para a questao.
+	 * @param grauDificuldade
+	 */
 	public boolean testaGrauDificuldade(String grauDificuldade) {
-		boolean is = false;
-		if (getBeanCabecalhoQuestao() != null && getBeanCabecalhoQuestao().getGrauDificuldade().equals(grauDificuldade)) {
-			is = true;
+		boolean ret = false;
+		if (getBeanCabecalhoQuestao().getGrauDificuldade() != null
+				&& getBeanCabecalhoQuestao().getGrauDificuldade().equals(grauDificuldade)
+				&& !StringUtils.isEmpty(grauDificuldade)) {
+			ret = true;
 		}
-		return is;
+		return ret;
 	}
 
+	/**
+	 * Metodo para inclusão de uma nova disciplina
+	 */
+	public String incluiNovaDisciplina() {
+		return PAGINA_INCLUIR_DISCIPLINA;
+	}
+
+	/**
+	 * Método para inclusão de um novo tópico de estudo
+	 */
+	public String incluiTopicoDeEstudo() {
+		// Somente permite a inclusão se houver uma disciplina informada
+		if (getBeanCabecalhoQuestao() != null && getBeanCabecalhoQuestao().getDisciplina() != null
+				&& getBeanCabecalhoQuestao().getDisciplina().getIdDisciplina() != null) {
+			return PAGINA_INCLUIR_TOPICOS_ESTUDOS;
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_INFO, "Selecione uma disciplina para prosseguir!", ""));
+			return null;
+		}
+	}
+
+	/**
+	 * Método que controla a visibilidade do formulário do grau de dificuldade
+	 * de uma questão
+	 */
 	public boolean exibirFormGrauDificuldade() {
 		return true;
 	}
 
+	/**
+	 * Método que seta o grau de dificuldade de uma questão
+	 * @param grauDificuldade
+	 */
+	public void setGrauDificuldade(String grauDificuldadade) {
+		this.beanCabecalhoQuestao.setGrauDificuldade(grauDificuldadade);
+	}
+
+	/**
+	 * Método que cria uma nova página em branco para inclusão de uma nova
+	 * questão
+	 */
 	public String novaQuestao() {
 		setQuestao(new QuestaoDissertativa());
+		setTopico(new TopicoEstudo());
+		topicosEstudo.clear();
 		return PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
 	}
 
+	/**
+	 * Método encerra a edição ou visualização da questão e abre a página
+	 * inicial do sistema.
+	 */
 	public String encerraCadastro() {
+		setQuestao(null);
 		return PAGINA_HOME;
 	}
 
+	/**
+	 * Método que faz verificações e envia dados para o salvamento
+	 */
 	public void addQuestao() {
 		if (getQuestao().getIdQuestao() == null || questao.getIdQuestao() == 0) {
+			// Exige que seja informada uma disciplina
+			if (getBeanCabecalhoQuestao() == null || getBeanCabecalhoQuestao().getDisciplina() == null) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"É obrigatório informar o campo [Discplina].", ""));
+				return;
+			}
+			// Exige que seja informado um tópico de estudo
+			if (getBeanCabecalhoQuestao() == null || getBeanCabecalhoQuestao().getTopicoEstudo() == null) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"É obrigatório informar o  campo [Tópico de Estudo].", ""));
+				return;
+			}
+
+			// Exige que seja informado um grau de dificuldade para a questão
+			if (isBlank(getBeanCabecalhoQuestao().getGrauDificuldade())) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"É obrigatório informar o [Grau de Deficuldade] da questão.", ""));
+				return;
+			}
 			salvar();
 		} else {
 			atualizar();
@@ -98,103 +191,128 @@ public class MbQuestaoDissertativa implements Serializable {
 
 	}
 
-	public void setGrauDificuldade(String grauDificuldadade) {
-		this.beanCabecalhoQuestao.setGrauDificuldade(grauDificuldadade);
-	}
-	
+	/**
+	 * Método que atualiza os tópicos de estudos de uma disciplina previamente
+	 * cadastrada
+	 */
 	public void carregaDadosTopicoEstudo() {
-
 		if (this.beanCabecalhoQuestao.getDisciplina() != null) {
 			try {
 				topicosEstudo = daoTopicoEstudo.listarTopicoEstudoDisciplina(beanCabecalhoQuestao.getDisciplina());
 			} catch (Exception e) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Erro ao gerar listagens de tópicos de estudo desta discsiplina", ""));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR,
+						"Erro ao gerar listagens de tópicos de estudo para a disciplina.", e.getMessage()));
 			}
 		}
-
 	}
 
+	/**
+	 * Método que controla se uma questão será pública
+	 * @param isPublica
+	 */
 	public void setIsQuestaoPublica(boolean isPublica) {
-		getQuestao().setPublica(isPublica);
+		questao.setPublica(isPublica);
 	}
 
+	/**
+	 * Método usado para controlar o grau de dificuldade de uma questão(Gerencia
+	 * de acordo com o botão pressionado na tela)
+	 * @param grauDificuldade
+	 */
+	public void setaGrauDificuldade(String grauDificuldade) {
+		getBeanCabecalhoQuestao().setGrauDificuldade(grauDificuldade);
+	}
+	/**
+	 * Método busca uma instancia e atualiza o tópico de estudos
+	 * @throws Exception
+	 */
+	public void selecionaTopicoEstudo() throws Exception {
+		getBeanCabecalhoQuestao().setTopicoEstudo(daoTopicoEstudo.buscaPorId(getTopico().getIdTopicoEstudo()));	
+	}
+
+	/**
+	 * Método que persiste os dados da questão
+	 */
 	private void salvar() {
-
-		if (getBeanCabecalhoQuestao() == null || getBeanCabecalhoQuestao().getDisciplina() == null) {
+		getBeanCabecalhoQuestao().setTopicoEstudo(getTopico());
+		try {
+			getQuestao().setDataInclusao(new Date());
+			getQuestao().setDisciplina(getBeanCabecalhoQuestao().getDisciplina());
+			getQuestao().setTopicoEstudo(getBeanCabecalhoQuestao().getTopicoEstudo());
+			getQuestao().setTipoQuestao(getBeanCabecalhoQuestao().getTipoQuestao());
+			getQuestao().setGrauDificuldade(getBeanCabecalhoQuestao().getGrauDificuldade());
+			getQuestao().setTipoQuestao(QUESTAO_DISSERTATIVA);
+			dao.create(getQuestao());
+			setBeanCabecalhoQuestao(new BeanCabecalhoQuestoes());
+			novaQuestao();
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "É obrigatório informar o campo [Discplina].", ""));
-			return;
-		}
-		if (getBeanCabecalhoQuestao() == null || getBeanCabecalhoQuestao().getTopicoEstudo() == null) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"É obrigatório informar o  campo [Tópco de Estudo].", ""));
-			return;
+					new FacesMessage(SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_ERROR, "Erro durante gravação das informações.", e.getMessage()));
 		}
 
-		if (isBlank(getBeanCabecalhoQuestao().getGrauDificuldade())) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"É obrigatório informar o [Grau de Deficuldade] da questão.", ""));
-			return;
-		}
+	}
 
-		getQuestao().setDataInclusao(new Date());
-
+	/**
+	 * Método que efetua edição dos dados de uma questão no banco de dados
+	 */
+	private void atualizar() {
+		getBeanCabecalhoQuestao().setTopicoEstudo(getTopico());
 		try {
 			getQuestao().setDisciplina(getBeanCabecalhoQuestao().getDisciplina());
 			getQuestao().setTopicoEstudo(getBeanCabecalhoQuestao().getTopicoEstudo());
 			getQuestao().setTipoQuestao(getBeanCabecalhoQuestao().getTipoQuestao());
 			getQuestao().setGrauDificuldade(getBeanCabecalhoQuestao().getGrauDificuldade());
+			getQuestao().setTipoQuestao(QUESTAO_DISSERTATIVA);
+			dao.update(getQuestao());
+			novaQuestao();
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
 		} catch (Exception e) {
-			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_ERROR, "Erro durante gravação das informações.", e.getMessage()));
 		}
-
-		dao.create(getQuestao());
-		setBeanCabecalhoQuestao(new BeanCabecalhoQuestoes());
-		setQuestao(new QuestaoDissertativa());
-
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
-
 	}
 
-	private void atualizar() {
-		dao.update(getQuestao());
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
-	}
-
+	/**
+	 * Método que exclui a questão em uso do banco de dados
+	 */
 	public void deletar() {
-		dao.remove(getQuestao());
-		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		try {
+			dao.remove(questao);
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_ERROR, "Erro durante exclusão das inforamações.", e.getMessage()));
+		}
 	}
 
 	// ****************GETTERS E SETTERS *********************************
-
 	public QuestaoDissertativa getQuestao() {
 		return questao;
 	}
-
 	public void setQuestao(QuestaoDissertativa questao) {
 		this.questao = questao;
 	}
-
 	public List<TopicoEstudo> getTopicosEstudo() {
 		return topicosEstudo;
 	}
-
 	public void setTopicosEstudo(List<TopicoEstudo> topicosEstudo) {
 		this.topicosEstudo = topicosEstudo;
 	}
-
 	public BeanCabecalhoQuestoes getBeanCabecalhoQuestao() {
 		return beanCabecalhoQuestao;
 	}
-
 	public void setBeanCabecalhoQuestao(BeanCabecalhoQuestoes beanCabecalhoQuestao) {
 		this.beanCabecalhoQuestao = beanCabecalhoQuestao;
 	}
-	
+	public TopicoEstudo getTopico() {
+		return topico;
+	}
+	public void setTopico(TopicoEstudo topico) {
+		this.topico = topico;
+	}
 
 }

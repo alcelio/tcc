@@ -1,5 +1,9 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static javax.faces.application.FacesMessage.SEVERITY_INFO;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,20 +23,21 @@ public class MbCadastroDisciplina implements Serializable {
 
 	@EJB
 	DisciplinaBeanDao dao;
-
+	
 	private Disciplina disciplina = new Disciplina();
 	
 	private String caminhoOrigem;
-
+	
 	public MbCadastroDisciplina() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public void novaDisciplina() {
-		disciplina = new Disciplina();
+		setDisciplina(new Disciplina());
 	}
 
 	public String encerraCadastro() {
-		return "publico/login.jsf";
+		return PAGINA_HOME;
 	}
 
 	public void addDisciplina() {
@@ -44,33 +49,34 @@ public class MbCadastroDisciplina implements Serializable {
 	}
 
 	/**
-	 * Método para incluir instancia de usuario corrente na base de dados.
+	 * Método para incluir instância de disciplina na base de dados.
 	 */
 	private void salvar() {
 		dao.create(disciplina);
 		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
+				new FacesMessage(SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
 		novaDisciplina();
 	}
 	
 	public String goBack(){
-		return caminhoOrigem;
-	}
-	
-	public void setaCaminhoOrigem(String caminhoOrigem) {
-		this.caminhoOrigem = caminhoOrigem;
+		if(isBlank(getCaminhoOrigem())){
+			return PAGINA_HOME;
+		}else{
+			return caminhoOrigem;
+		}
 	}
 	
 	private void atualizar() {
 		dao.update(disciplina);
 		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+				new FacesMessage(SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		novaDisciplina();
 	}
 
 	public void deletar() {
 		dao.remove(disciplina);
 		FacesContext.getCurrentInstance().addMessage(null,
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+				new FacesMessage(SEVERITY_INFO, "Operação realizada com sucesso", ""));
 	}
 
 	public Disciplina getDisciplina() {
@@ -85,4 +91,11 @@ public class MbCadastroDisciplina implements Serializable {
 		return dao.listarDisciplina();
 	}
 
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
+	}
+
+	public void setaCaminhoOrigem(String caminhoOrigem) {
+		this.caminhoOrigem = caminhoOrigem;
+	}
 }

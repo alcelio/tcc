@@ -27,32 +27,33 @@
 							<h:outputLabel />
 							<h:outputLabel />
 
-							<p:commandButton value="Fácil"
-								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}"
+														<p:commandButton value="Fácil"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}"
 								update="@form"
-								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_FACIL)}">
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}">
 							</p:commandButton>
 							<p:commandButton value="Moderado"
-								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}"
 								update="@form"
-								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_MODERADA)}">
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbGlobal.DIFICULDADE_MODERADA)}">
 							</p:commandButton>
 							<p:commandButton value="Exigente"
-								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXIGENTE)}">
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Muito Exigente"
-								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}"
 								update="@form"
-								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_MUITO_EGIGENTE)}">
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbGlobal.DIFICULDADE_MUITO_EGIGENTE)}">
 							</p:commandButton>
 							<p:commandButton value="Extremo"
-								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}"
+								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}"
 								update="@form"
-								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbConstantes.DIFICULDADE_EXTREMA)}">
+								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbGlobal.DIFICULDADE_EXTREMA)}">
 							</p:commandButton>
 						</h:panelGrid>
+
 
 					</p:panel>
 				</h:form>
@@ -64,10 +65,9 @@
 								rendered="true" />
 							<p:outputLabel for="topicoEstudo" value="Tópicos de Estudo:" />
 
-
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="disciplina" style="width:240px"
-									value="#{mbQuestaoOrdenar.disciplina.idDisciplina}">
+									value="#{mbQuestaoOrdenar.beanCabecalhoQuestao.disciplina.idDisciplina}">
 									<f:selectItem itemLabel="Selecione uma Disciplina" itemValue="" />
 									<f:selectItems value="#{bbDisciplina.disciplinas}"
 										var="disciplina" itemValue="#{disciplina.idDisciplina}"
@@ -78,29 +78,33 @@
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarDisciplina" value="+"
 									style="float:right" immediate="true"
-									action="incluirdisciplina.jsf" update="@all">
+									action="#{mbQuestaoOrdenar.incluiNovaDisciplina()}"
+									update="@all">
 									<p:ajax
-										listener="#{mbCadastroDisciplina.setaCaminhoOrigem('incluirquestaoordenar.jsf')}" />
+										listener="#{mbCadastroDisciplina.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_ORDENAR)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
 
 							<h:panelGrid columns="2">
 								<p:selectOneMenu id="topicoEstudo" style="width:240px"
-									value="#{mbQuestaoOrdenar.topicoEstudo.idTopicoEstudo}">
+									value="#{mbQuestaoOrdenar.topico.idTopicoEstudo}">
 									<f:selectItem itemLabel="Selecione um tópico" itemValue="" />
 									<f:selectItems value="#{mbQuestaoOrdenar.topicosEstudo}"
 										var="topico" itemValue="#{topico.idTopicoEstudo}"
 										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
 									<p:ajax event="change" process="@this"
-										listener="#{mbQuestaoOrdenar.setaCodTopicoEstudo()}" />
+										listener="#{mbQuestaoOrdenar.selecionaTopicoEstudo()}" />
 
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarTopicoEstudo" value="+"
 									style="float:right" immediate="true"
-									action="incluirtopicoestudo.jsf" update="@all">
+									action="#{mbQuestaoOrdenar.incluiTopicoDeEstudo()}"
+									update="@all">
 									<p:ajax
-										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem('incluirquestaoordenar.jsf')}" />
+										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_ORDENAR)}" />
+									<f:setPropertyActionListener
+										target="#{mbCadastroTopicoEstudo.beanCabecalho}" value="#{mbQuestaoOrdenar.beanCabecalhoQuestao}" />
 								</p:commandButton>
 							</h:panelGrid>
 						</h:panelGrid>
@@ -140,10 +144,20 @@
 
 					<h:outputLabel for="editorPergunta" value="Pergunta:" />
 					<p:editor id="editorPergunta" widgetVar="editorPergunta"
-						value="#{mbQuestaoOrdenar.questao.pergunta}" width="1230" height="150"
+						value="#{mbQuestaoOrdenar.questao.pergunta}" width="1230" height="100"
 						required="true"
 						requiredMessage="O campo [Pergunta] é obrigatório!" />
 					<p:separator style="widht:1230; height: 20;" />
+					
+					<br />
+					<h:outputLabel for="editorRecomendacaoErro" value="Recomendação para Resposta errada:" />
+					<p:editor id="editorRecomendacao"
+						widgetVar="editorRecomendacao"
+						value="#{mbQuestaoOrdenar.questao.recomendacaoErro}"
+						width="1230" height="100" required="false"
+						requiredMessage="O Campo [Recomendação] é obrigatório" rendered="true" />
+					<p:separator style="widht:1230; height: 20;" />
+					
 					<br />
 
 

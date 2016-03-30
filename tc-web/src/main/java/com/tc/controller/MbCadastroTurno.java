@@ -1,5 +1,9 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUIR_TURNOS;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,18 +32,27 @@ public class MbCadastroTurno implements Serializable {
 	}
 
 	
-	public String limpTurno() {
+	public String novoTurno() {
         turno = new Turno();
-        return "incluirturno.jsf";
+        return PAGINA_INCLUIR_TURNOS;
     }
 
-	public void setaCaminhoOrigem(String caminhoOrigem) {
-		this.caminhoOrigem = caminhoOrigem;
+	public String encerraCadastro(){ 
+		setTurno(new Turno());
+		return PAGINA_HOME;
+	}
+
+	/**
+	 * Método que orienta qual pagina deverá ser retornada
+	 * @return
+	 */
+	public String goBack(){
+		if(isBlank(getCaminhoOrigem())){
+			return PAGINA_HOME;
+		}
+		return getCaminhoOrigem();
 	}
 	
-	public String goBack(){
-		return caminhoOrigem;
-	}
 	
     public void addTurno() {
         if (turno.getIdTurno() == null || turno.getIdTurno() == 0) {
@@ -53,16 +66,17 @@ public class MbCadastroTurno implements Serializable {
         dao.create(turno);
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
-        limpTurno();
+        novoTurno();
     }
 
     private void updateTurno() {
         dao.update(turno);
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Atualização efetuada com sucesso", ""));
+        novoTurno();
     }
     
-    public void deleteTurno(){
+    public void deletar(){
        dao.remove(turno);
        FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro excluido com sucesso", ""));
@@ -91,10 +105,10 @@ public class MbCadastroTurno implements Serializable {
 	}
 
 
-	public void setCaminhoOrigem(String caminhoOrigem) {
+	public void setaCaminhoOrigem(String caminhoOrigem) {
 		this.caminhoOrigem = caminhoOrigem;
 	}
 	
-	
+
 
 }

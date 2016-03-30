@@ -1,5 +1,13 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_CADASTRO_TURMA;
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUIR_INSTITUICAO;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUIR_TURNOS;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_SERIE;
+import static javax.faces.application.FacesMessage.SEVERITY_INFO;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,37 +30,107 @@ public class MbCadastroTurma implements Serializable {
 
 	@EJB
 	TurmaBeanDao dao;
-	
+
 	private Turma turma = new Turma();
 	private String caminhoOrigem;
 	private List<Turma> turmas = new ArrayList<Turma>();
 
-	
 	public MbCadastroTurma() {
 	}
 
+	/**
+	 * Método que retorna a página para adicionar uma série
+	 */
+	public String adicionarSerie() {
+		return PAGINA_INCLUI_SERIE;
+	}
+
+	/**
+	 * Método que retorna a página para adicionar turnoss
+	 */
+	public String adicionarTurno() {
+		return PAGINA_INCLUIR_TURNOS;
+	}
+
+	/**
+	 * Método que retorna a página para adicionar instituição
+	 */
+	public String adicionarInstituicao() {
+		return PAGINA_INCLUIR_INSTITUICAO;
+	}
+
 	public void setaCaminhoOrigem(String caminhoOrigem) {
- 		this.caminhoOrigem = caminhoOrigem;
+		this.caminhoOrigem = caminhoOrigem;
 	}
-	
-	public String goBack(){
-		if(StringUtils.isBlank(caminhoOrigem)){
-			return "/restrito/home.jsf";
+
+	/**
+	 * Método que orienta qual pagina deverá ser retornada
+	 * 
+	 * @return
+	 */
+	public String goBack() {
+		if (isBlank(getCaminhoOrigem())) {
+			return PAGINA_HOME;
 		}
-		return caminhoOrigem;
+		return getCaminhoOrigem();
 	}
-	
+
 	public String novaTurma() {
 		turma = new Turma();
-		return "cadastroturma.jsf";
+		return PAGINA_CADASTRO_TURMA;
 	}
-	
+
+	public String encerraCadastro() {
+		turma = new Turma();
+		return PAGINA_HOME;
+	}
+
 	public void addTurma() {
+		if(turma == null){
+			return;
+		}
+
 		if (turma.getIdTurma() == null || turma.getIdTurma() == 0) {
+			if(!isCamposValidos()){
+				return;
+			}
 			salvar();
 		} else {
+			if(!isCamposValidos()){
+				return;
+			}
 			atualizar();
 		}
+	}
+	
+	private boolean isCamposValidos(){
+	
+			//Valida nome da turma
+			if (StringUtils.isBlank(getTurma().getDsTurma())) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(SEVERITY_INFO, "Campo [Nome da Turma] é obrigatório.", ""));
+				return false;
+			}
+			//Valida Série
+			if (getTurma().getSerie() != null && getTurma().getSerie().getIdSerie() == null) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(SEVERITY_INFO, "Campo [Série/Ano/Curso/Módulo] é obrigatório.", ""));
+				return false;
+			}
+			//Valida Turno
+			if (getTurma().getTurno() != null && getTurma().getTurno().getIdTurno() == null) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(SEVERITY_INFO, "Campo [Turno] é obrigatório.", ""));
+				return false;
+			}
+			//Valida o campo ano letivo
+			if (getTurma().getAnoLetivo() == null) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(SEVERITY_INFO, "Campo [Ano Letivo] é obrigatório.", ""));
+				return false;
+			}
+	
+			return true;
 	}
 
 	private void salvar() {
@@ -66,6 +144,7 @@ public class MbCadastroTurma implements Serializable {
 		dao.update(turma);
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		novaTurma();
 	}
 
 	public void deletar() {
@@ -73,7 +152,6 @@ public class MbCadastroTurma implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Operação realizada com sucesso", ""));
 	}
-
 
 	// ****************************************** GETTERS E SETTERS
 	// **************************************************
@@ -88,6 +166,10 @@ public class MbCadastroTurma implements Serializable {
 	public List<Turma> getTurmas() {
 		turmas = dao.listarTurmas();
 		return turmas;
+	}
+
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
 	}
 
 }

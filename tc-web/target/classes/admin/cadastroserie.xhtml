@@ -27,9 +27,11 @@
                             <p:panel>
                                 <p:commandButton value="Salvar" action="#{mbCadastroSerie.addSerie}"
                                     icon="ui-icon-disk" update="@form :formtable"/>
-                                <p:commandButton value="Cancelar" actionListener="#{mbCadastroSerie.limpSerie}" 
-                                    icon="ui-icon ui-icon-close" update="@form"/>
+                                <p:commandButton value="Voltar" immediate="true"  action="#{mbCadastroSerie.goBack()}"
+                                    icon="ui-icon ui-icon-close" update="@all">
+                                </p:commandButton>
                             </p:panel>
+                            
                         </h:panelGrid>
                     </h:form>
                 </p:tab>
@@ -44,30 +46,43 @@
                              rowsPerPageTemplate="5,10,15">
                 
                     <f:facet name="header">Lista de Séries</f:facet>
-                    <p:column>
+                    <p:column width="910">
                         <f:facet name="header">
                             <h:outputText value="Série"/>
                         </f:facet>
                         <h:outputText value="#{serie.dsSerie}"/>
                     </p:column>
                     
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Ações"/>
-                        </f:facet>
-                        <p:commandButton value="Editar" image="ui-icon ui-icon-pencil"
-                                process="@this" update=":tbv1:formSerie">
-                            <f:setPropertyActionListener target="#{mbCadastroSerie.serie}"
-                                value="#{serie}"/>
-                        </p:commandButton>
-                        <p:commandButton value="Remover" action="#{mbCadastroSerie.deleteSerie()}"
-                                image="ui-icon ui-icon-close" update="@form">
-                            <f:setPropertyActionListener target="#{mbCadastroSerie.serie}"
-                                value="#{serie}"/>
-                        </p:commandButton>
-                        
-                    </p:column>
-                    
+                   					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Editar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formSerie">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroSerie.serie}" value="#{serie}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroSerie.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão da serie #{serie.dsSerie}?')) return false;"
+								update="@form"> 
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroSerie.serie}" value="#{serie}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+					
                 </p:dataTable>
                 
             </h:form>

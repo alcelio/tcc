@@ -1,6 +1,59 @@
 package com.tc.util;
 
 public class IavaliarGlobal {
+	
+	/**
+	 * Indica a opção 'A' para as respostas
+	 */
+	public static  final String OPACAO_A = "A";
+	
+	/**
+	 * Indica a opção 'B' para as respostas
+	 */
+	public static  final String OPACAO_B = "B";
+	
+	/**
+	 * Indica a opção 'C' para as respostas
+	 */
+	public static  final String OPACAO_C = "C";
+	
+	/**
+	 * Indica a opção 'D' para as respostas
+	 */
+	public static  final String OPACAO_D = "D";
+	
+	/**
+	 * Indica a opção 'E' para as respostas
+	 */
+	public static  final String OPACAO_E = "E";
+	
+	/**
+	 * Indica tipo de questão dissertativa.
+	 */
+	public static  final String QUESTAO_DISSERTATIVA = "DISSERTATIVA";
+
+	/**
+	 * Indica tipo de questão verdadeiro ou falso.
+	 */
+	public static  final String QUESTAO_VF = "VERDADEIRO OU FALSO";
+
+	/**
+	 * Indica tipo de questão objetiva.
+	 */
+	public static  final String QUESTAO_OBJETIVA = "OBJETIVA";
+
+	/**
+	 * Indica tipo de questão relacionar.
+	 */
+	public static  final String QUESTAO_RELACAO = "RELACIONAR";
+
+	/**
+	 * Indica tipo de questão de relacionar
+	 */
+	public static  final String QUESTAO_ORDENACAO = "ORDENAR";
+	
+	
+	
 	/**
 	 * Endereço da página home
 	 */
