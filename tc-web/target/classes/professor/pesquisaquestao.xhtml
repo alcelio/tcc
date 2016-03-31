@@ -27,9 +27,9 @@
 
 				<p:column filterBy="#{questao.disciplina.dsDisciplina}"
 					headerText="Disciplinas" footerText="Disciplina"
-					filterMatchMode="exact">
-					<f:facet name="filter">
-						<p:selectOneMenu onchange="PF('carsTable').filter()">
+					filterMatchMode="exact" style="width:200px">
+					<f:facet name="filter"  >
+						<p:selectOneMenu onchange="PF('carsTable').filter()" style="width:200px">
 							<f:selectItem itemLabel="Todos" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{dtFilterView.disciplinas}" />
@@ -41,9 +41,9 @@
 
 				<p:column filterBy="#{questao.topicoEstudo.dsTopicoEstudo}"
 					headerText="Tópicos de Estudo" footerText="Tópico de estudo"
-					filterMatchMode="exact">
+					filterMatchMode="exact" style="width:200px">
 					<f:facet name="filter">
-						<p:selectOneMenu onchange="PF('carsTable').filter()">
+						<p:selectOneMenu onchange="PF('carsTable').filter()" style="width:200px">
 							<f:selectItem itemLabel="Todos" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{dtFilterView.topicosEstudo}" />
@@ -54,9 +54,9 @@
 
 				<p:column filterBy="#{questao.grauDificuldade}"
 					headerText="Grau de dificuldade" footerText="Grau de dificuldade"
-					filterMatchMode="exact">
+					filterMatchMode="exact" style="width:200px">
 					<f:facet name="filter">
-						<p:selectOneMenu onchange="PF('carsTable').filter()">
+						<p:selectOneMenu onchange="PF('carsTable').filter()" style="width:200px">
 							<f:selectItem itemLabel="Todos" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{dtFilterView.grauDificuldade}" />
@@ -67,9 +67,9 @@
 
 				<p:column filterBy="#{questao.tipoQuestao}"
 					headerText="Tipo de questão" footerText="Tipos de questão"
-					filterMatchMode="exact">
+					filterMatchMode="exact" style="width:200px">
 					<f:facet name="filter">
-						<p:selectOneMenu onchange="PF('carsTable').filter()">
+						<p:selectOneMenu onchange="PF('carsTable').filter()" style="width:200px">
 							<f:selectItem itemLabel="Todos" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{dtFilterView.tipoQuestao}" />
