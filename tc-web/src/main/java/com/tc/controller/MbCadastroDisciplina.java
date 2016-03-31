@@ -1,5 +1,6 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_CADASTRO_DISCIPLINA;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
 import static javax.faces.application.FacesMessage.SEVERITY_INFO;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -32,8 +33,9 @@ public class MbCadastroDisciplina implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void novaDisciplina() {
+	public String novaDisciplina() {
 		setDisciplina(new Disciplina());
+		return PAGINA_CADASTRO_DISCIPLINA;
 	}
 
 	public String encerraCadastro() {
@@ -77,6 +79,7 @@ public class MbCadastroDisciplina implements Serializable {
 		dao.remove(disciplina);
 		FacesContext.getCurrentInstance().addMessage(null,
 				new FacesMessage(SEVERITY_INFO, "Operação realizada com sucesso", ""));
+		novaDisciplina();
 	}
 
 	public Disciplina getDisciplina() {

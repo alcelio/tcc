@@ -28,8 +28,9 @@
                             <p:panel>
                                 <p:commandButton value="Salvar" action="#{mbCadastroTurno.addTurno}"
                                     icon="ui-icon-disk" update="@form :formtable"/>
-                                <p:commandButton value="Cancelar" actionListener="#{mbCadastroTurno.encerraCadastro()}" 
-                                    icon="ui-icon ui-icon-close" update="@form" immediate="true"/>
+								<p:commandButton value="Voltar" immediate="true"
+									action="#{mbCadastroTurno.goBack()}"
+									icon="ui-icon ui-icon-close" update="@all" />
                             </p:panel>
                         </h:panelGrid>
                     </h:form>
@@ -45,30 +46,43 @@
                              rowsPerPageTemplate="5,10,15">
                 
                     <f:facet name="header">Lista de Turnos</f:facet>
-                    <p:column>
+                    <p:column width="1010" >
                         <f:facet name="header">
                             <h:outputText value="Descrição"/>
                         </f:facet>
                         <h:outputText value="#{turno.dsTurno}"/>
                     </p:column>
                     
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Ações"/>
-                        </f:facet>
-                        <p:commandButton value="Editar" image="ui-icon ui-icon-pencil"
-                                process="@this" update=":tbv1:formTurno">
-                            <f:setPropertyActionListener target="#{mbCadastroTurno.turno}"
-                                value="#{turno}"/>
-                        </p:commandButton>
-                        <p:commandButton value="Remover" action="#{mbCadastroTurno.deleteTurno}"
-                                image="ui-icon ui-icon-close" update="@form">
-                            <f:setPropertyActionListener target="#{mbCadastroTurno.turno}"
-                                value="#{turno}"/>
-                        </p:commandButton>
-                        
-                    </p:column>
-                    
+                  <p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Editar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formTurno">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener target="#{mbCadastroTurno.turno}"
+									value="#{turno}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroTurno.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão do turno #{turno.dsTurno}?')) return false;"
+								update="@form">
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener target="#{mbCadastroTurno.turno}"
+									value="#{turno}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
                 </p:dataTable>
                 
             </h:form>
