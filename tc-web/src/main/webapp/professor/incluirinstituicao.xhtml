@@ -60,9 +60,6 @@
 								<p:commandButton value="Salvar"
 									action="#{mbCadastroInstiuicao.addCidade}" icon="ui-icon-disk"
 									update="@form :formtable" />
-								<p:commandButton value="Cancelar"
-									actionListener="#{mbCadastroInstiuicao.limpInstituicao()}"
-									icon="ui-icon ui-icon-close" update="@form :formtable" />
 								<p:commandButton value="Voltar" immediate="true"
 									action="#{mbCadastroInstiuicao.goBack()}"
 									icon="ui-icon ui-icon-close" update="@all" />
@@ -85,14 +82,14 @@
 
 					<f:facet name="header">Lista de Instituições</f:facet>
 
-					<p:column width="35%">
+					<p:column width="25%">
 						<f:facet name="header">
 							<h:outputText value="Nome" />
 						</f:facet>
 						<h:outputText value="#{instituicao.dsNomeInstituicao}" />
 					</p:column>
 
-					<p:column width="25%">
+					<p:column width="15%">
 						<f:facet name="header">
 							<h:outputText value="Nome Diretor" />
 						</f:facet>
@@ -119,6 +116,51 @@
 						</f:facet>
 						<h:outputText value="#{instituicao.dsFone3}" />
 					</p:column>
+					
+										<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Editar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formInstituicao">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener target="#{mbCadastroInstiuicao.instituicao}"
+									value="#{isntituicao}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroInstiuicao.deleteInstituicao()}"
+								onclick="if (!confirm('Confirma a exclusão de #{instituicao.dsNomeInstituicao})?')) return false;"
+								update="@form">
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener target="#{mbCadastroInstiuicao.instituicao}"
+									value="#{instituicao}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+						<p:commandButton value="Selecionar" image="ui-icon ui-icon-select"
+							process="@this" update="@all"
+							action="#{mbCadastroInstiuicao.goBack()}">
+							<f:setPropertyActionListener
+								target="#{mbCadastroTurma.turma.instituicao}" value="#{instituicao}" />
+						</p:commandButton>
+
+					</p:column>
+					
+					
 				</p:dataTable>
 
 			</h:form>

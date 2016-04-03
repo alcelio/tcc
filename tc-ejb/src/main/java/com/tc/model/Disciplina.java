@@ -25,9 +25,9 @@ public class Disciplina implements Serializable {
 	private String dsDisciplina;
 	// private Image imgSimbolo;
 
-	// BIdirecional para Questão
-	@OneToMany(mappedBy = "disciplina")
-	private List<Questao> questoes;
+//	// BIdirecional para Questão
+//	@OneToMany(mappedBy = "disciplina")
+//	private List<Questao> questoes;
 
 	// BIdirecional para Topico Estudo
 	@OneToMany(mappedBy = "disciplina")
@@ -37,7 +37,7 @@ public class Disciplina implements Serializable {
 	private List<Avaliacao> avaliacoes;
 
 	public Disciplina() {
-		questoes = new ArrayList<>();
+//		questoes = new ArrayList<Questao>();
 		avaliacoes= new ArrayList<Avaliacao>();
 	}
 
@@ -57,13 +57,13 @@ public class Disciplina implements Serializable {
 		this.dsDisciplina = dsDisciplina;
 	}
 
-	public List<Questao> getQuestoes() {
-		return questoes;
-	}
-
-	public void setQuestoes(List<Questao> questoes) {
-		this.questoes = questoes;
-	}
+//	public List<Questao> getQuestoes() {
+//		return questoes;
+//	}
+//
+//	public void setQuestoes(List<Questao> questoes) {
+//		this.questoes = questoes;
+//	}
 
 	public List<TopicoEstudo> getTopicoEstudo() {
 		return topicoEstudo;
@@ -88,7 +88,6 @@ public class Disciplina implements Serializable {
 		result = prime * result + ((avaliacoes == null) ? 0 : avaliacoes.hashCode());
 		result = prime * result + ((dsDisciplina == null) ? 0 : dsDisciplina.hashCode());
 		result = prime * result + ((idDisciplina == null) ? 0 : idDisciplina.hashCode());
-		result = prime * result + ((questoes == null) ? 0 : questoes.hashCode());
 		result = prime * result + ((topicoEstudo == null) ? 0 : topicoEstudo.hashCode());
 		return result;
 	}
@@ -116,11 +115,6 @@ public class Disciplina implements Serializable {
 			if (other.idDisciplina != null)
 				return false;
 		} else if (!idDisciplina.equals(other.idDisciplina))
-			return false;
-		if (questoes == null) {
-			if (other.questoes != null)
-				return false;
-		} else if (!questoes.equals(other.questoes))
 			return false;
 		if (topicoEstudo == null) {
 			if (other.topicoEstudo != null)

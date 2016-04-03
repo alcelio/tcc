@@ -17,8 +17,14 @@ import com.tc.data.QuestaoBeanDao;
 import com.tc.data.TopicoEstudoBeanDao;
 import com.tc.model.Disciplina;
 import com.tc.model.Questao;
+import com.tc.model.QuestaoDissertativa;
+import com.tc.model.QuestaoObjetiva;
+import com.tc.model.QuestaoOrdenar;
+import com.tc.model.QuestaoRelacionar;
+import com.tc.model.QuestaoVF;
 import com.tc.model.TopicoEstudo;
 import com.tc.suport.QuestaoService;
+import com.tc.util.IavaliarGlobal;
 
 @ManagedBean(name = "dtFilterView")
 @SessionScoped
@@ -40,6 +46,7 @@ public class MbPesquisaQuestao {
 	private List<String> pergunta;
 	private Questao questao;
 	private String caminhoOrigem;
+	private Disciplina disciplina;
 
 	@PostConstruct
 	public void init() {
@@ -58,6 +65,25 @@ public class MbPesquisaQuestao {
 			return PAGINA_HOME;
 		}
 		return this.caminhoOrigem;
+	}
+	
+	public String abrePaginaQuestao(){
+		
+		if(getQuestao() instanceof QuestaoObjetiva)	
+			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_OBJETIVA;
+		
+		if(getQuestao() instanceof QuestaoDissertativa)	
+			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
+		
+		if(getQuestao() instanceof QuestaoRelacionar)	
+			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR;
+		
+		if(getQuestao() instanceof QuestaoOrdenar)	
+			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_ORDENAR;
+		
+		if(getQuestao() instanceof QuestaoVF)	
+			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_VF;
+		return null;
 	}
 
 	public List<String> getTipoQuestao() {
@@ -104,5 +130,14 @@ public class MbPesquisaQuestao {
 	public void setQuestao(Questao questao) {
 		this.questao = questao;
 	}
+
+	public Disciplina getDisciplina() {
+		return disciplina;
+	}
+
+	public void setDisciplina(Disciplina disciplina) {
+		this.disciplina = disciplina;
+	}
+	
 
 }

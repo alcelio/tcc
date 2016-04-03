@@ -47,7 +47,7 @@ public abstract class Questao implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "idProfessor")
-	private Usuario professor;
+	private Professor professor;
 
 	@ManyToOne
 	@JoinColumn(name = "idDisciplina")
@@ -159,11 +159,11 @@ public abstract class Questao implements Serializable {
 		this.opcaoE = opcaoE;
 	}
 
-	public Usuario getProfessor() {
+	public Professor getProfessor() {
 		return professor;
 	}
 
-	public void setProfessor(Usuario professor) {
+	public void setProfessor(Professor professor) {
 		this.professor = professor;
 	}
 
