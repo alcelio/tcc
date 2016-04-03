@@ -26,9 +26,9 @@ import com.tc.data.DisciplinaBeanDao;
 import com.tc.data.QuestaoBeanDao;
 import com.tc.data.TopicoEstudoBeanDao;
 import com.tc.data.UsuarioBeanDao;
+import com.tc.model.Professor;
 import com.tc.model.QuestaoDissertativa;
 import com.tc.model.TopicoEstudo;
-import com.tc.model.Usuario;
 
 @SessionScoped
 @ManagedBean
@@ -54,7 +54,6 @@ public class MbQuestaoDissertativa implements Serializable {
 
 	public MbQuestaoDissertativa() {
 	}
-
 	/**
 	 * Método que recebe o tipo de qustão e atualiza o objeto questão com a informação
 	 * @param tipoQuestao
@@ -79,9 +78,9 @@ public class MbQuestaoDissertativa implements Serializable {
   * @param login
   */
 	public void setaUsuarioQuestao(String login) {
-		Usuario usuario = new Usuario();
+		Professor usuario = new Professor();
 		try {
-			usuario = daoUsuario.buscaUsuarioPorLogin(login);
+			usuario = (Professor) daoUsuario.buscaUsuarioPorLogin(login);
 			getQuestao().setProfessor(usuario);
 		} catch (Exception e) {
 			e.printStackTrace();
