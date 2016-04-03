@@ -1,5 +1,9 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_CADASTRO_INSTITUICOES;
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,8 +12,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.tc.data.InstituicaoBeanDao;
 import com.tc.model.Instituicao;
@@ -33,21 +35,25 @@ public class MbCadastroInstiuicao implements Serializable{
  		this.caminhoOrigem = caminhoOrigem;
 	}
 
+	/**
+	 * Método que orienta qual pagina deverá ser retornada
+	 * @return
+	 */
 	public String goBack(){
-		if(StringUtils.isBlank(caminhoOrigem)){
-			return "/restrito/home.jsf";
+		if(isBlank(getCaminhoOrigem())){
+			return PAGINA_HOME;
 		}
-		return caminhoOrigem;
+		return getCaminhoOrigem();
 	}
 	
-	 	public String editInstituicao() {
-		 	return "professor/manutencaoinstituicao.jsf";
-	    }
-	 
-	    public String limpInstituicao() {
-	        instituicao = new Instituicao();
-	        return editInstituicao();
-	    }
+	/**
+	 * Método que retorna uma nova página para cadastrar as instituções
+	 * @return
+	 */
+	public String novaInstituicao() {
+		setInstituicao(new Instituicao());
+		return PAGINA_CADASTRO_INSTITUICOES;
+	}
 
 
 	    public String addCidade() {
@@ -56,7 +62,7 @@ public class MbCadastroInstiuicao implements Serializable{
 	        } else {
 	            updateInstituicao();
 	        }
-	        limpInstituicao();
+	        novaInstituicao();
 	        return null;
 	    }
 
@@ -74,7 +80,7 @@ public class MbCadastroInstiuicao implements Serializable{
 	    
 	    public void deleteInstituicao(){
 	       dao.remove(instituicao);
-	       editInstituicao();
+	       novaInstituicao();
 	       FacesContext.getCurrentInstance().addMessage(null,
 	                new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro excluído com sucesso", ""));
 	    }
@@ -95,11 +101,9 @@ public class MbCadastroInstiuicao implements Serializable{
 		public void setInstituicoes(List<Instituicao> instituicoes) {
 			this.instituicoes = instituicoes;
 		}
-	    
-	    
-	
-	
-	
-	
+
+		public String getCaminhoOrigem() {
+			return caminhoOrigem;
+		}
 
 }
