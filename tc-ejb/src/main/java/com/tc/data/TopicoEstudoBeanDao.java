@@ -50,13 +50,6 @@ public class TopicoEstudoBeanDao implements Serializable{
     }
     
     @SuppressWarnings("unchecked")
-//	public List<TopicoEstudo> listarTopicoEstudoDisciplina(Disciplina  disciplina) throws Exception{
-//		final Session session = em.unwrap(Session.class);
-//		
-//		return  session.createCriteria(TopicoEstudo.class)
-//			    .add( Restrictions.eq("idDisclipina", 1 )).list();
-//    }
-    
 	public List<TopicoEstudo> listarTopicoEstudoDisciplina(Disciplina  disciplina) throws Exception{
 		final Session session = em.unwrap(Session.class);
 		List<TopicoEstudo> topicos;
