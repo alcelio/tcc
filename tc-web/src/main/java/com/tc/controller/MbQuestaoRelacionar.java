@@ -27,9 +27,9 @@ import com.tc.data.DisciplinaBeanDao;
 import com.tc.data.QuestaoBeanDao;
 import com.tc.data.TopicoEstudoBeanDao;
 import com.tc.data.UsuarioBeanDao;
+import com.tc.model.Professor;
 import com.tc.model.QuestaoRelacionar;
 import com.tc.model.TopicoEstudo;
-import com.tc.model.Usuario;
 
 @SessionScoped
 @ManagedBean
@@ -67,19 +67,19 @@ public class MbQuestaoRelacionar implements Serializable {
 		}
 		return tem;
 	}
- /**
-  * Método que seta o usuário corrente como autor da questão
-  * @param login
-  */
-	public void setaUsuarioQuestao(String login) {
-		Usuario usuario = new Usuario();
-		try {
-			usuario = daoUsuario.buscaUsuarioPorLogin(login);
-			getQuestao().setProfessor(usuario);
-		} catch (Exception e) {
-			e.printStackTrace();
+	 /**
+	  * Método que seta o usuário corrente como autor da questão
+	  * @param login
+	  */
+		public void setaUsuarioQuestao(String login) {
+			Professor usuario = new Professor();
+			try {
+				usuario = (Professor) daoUsuario.buscaUsuarioPorLogin(login);
+				getQuestao().setProfessor(usuario);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-	}
 
 	/**
 	 * Método que retorna somente um grau de dificuldade para a questao.
