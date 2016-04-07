@@ -100,8 +100,7 @@
 									style="float:right" immediate="true"
 									action="#{mbQuestaoRelacionar.incluiTopicoDeEstudo()}" update="@all">
 									<p:ajax listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR)}" />
-									<f:setPropertyActionListener
-										target="#{mbCadastroTopicoEstudo.beanCabecalho}" value="#{mbQuestaoObjetiva.beanCabecalhoQuestao}" />
+									<f:setPropertyActionListener target="#{mbCadastroTopicoEstudo.beanCabecalho}" value="#{mbQuestaoRelacionar.beanCabecalhoQuestao}" />
 								</p:commandButton>
 							</h:panelGrid>
 						</h:panelGrid>

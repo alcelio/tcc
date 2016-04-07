@@ -11,7 +11,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import com.tc.beans.BeanUsuarioLogado;
 import com.tc.data.AlunosTurmaBeanDao;
 import com.tc.data.TurmaBeanDao;
 import com.tc.data.UsuarioBeanDao;
@@ -33,9 +32,10 @@ public class MbAlunosTurma implements Serializable {
 
 	private List<AlunosTurma> turmasAluno;
 	private Turma turma;
-	
+
 	@PostConstruct
 	public void init() {
+
 		if (turma == null) {
 			turma = new Turma();
 		}
@@ -44,7 +44,7 @@ public class MbAlunosTurma implements Serializable {
 		}
 
 		try {
-			turmasAluno = dao.listarTurmasPorAluno(BeanUsuarioLogado.usualioLogado);
+			turmasAluno = dao.listarTurmasPorAluno(MbLoginController.getUsuarioLogado());
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Erro ao obter turmas do aluno, reinicie o processo.", ""));
@@ -55,15 +55,16 @@ public class MbAlunosTurma implements Serializable {
 		AlunosTurma ta = new AlunosTurma();
 		AlunosTurmaPK pk = new AlunosTurmaPK();
 		pk.setIdTurma(turma.getIdTurma());
-		pk.setIdUsuario(BeanUsuarioLogado.usualioLogado.getIdUsuario());
-		if(dao.isExistePk(pk)){
+		pk.setIdUsuario(MbLoginController.getUsuarioLogado().getIdUsuario());
+
+		if (dao.isExistePk(pk)) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Aluno já está cadastrado nesta turma.", ""));
 			return;
 		}
-		
+
 		ta.setId(pk);
-		ta.setAluno(BeanUsuarioLogado.usualioLogado);
+		ta.setAluno(MbLoginController.getUsuarioLogado());
 		ta.setTurma(turma);
 
 		dao.create(ta);
@@ -71,27 +72,25 @@ public class MbAlunosTurma implements Serializable {
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Gravação efetuada com sucesso", ""));
 	}
 
-
-	// ****************************************** GETTERS E SETTERS
-	// **************************************************
-
-
 	public List<AlunosTurma> getTurmasAluno() {
 		try {
-			turmasAluno = dao.listarTurmasPorAluno(BeanUsuarioLogado.usualioLogado);
+			turmasAluno = dao.listarTurmasPorAluno(MbLoginController.getUsuarioLogado());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return turmasAluno;
 	}
+
 	public void setTurmasAluno(List<AlunosTurma> turmasAluno) {
 		this.turmasAluno = turmasAluno;
 	}
+
 	public Turma getTurma() {
 		return turma;
 	}
+
 	public void setTurma(Turma turma) {
 		this.turma = turma;
 	}
-    
+
 }

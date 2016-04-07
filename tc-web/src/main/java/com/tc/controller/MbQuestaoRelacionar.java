@@ -91,7 +91,7 @@ public class MbQuestaoRelacionar implements Serializable {
 				&& getBeanCabecalhoQuestao().getGrauDificuldade().equals(grauDificuldade)
 				&& !StringUtils.isEmpty(grauDificuldade)) {
 			ret = true;
-		}
+		}	
 		return ret;
 	}
 

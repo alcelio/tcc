@@ -1,6 +1,11 @@
 package com.tc.controller;
 
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_OBJETIVA;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_ORDENAR;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR;
+import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_VF;
 
 import java.util.List;
 
@@ -24,7 +29,6 @@ import com.tc.model.QuestaoRelacionar;
 import com.tc.model.QuestaoVF;
 import com.tc.model.TopicoEstudo;
 import com.tc.suport.QuestaoService;
-import com.tc.util.IavaliarGlobal;
 
 @ManagedBean(name = "dtFilterView")
 @SessionScoped
@@ -47,6 +51,12 @@ public class MbPesquisaQuestao {
 	private Questao questao;
 	private String caminhoOrigem;
 	private Disciplina disciplina;
+	
+	private QuestaoDissertativa dissertativa;
+	private QuestaoOrdenar ordenar;
+	private QuestaoRelacionar relacionar;
+	private QuestaoVF vf;
+	private QuestaoObjetiva objetiva;
 
 	@PostConstruct
 	public void init() {
@@ -69,20 +79,30 @@ public class MbPesquisaQuestao {
 	
 	public String abrePaginaQuestao(){
 		
-		if(getQuestao() instanceof QuestaoObjetiva)	
-			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_OBJETIVA;
+		if(getQuestao() instanceof QuestaoObjetiva){
+			setObjetiva((QuestaoObjetiva) getQuestao());
+			return PAGINA_INCLUI_QUESTAO_OBJETIVA;
+		}
 		
-		if(getQuestao() instanceof QuestaoDissertativa)	
-			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
+		if(getQuestao() instanceof QuestaoDissertativa){
+			setDissertativa((QuestaoDissertativa) getQuestao());
+			return PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
+		}
 		
-		if(getQuestao() instanceof QuestaoRelacionar)	
-			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR;
+		if(getQuestao() instanceof QuestaoRelacionar){
+			setRelacionar((QuestaoRelacionar) getQuestao());
+			return PAGINA_INCLUI_QUESTAO_RELACIONAR;
+		}
 		
-		if(getQuestao() instanceof QuestaoOrdenar)	
-			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_ORDENAR;
+		if(getQuestao() instanceof QuestaoOrdenar){	
+			setOrdenar((QuestaoOrdenar) getQuestao());
+			return PAGINA_INCLUI_QUESTAO_ORDENAR;
+		}
 		
-		if(getQuestao() instanceof QuestaoVF)	
-			return IavaliarGlobal.PAGINA_INCLUI_QUESTAO_VF;
+		if(getQuestao() instanceof QuestaoVF){
+			setVf((QuestaoVF) getQuestao());
+			return PAGINA_INCLUI_QUESTAO_VF;
+		}
 		return null;
 	}
 
@@ -137,6 +157,46 @@ public class MbPesquisaQuestao {
 
 	public void setDisciplina(Disciplina disciplina) {
 		this.disciplina = disciplina;
+	}
+
+	public QuestaoDissertativa getDissertativa() {
+		return dissertativa;
+	}
+
+	public void setDissertativa(QuestaoDissertativa dissertativa) {
+		this.dissertativa = dissertativa;
+	}
+
+	public QuestaoOrdenar getOrdenar() {
+		return ordenar;
+	}
+
+	public void setOrdenar(QuestaoOrdenar ordenar) {
+		this.ordenar = ordenar;
+	}
+
+	public QuestaoRelacionar getRelacionar() {
+		return relacionar;
+	}
+
+	public void setRelacionar(QuestaoRelacionar relacionar) {
+		this.relacionar = relacionar;
+	}
+
+	public QuestaoVF getVf() {
+		return vf;
+	}
+
+	public void setVf(QuestaoVF vf) {
+		this.vf = vf;
+	}
+
+	public QuestaoObjetiva getObjetiva() {
+		return objetiva;
+	}
+
+	public void setObjetiva(QuestaoObjetiva objetiva) {
+		this.objetiva = objetiva;
 	}
 	
 

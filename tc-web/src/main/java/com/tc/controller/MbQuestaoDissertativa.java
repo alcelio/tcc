@@ -51,9 +51,23 @@ public class MbQuestaoDissertativa implements Serializable {
 	private BeanCabecalhoQuestoes beanCabecalhoQuestao = new BeanCabecalhoQuestoes();
 
 	private List<TopicoEstudo> topicosEstudo;
-
+	
+	private String caminhoOrigem;
+	
 	public MbQuestaoDissertativa() {
 	}
+	/**
+	 * Método que indica para que página deve seguir o programa
+	 * @return
+	 */
+	public String goBack(){
+		if(isBlank(getCaminhoOrigem())){
+			return PAGINA_HOME;
+		}else{
+			return getCaminhoOrigem();
+		}
+	}
+	
 	/**
 	 * Método que recebe o tipo de qustão e atualiza o objeto questão com a informação
 	 * @param tipoQuestao
@@ -313,5 +327,12 @@ public class MbQuestaoDissertativa implements Serializable {
 	public void setTopico(TopicoEstudo topico) {
 		this.topico = topico;
 	}
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
+	}
+	public void setCaminhoOrigem(String caminhoOrigem) {
+		this.caminhoOrigem = caminhoOrigem;
+	}
+	
 
 }

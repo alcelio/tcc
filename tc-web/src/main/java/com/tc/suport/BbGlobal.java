@@ -6,7 +6,10 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean (name="bbGlobal")
 @ApplicationScoped
 public class BbGlobal {
-	
+	/**
+	 * Endereço da página para para visualização de avalições
+	 */
+	private static final String PAGINA_PESQUISA_AVALIACAO = "/professor/pesquisaavaliacao.jsf";
 	/**
 	 * Indica a opção 'A' para as respostas
 	 */
@@ -465,6 +468,10 @@ public class BbGlobal {
 
 	public static String getOpacaoE() {
 		return OPACAO_E;
+	}
+
+	public static String getPaginaPesquisaAvaliacao() {
+		return PAGINA_PESQUISA_AVALIACAO;
 	}
 	
 	

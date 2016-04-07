@@ -233,4 +233,10 @@ public class IavaliarGlobal {
 	 * Endereço da página para pesquisa de questões ja cadastradas
 	 */
 	public static final String PAGINA_PESQUISA_QUESTAO = "/professor/pesquisaquestao.jsf";
+	
+	/**
+	 * Endereço da página para visualização de avalições
+	 */
+	public static final String PAGINA_PESQUISA_AVALIACAO = "/professor/pesquisaavaliacao.jsf";
+	
 }

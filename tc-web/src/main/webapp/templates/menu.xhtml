@@ -39,14 +39,6 @@
 				<p:submenu label="Questões" rendered="#{mbLoginController.professor}">
 					<p:menuitem value="Consultar Questões públicas" url="/restrito/atualizacadastro.jsf" /> 
 					<p:menuitem value="Buscador de Questão" url="/professor/pesquisaquestao.jsf" />
-				</p:submenu>
-
-				<p:submenu label="Professor" rendered="#{mbLoginController.professor}">
-
-					<p:menuitem value="Criar Avaliação"	url="/professor/criaravaliacao.jsf" />
-					<p:menuitem value="Corrigir Avaliação" url="/professor/correcaoavaliacao.jsf" />
-					<p:menuitem value="Criar Turma/Grupo ou Curso" url="/professor/cadastroturma.jsf" />
-					<p:menuitem value="Estatísticas/Informações" url="/professor/estatisticas.jsf" />
 					<p:submenu label="Incluir Questão" >
 							<p:menuitem value="Dissertativa" url="/professor/incluirquestaodissertativa.jsf" />
 							<p:menuitem value="Objetiva" url="/professor/incluirquestaoobjetiva.jsf" />
@@ -54,6 +46,18 @@
 							<p:menuitem value="Verdadeiro ou Falso" url="/professor/incluirquestaoVF.jsf" />
 							<p:menuitem value="Ordenar" url="/professor/incluirquestaoordenar.jsf" />
 					</p:submenu>
+				</p:submenu>
+
+				<p:submenu label="Avaliações" rendered="#{mbLoginController.professor}">
+					<p:menuitem value="Criar Avaliação"	url="/professor/criaravaliacao.jsf" />
+					<p:menuitem value="Busca Avaliações" url="/professor/pesquisaavaliacao.jsf" />
+					<p:menuitem value="Corrigir Avaliação" url="/professor/correcaoavaliacao.jsf" />
+					<p:menuitem value="Estatísticas/Informações" url="/professor/estatisticas.jsf" />
+					
+				</p:submenu>
+				
+				<p:submenu label="Estatísticas" rendered="#{mbLoginController.professor}">
+					<p:menuitem value="Estatísticas/Informações" url="/professor/estatisticas.jsf" />
 				</p:submenu>
 
 				<p:submenu label="Aluno" rendered="#{mbLoginController.aluno}">

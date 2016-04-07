@@ -90,11 +90,15 @@
 					 icon="ui-icon-search" title="Vizualizar Questão"
 					 action="#{dtFilterView.abrePaginaQuestao()}">
 					 
-					 <f:setPropertyActionListener value="#{questao}" target="#{mbQuestaoDissertativa.questao}" />
-<!-- 					 <f:setPropertyActionListener value="#{questao}" target="#{mbQuestaoObjetiva.questao}" /> -->
-<!-- 					 <f:setPropertyActionListener value="#{questao}" target="#{mbQuestaoOrdenar.questao}" /> -->
-<!-- 					 <f:setPropertyActionListener value="#{questao}" target="#{mbQuestaoRelacionar.questao}" /> -->
-<!-- 					 <f:setPropertyActionListener value="#{questao}" target="#{mbQuestaoVF.questao}" /> -->
+					  <f:setPropertyActionListener value="#{questao}" target="#{dtFilterView.questao}" />
+					  
+					  <f:setPropertyActionListener value="#{bbGlobal.PAGINA_PESQUISA_QUESTAO}" target="#{mbQuestaoDissertativa.caminhoOrigem}" />
+					 
+					 <f:setPropertyActionListener value="#{dtFilterView.dissertativa}" target="#{mbQuestaoDissertativa.questao}" />
+					 <f:setPropertyActionListener value="#{dtFilterView.objetiva}" target="#{mbQuestaoObjetiva.questao}" />
+					 <f:setPropertyActionListener value="#{dtFilterView.relacionar}" target="#{mbQuestaoRelacionar.questao}" />
+					 <f:setPropertyActionListener value="#{dtFilterView.ordenar}" target="#{mbQuestaoOrdenar.questao}" />
+					 <f:setPropertyActionListener value="#{dtFilterView.vf}" target="#{mbQuestaoVF.questao}" />
 					 
 					</p:commandButton>
 				</p:column>

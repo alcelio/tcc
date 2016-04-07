@@ -24,7 +24,7 @@ public class MbLoginController implements Serializable {
 
 	@EJB
 	UsuarioBeanDao dao;
-	private Usuario usuarioLogado;
+	private static Usuario usuarioLogado;
 	private boolean professor;
 	private boolean aluno;
 	private boolean admin;
@@ -74,12 +74,6 @@ public class MbLoginController implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	public Usuario getUsuarioLogado() {
-		return usuarioLogado;
-	}
-	public void setUsuarioLogado(Usuario usuarioLogado) {
-		this.usuarioLogado = usuarioLogado;
-	}
 
 	public boolean isProfessor() {
 		return professor;
@@ -104,5 +98,14 @@ public class MbLoginController implements Serializable {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
+
+	public static Usuario getUsuarioLogado() {
+		return usuarioLogado;
+	}
+
+	public static void setUsuarioLogado(Usuario usuarioLogado) {
+		MbLoginController.usuarioLogado = usuarioLogado;
+	}
+	
 	
 }

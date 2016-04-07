@@ -64,6 +64,21 @@ public class AlunosTurmaBeanDao implements Serializable{
 			throw new Exception("Erro ao carregar dados da tabela.", e);
 		}
     }
+//    
+//	@SuppressWarnings("unchecked")
+//	public List<AlunosTurma> listarTurmasPorAluno(Usuario aluno) throws Exception{
+//		final Session session = em.unwrap(Session.class);
+//		List<AlunosTurma>  alunosTurma = null;
+//		try {
+//			final Criteria crit = CriaCriteria.createCriteria(AlunosTurma.class, session);
+//			crit.add(Restrictions.eq("idUsuario", aluno.getIdUsuario()));
+//			alunosTurma = crit.list();
+//		} catch (final Exception e) {
+//			throw new Exception("Erro ao carregar dados da tabela.", e);
+//		}
+//		return alunosTurma;
+//    }
+    
     
 	@SuppressWarnings("unchecked")
 	public List<AlunosTurma> listarTurmasPorAluno(Usuario aluno) throws Exception{
