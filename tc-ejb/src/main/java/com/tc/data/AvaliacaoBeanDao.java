@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -15,6 +16,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.tc.model.Avaliacao;
+import com.tc.model.Turma;
 import com.tc.model.Usuario;
 import com.tc.util.CriaCriteria;
 
@@ -30,6 +32,9 @@ public class AvaliacaoBeanDao implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@PersistenceContext
 	private EntityManager em;
+	
+	@EJB
+	AlunosTurmaBeanDao daoAlunosTurma;
 
 	public AvaliacaoBeanDao() {
     }
@@ -47,6 +52,25 @@ public class AvaliacaoBeanDao implements Serializable{
     
     public List<Avaliacao> listarAvaliacoes(){
     	return em.createNamedQuery("Avaliacao.findAll", Avaliacao.class).getResultList();
+    }
+    /**
+     * Método que retorna as avalições diponíveis para um aluno
+     * @param usuario
+     * @return
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
+	public List<Avaliacao> listarAvaliacoesAluno(Usuario usuario) throws Exception{
+    	final Session session = em.unwrap(Session.class);
+		try {
+			List<Turma> turmas= daoAlunosTurma.listarTurmasDoAluno(usuario);
+			final Criteria crit = CriaCriteria.createCriteria(Avaliacao.class, session);
+			crit.add(Restrictions.in("turma", turmas));
+			return crit.list();
+			
+		} catch (final Exception e) {
+			throw new Exception("Erro ao carregar Avaliações do aluno no banco de dados.", e);
+		}
     }
 
 	public Avaliacao buscaPorId(Integer idAvaliacao) throws Exception {

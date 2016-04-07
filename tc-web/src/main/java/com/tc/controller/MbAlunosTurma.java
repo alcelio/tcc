@@ -44,7 +44,7 @@ public class MbAlunosTurma implements Serializable {
 		}
 
 		try {
-			turmasAluno = dao.listarTurmasPorAluno(MbLoginController.getUsuarioLogado());
+			turmasAluno = dao.listarAlunosTurmaPorAluno(MbLoginController.getUsuarioLogado());
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Erro ao obter turmas do aluno, reinicie o processo.", ""));
@@ -74,7 +74,7 @@ public class MbAlunosTurma implements Serializable {
 
 	public List<AlunosTurma> getTurmasAluno() {
 		try {
-			turmasAluno = dao.listarTurmasPorAluno(MbLoginController.getUsuarioLogado());
+			turmasAluno = dao.listarAlunosTurmaPorAluno(MbLoginController.getUsuarioLogado());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

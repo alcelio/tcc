@@ -1,13 +1,17 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-
-import org.apache.commons.lang3.StringUtils;
+import javax.faces.context.FacesContext;
 
 import com.tc.data.AvaliacaoBeanDao;
 import com.tc.data.DisciplinaBeanDao;
@@ -39,10 +43,15 @@ public class MbPesquisaAvaliacaoAluno {
 
 	@PostConstruct
 	public void init() {
-		avaliacoes = daoAvaliacao.listarAvaliacoes();
+		try {
+			avaliacoes = daoAvaliacao.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado());
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_ERROR, "Selecione uma disciplina para prosseguir!", e.getMessage()));
+			return;
+		}
 		disciplinas = daoDisciplina.listarDisciplina();
 		turmas = daoTurma.listarTurmas();
-		//List<Avaliacao> teste = daoAvaliacao.buscaAvaliacoesTurmaAluno(BeanUsuarioLogado.usualioLogado);
 	}
 
 	public String responderAvaliacao(){
@@ -53,15 +62,20 @@ public class MbPesquisaAvaliacaoAluno {
 		this.caminhoOrigem = origem;
 	}
 
-	public String goBack() {
-		if (StringUtils.isBlank(this.caminhoOrigem)) {
-			return "/restrito/home.jsf";
+	/**
+	 * Método que indica para que página deve seguir o programa
+	 * @return
+	 */
+	public String goBack(){
+		if(isBlank(getCaminhoOrigem())){
+			return PAGINA_HOME;
+		}else{
+			return getCaminhoOrigem();
 		}
-		return this.caminhoOrigem;
 	}
 
-	public List<Avaliacao> getAvaliacoes() {
-		avaliacoes = daoAvaliacao.listarAvaliacoes();
+	public List<Avaliacao> getAvaliacoes() throws Exception {
+		avaliacoes = daoAvaliacao.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado());
 		return avaliacoes;
 	}
 
@@ -108,6 +122,14 @@ public class MbPesquisaAvaliacaoAluno {
 
 	public void setAvaliacao(Avaliacao avaliacao) {
 		this.avaliacao = avaliacao;
+	}
+
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
+	}
+
+	public void setCaminhoOrigem(String caminhoOrigem) {
+		this.caminhoOrigem = caminhoOrigem;
 	}
 	
 

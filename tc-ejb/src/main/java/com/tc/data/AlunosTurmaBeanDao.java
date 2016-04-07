@@ -1,6 +1,7 @@
 package com.tc.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -79,21 +80,53 @@ public class AlunosTurmaBeanDao implements Serializable{
 //		return alunosTurma;
 //    }
     
-    
+    /**
+     * Métod que lista todas a entidades AlunosTurma em que um aluno está lotado
+     * @param aluno
+     * @return
+     * @throws Exception
+     */
 	@SuppressWarnings("unchecked")
-	public List<AlunosTurma> listarTurmasPorAluno(Usuario aluno) throws Exception{
+	public List<Turma> listarTurmasDoAluno(Usuario aluno) throws Exception{
 		final Session session = em.unwrap(Session.class);
-		List<AlunosTurma>  alunosTurma = null;
 		try {
 			final Criteria crit = CriaCriteria.createCriteria(AlunosTurma.class, session);
 			crit.add(Restrictions.eq("aluno", aluno));
-			alunosTurma = crit.list();
+			List<AlunosTurma> alunosTurma = crit.list();
+			List<Turma> turmas = new ArrayList<>();
+			for (AlunosTurma turmasAluno : alunosTurma) {
+				turmas.add(turmasAluno.getTurma());
+			}
+			return turmas;
 		} catch (final Exception e) {
 			throw new Exception("Erro ao carregar dados da tabela.", e);
 		}
-		return alunosTurma;
     }
 	
+	/**
+	 * Método que lista todas retorna todas as turmas em que um aluno está lotado
+	 * @param aluno
+	 * @return
+	 * @throws Exception
+	 */
+	
+	@SuppressWarnings("unchecked")
+	public List<AlunosTurma> listarAlunosTurmaPorAluno(Usuario aluno) throws Exception{
+		final Session session = em.unwrap(Session.class);
+		try {
+			final Criteria crit = CriaCriteria.createCriteria(AlunosTurma.class, session);
+			crit.add(Restrictions.eq("aluno", aluno));
+			return crit.list();
+		} catch (final Exception e) {
+			throw new Exception("Erro ao carregar dados da tabela.", e);
+		}
+    }
+	/**
+	 * Método que retorna todos os alunos que participam de uma turma
+	 * @param turma
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings("unchecked")
 	public List<AlunosTurma> listarAlunosPorTurma(Turma turma) throws Exception{
 		final Session session = em.unwrap(Session.class);
