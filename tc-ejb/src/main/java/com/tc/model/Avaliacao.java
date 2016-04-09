@@ -45,12 +45,13 @@ public class Avaliacao implements Serializable {
 	private String criteriosCorrecao;
 	private Long notaMaxima;
 	private String conceitoGeral;
+	private boolean respondida;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idDisciplina")
 	private Disciplina disciplina;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idTurma")
 	private Turma turma;
 	
@@ -135,7 +136,7 @@ public class Avaliacao implements Serializable {
 	public void setCriteriosCorrecao(String criteriosCorrecao) {
 		this.criteriosCorrecao = criteriosCorrecao;
 	}
-	
+
 	public Long getNotaMaxima() {
 		return notaMaxima;
 	}
@@ -208,6 +209,14 @@ public class Avaliacao implements Serializable {
 		this.questoesAvaliacao = questoesAvaliacao;
 	}
 
+	public boolean isRespondida() {
+		return respondida;
+	}
+
+	public void setRespondida(boolean respondida) {
+		this.respondida = respondida;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -225,6 +234,7 @@ public class Avaliacao implements Serializable {
 		result = prime * result + ((orientacoes == null) ? 0 : orientacoes.hashCode());
 		result = prime * result + ((professor == null) ? 0 : professor.hashCode());
 		result = prime * result + ((questoesAvaliacao == null) ? 0 : questoesAvaliacao.hashCode());
+		result = prime * result + (respondida ? 1231 : 1237);
 		result = prime * result + ((statusAvaliacao == null) ? 0 : statusAvaliacao.hashCode());
 		result = prime * result + ((tituloAvaliacao == null) ? 0 : tituloAvaliacao.hashCode());
 		result = prime * result + ((turma == null) ? 0 : turma.hashCode());
@@ -305,6 +315,8 @@ public class Avaliacao implements Serializable {
 				return false;
 		} else if (!questoesAvaliacao.equals(other.questoesAvaliacao))
 			return false;
+		if (respondida != other.respondida)
+			return false;
 		if (statusAvaliacao == null) {
 			if (other.statusAvaliacao != null)
 				return false;
@@ -322,6 +334,7 @@ public class Avaliacao implements Serializable {
 			return false;
 		return true;
 	}
-	
+
+
 
 }

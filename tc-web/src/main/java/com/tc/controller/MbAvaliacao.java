@@ -172,6 +172,7 @@ public class MbAvaliacao implements Serializable {
 	private void salvar() {
 		try {
 			avaliacao.setStatusAvaliacao(daoStatus.buscaStatusAvaliacaoPorId(3));
+			avaliacao.setRespondida(false);
 			dao.create(avaliacao);
 		} catch (Exception e1) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR,

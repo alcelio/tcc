@@ -1,6 +1,20 @@
 package com.tc.util;
 
 public class IavaliarGlobal {
+	/**
+	 * Indica o status de avaliação corrigida
+	 */
+	public static final Integer STATUS_AVALIACAO_1_CORRIGIDA = 1;
+	
+	/**
+	 * Indica o status de avaliação PENDENTE DE CORREÇÃO
+	 */
+	public static final Integer STATUS_AVALIACAO_2_PENDETE = 2;
+	
+	/**
+	 * Indica o status de avaliação AGUARDANDO INÍCIO
+	 */
+	public static final Integer STATUS_AVALIACAO_3_AGUARDANTO = 3;
 	
 	/**
 	 * Indica a opção 'A' para as respostas

@@ -1,8 +1,6 @@
 package com.tc.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 
 /**
  * Entity implementation class for Entity: Turma
@@ -33,16 +30,6 @@ public class Turma implements Serializable {
 	@JoinColumn(name = "idTurno")
 	private Turno turno;
 	
-//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//	@JoinTable(name = "alunos_turma", joinColumns = { @JoinColumn(name = "idTurma") }, inverseJoinColumns = {
-//			@JoinColumn(name = "idUsuario") })
-//	private Set<Usuario> listaAlunosTurma;
-	
-
-	//bi-directional many-to-one association to AlunosTurma
-	@OneToMany(mappedBy="turma")
-	private List<AlunosTurma> alunosTurma;
-
 	@ManyToOne
 	@JoinColumn(name = "idInstituicao")
 	private Instituicao instituicao;
@@ -55,8 +42,6 @@ public class Turma implements Serializable {
 		instituicao = new Instituicao();
 		serie = new Serie();
 		turno = new Turno();
-		alunosTurma = new ArrayList<AlunosTurma>();
-//		listaAlunosTurma = new HashSet<Usuario>();
 	}
 
 	public Integer getIdTurma() {
@@ -91,14 +76,6 @@ public class Turma implements Serializable {
 		this.turno = turno;
 	}
 
-//	public Set<Usuario> getListaAlunosTurma() {
-//		return listaAlunosTurma;
-//	}
-//
-//	public void setListaAlunosTurma(Set<Usuario> listaAlunosTurma) {
-//		this.listaAlunosTurma = listaAlunosTurma;
-//	}
-
 	public Instituicao getInstituicao() {
 		return instituicao;
 	}
@@ -119,7 +96,6 @@ public class Turma implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((alunosTurma == null) ? 0 : alunosTurma.hashCode());
 		result = prime * result + ((anoLetivo == null) ? 0 : anoLetivo.hashCode());
 		result = prime * result + ((dsTurma == null) ? 0 : dsTurma.hashCode());
 		result = prime * result + ((idTurma == null) ? 0 : idTurma.hashCode());
@@ -138,11 +114,6 @@ public class Turma implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Turma other = (Turma) obj;
-		if (alunosTurma == null) {
-			if (other.alunosTurma != null)
-				return false;
-		} else if (!alunosTurma.equals(other.alunosTurma))
-			return false;
 		if (anoLetivo == null) {
 			if (other.anoLetivo != null)
 				return false;
@@ -175,5 +146,6 @@ public class Turma implements Serializable {
 			return false;
 		return true;
 	}
+	
 	
 }
