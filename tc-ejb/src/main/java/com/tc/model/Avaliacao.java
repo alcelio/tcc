@@ -71,7 +71,7 @@ public class Avaliacao implements Serializable {
 	private StatusAvaliacao statusAvaliacao;
 	
 	//bi-directional many-to-one association to Questoesavaliacao
-	@OneToMany(mappedBy="avaliacao", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="avaliacao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<QuestoesAvaliacao> questoesAvaliacao;
 
 	public Avaliacao() {
@@ -334,7 +334,5 @@ public class Avaliacao implements Serializable {
 			return false;
 		return true;
 	}
-
-
 
 }

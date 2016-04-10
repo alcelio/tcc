@@ -132,8 +132,6 @@
 							action="#{mbQuestaoDissertativa.addQuestao()}"
 							icon="ui-icon-disk"
 							update="formQuestao :formGrauDificuldade :formDadosAdicionais">
-							<p:ajax
-								listener="#{mbQuestaoDissertativa.setaUsuarioQuestao(request.getUserPrincipal().getName())}" />
 							<p:ajax update="formGrauDificuldade" />
 						</p:commandButton>
 

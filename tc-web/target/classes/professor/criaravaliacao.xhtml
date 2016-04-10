@@ -79,9 +79,6 @@
 							<p:commandButton value="Salvar"
 								action="#{mbAvaliacao.addAvaliacao}" icon="ui-icon-disk"
 								update="@form">
-								<p:ajax
-									listener="#{mbAvaliacao.setaProfessorAvalicao(request.getUserPrincipal().getName())}" />
-								<!-- 							<p:ajax update="formGrauDificuldade" /> -->
 							</p:commandButton>
 
 							<p:commandButton value="Voltar"
@@ -111,7 +108,7 @@
 							value="#{mbAvaliacao.avaliacao.orientacoes}" />
 						<br />
 						<p:dataTable id="tblQuestoes" var="lq"
-							value="#{mbAvaliacao.questoesAvaliacao}" paginator="true"
+							value="#{mbAvaliacao.avaliacao.questoesAvaliacao}" paginator="true"
 							rows="10" emptyMessage="Nenhum registro encontrado"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
                              {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -122,21 +119,21 @@
 								<f:facet name="header">
 									<h:outputText value="Tipo de Questao" />
 								</f:facet>
-								<h:outputText value="#{lq.tipoQuestao}" />
+								<h:outputText value="#{lq.questao.tipoQuestao}" />
 							</p:column>
 
 							<p:column style="width:170;">
 								<f:facet name="header">
 									<h:outputText value="Grau de Dificuldade" />
 								</f:facet>
-								<h:outputText value="#{lq.grauDificuldade}" />
+								<h:outputText value="#{lq.questao.grauDificuldade}" />
 							</p:column>
 
 							<p:column>
 								<f:facet name="header">
 									<h:outputText value="Enunciado" />
 								</f:facet>
-								<h:outputText value="#{lq.pergunta}" />
+								<h:outputText value="#{lq.questao.pergunta}" />
 							</p:column>
 
 							<p:column style="width:50;">
@@ -154,7 +151,7 @@
 									action="#{mbAvaliacao.excluiQuestaoListaAvaliacao}"
 									immediate="true" image="ui-icon ui-icon-close"
 									update="tblQuestoes">
-									<f:setPropertyActionListener target="#{mbAvaliacao.questao}"
+									<f:setPropertyActionListener target="#{mbAvaliacao.questaoAvaliacao}"
 										value="#{lq}" />
 								</p:commandButton>
 

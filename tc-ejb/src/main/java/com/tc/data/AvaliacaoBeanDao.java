@@ -17,9 +17,11 @@ import org.hibernate.criterion.Restrictions;
 
 import com.tc.model.Avaliacao;
 import com.tc.model.Disciplina;
+import com.tc.model.QuestoesAvaliacao;
 import com.tc.model.StatusAvaliacao;
 import com.tc.model.Turma;
 import com.tc.model.Usuario;
+import com.tc.model.PK.QuestoesAvaliacaoPK;
 import com.tc.util.CriaCriteria;
 
 /**
@@ -42,7 +44,26 @@ public class AvaliacaoBeanDao implements Serializable {
 	}
 
 	public void create(Avaliacao entidade) throws Exception {
-		em.persist(entidade);
+		Avaliacao avaliacao = new Avaliacao();
+		avaliacao = entidade;
+		List<QuestoesAvaliacao> listaQuestoes = entidade.getQuestoesAvaliacao();
+		avaliacao.setQuestoesAvaliacao(null);
+		em.persist(avaliacao);
+		
+		try{
+			QuestoesAvaliacaoPK id;
+			for (QuestoesAvaliacao questoesAvaliacao : listaQuestoes) {
+				//Cria o id para cada nova questao
+				id = new QuestoesAvaliacaoPK();
+				id.setIdQuestao(questoesAvaliacao.getQuestao().getIdQuestao());
+				id.setIdAvaliacao(avaliacao.getIdAvaliacao());
+				questoesAvaliacao.setId(id);
+			}
+			avaliacao.setQuestoesAvaliacao(listaQuestoes);
+			em.merge(entidade);
+		}catch (Exception e){
+			em.remove(avaliacao);
+		}
 	}
 
 	public void update(Avaliacao entidade) {

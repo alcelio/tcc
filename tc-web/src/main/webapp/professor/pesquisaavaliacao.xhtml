@@ -79,9 +79,6 @@
 							<p:commandButton value="Salvar"
 								action="#{mbAvaliacao.addAvaliacao}" icon="ui-icon-disk"
 								update="@form">
-								<p:ajax
-									listener="#{mbAvaliacao.setaProfessorAvalicao(request.getUserPrincipal().getName())}" />
-								<!-- 							<p:ajax update="formGrauDificuldade" /> -->
 							</p:commandButton>
 
 							<p:commandButton value="Voltar"

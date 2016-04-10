@@ -124,8 +124,6 @@
 						<p:commandButton value="Salvar"
 							action="#{mbQuestaoRelacionar.addQuestao()}" icon="ui-icon-disk"
 							update="formQuestao :formGrauDificuldade :formDadosAdicionais">
-							<p:ajax
-								listener="#{mbQuestaoRelacionar.setaUsuarioQuestao(request.getUserPrincipal().getName())}" />
 							<p:ajax update="formGrauDificuldade" />
 						</p:commandButton>
 

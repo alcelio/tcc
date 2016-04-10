@@ -3,8 +3,10 @@ package com.tc.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -14,7 +16,7 @@ import javax.persistence.TemporalType;
 import com.tc.model.PK.QuestoesAvaliacaoPK;
 
 /**
- * Entity implementation class for Entity: ListaQuestoesAvaliacao
+ * Entity implementation class for Entity: QuestoesAvaliacao
  *
  */
 @Entity
@@ -32,12 +34,12 @@ public class QuestoesAvaliacao implements Serializable {
 	private Date dtaCorrecao;
 
 	//bi-directional many-to-one association to Avaliacao
-	@ManyToOne
-	@JoinColumn(name="idAvaliacao", insertable=false, updatable=false )
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name="idAvaliacao", insertable=false, updatable=false  )
 	private Avaliacao avaliacao;
 
 	//bi-directional many-to-one association to Questao
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="idQuestao", insertable=false, updatable=false)
 	private Questao questao;
 	

@@ -31,7 +31,6 @@ import com.tc.data.DisciplinaBeanDao;
 import com.tc.data.QuestaoBeanDao;
 import com.tc.data.TopicoEstudoBeanDao;
 import com.tc.data.UsuarioBeanDao;
-import com.tc.model.Professor;
 import com.tc.model.QuestaoObjetiva;
 import com.tc.model.TopicoEstudo;
 
