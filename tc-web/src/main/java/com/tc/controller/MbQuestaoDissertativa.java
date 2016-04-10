@@ -87,19 +87,6 @@ public class MbQuestaoDissertativa implements Serializable {
 		}
 		return tem;
 	}
- /**
-  * Método que seta o usuário corrente como autor da questão
-  * @param login
-  */
-	public void setaUsuarioQuestao(String login) {
-		Professor usuario = new Professor();
-		try {
-			usuario = (Professor) daoUsuario.buscaUsuarioPorLogin(login);
-			getQuestao().setProfessor(usuario);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Método que retorna somente um grau de dificuldade para a questao.
@@ -255,6 +242,7 @@ public class MbQuestaoDissertativa implements Serializable {
 			getQuestao().setTipoQuestao(getBeanCabecalhoQuestao().getTipoQuestao());
 			getQuestao().setGrauDificuldade(getBeanCabecalhoQuestao().getGrauDificuldade());
 			getQuestao().setTipoQuestao(QUESTAO_DISSERTATIVA);
+			getQuestao().setProfessor(MbLoginController.getUsuarioLogado());
 			dao.create(getQuestao());
 			setBeanCabecalhoQuestao(new BeanCabecalhoQuestoes());
 			novaQuestao();

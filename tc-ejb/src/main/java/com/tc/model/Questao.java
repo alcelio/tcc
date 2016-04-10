@@ -47,7 +47,7 @@ public abstract class Questao implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "idProfessor")
-	private Professor professor;
+	private Usuario professor;
 
 	@ManyToOne
 	@JoinColumn(name = "idDisciplina")
@@ -66,7 +66,7 @@ public abstract class Questao implements Serializable {
 	private String recomendacaoAcerto;
 
 	public Questao() {
-		professor = new Professor();
+		professor = new Usuario();
 		topicoEstudo = new TopicoEstudo();
 		disciplina = new Disciplina();
 	}
@@ -159,14 +159,6 @@ public abstract class Questao implements Serializable {
 		this.opcaoE = opcaoE;
 	}
 
-	public Professor getProfessor() {
-		return professor;
-	}
-
-	public void setProfessor(Professor professor) {
-		this.professor = professor;
-	}
-
 	public Disciplina getDisciplina() {
 		return disciplina;
 	}
@@ -205,6 +197,15 @@ public abstract class Questao implements Serializable {
 
 	public void setRecomendacaoAcerto(String recomendacaoAcerto) {
 		this.recomendacaoAcerto = recomendacaoAcerto;
+	}
+	
+
+	public Usuario getProfessor() {
+		return professor;
+	}
+
+	public void setProfessor(Usuario professor) {
+		this.professor = professor;
 	}
 
 	@Override

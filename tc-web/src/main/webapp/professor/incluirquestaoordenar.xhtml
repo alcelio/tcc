@@ -131,8 +131,6 @@
 						<p:commandButton value="Salvar"
 							action="#{mbQuestaoOrdenar.addQuestao()}" icon="ui-icon-disk"
 							update="formQuestao :formGrauDificuldade :formDadosAdicionais">
-							<p:ajax
-								listener="#{mbQuestaoOrdenar.setaUsuarioQuestao(request.getUserPrincipal().getName())}" />
 							<p:ajax update="formGrauDificuldade" />
 						</p:commandButton>
 
