@@ -103,7 +103,7 @@
 
 					<p:column style="width:130;text-align: center">
 						<p:commandButton icon="ui-icon-add" value="Corrigir"
-							rendered="#{!avaliacao.respondida}"
+							rendered="#{mbPesquisaAvaliacaoProfessor.corrigir(avaliacao.statusAvaliacao.idStatusAvaliacao)}"
 							action="#{mbPesquisaAvaliacaoProfessor.corrigirAvaliacao()}"
 							update="@all" title="Responder Avaliação">
 							<p:ajax

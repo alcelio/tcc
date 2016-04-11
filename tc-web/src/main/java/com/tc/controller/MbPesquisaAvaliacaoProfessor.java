@@ -2,6 +2,7 @@ package com.tc.controller;
 
 import static com.tc.util.IavaliarGlobal.PAGINA_CORRECAO_AVALIACAO;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.STATUS_AVALIACAO_2_PENDETE;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -36,7 +37,7 @@ public class MbPesquisaAvaliacaoProfessor {
 	private Avaliacao avaliacao;
 
 	private Turma turma;
-	
+
 	private String caminhoOrigem;
 
 	@PostConstruct
@@ -46,7 +47,8 @@ public class MbPesquisaAvaliacaoProfessor {
 		setTurma(new Turma());
 		// Carrega as avaliações para o aluno logado
 		try {
-			setAvaliacoes(daoAvaliacao.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(), getStatusAvaliacao(), getDisciplina(), getTurma()) );
+			setAvaliacoes(daoAvaliacao.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(),
+					getStatusAvaliacao(), getDisciplina(), getTurma()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(SEVERITY_ERROR, "Erro ao aplicar filtros!", e.getMessage()));
@@ -60,11 +62,21 @@ public class MbPesquisaAvaliacaoProfessor {
 	 */
 	public void aplicaFiltroAvaliacao() {
 		try {
-			setAvaliacoes(daoAvaliacao.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(), getStatusAvaliacao(), getDisciplina(), getTurma()) );
+			setAvaliacoes(daoAvaliacao.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(),
+					getStatusAvaliacao(), getDisciplina(), getTurma()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(SEVERITY_ERROR, "Erro ao aplicar filtros!", e.getMessage()));
 		}
+	}
+	/**
+	 * Retorna veradeiro se o status da avaliação estiver como pendente
+	 * @return
+	 */
+	public boolean corrigir(Integer status) {
+		if (status != null && STATUS_AVALIACAO_2_PENDETE.equals(status))
+			return true;
+		return false;
 	}
 
 	public String corrigirAvaliacao() {
@@ -135,6 +147,5 @@ public class MbPesquisaAvaliacaoProfessor {
 	public void setTurma(Turma turma) {
 		this.turma = turma;
 	}
-	
-	
+
 }
