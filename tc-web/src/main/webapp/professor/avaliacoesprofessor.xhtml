@@ -14,39 +14,51 @@
 				<p:tab title="Filtros">
 					<h:form prependId="false" id="formFiltros">
 						<p:growl id="msg0" />
-						<h:panelGrid columns="3" cellpadding="10" styleClass="panelGrid"
+						<h:panelGrid columns="5" cellpadding="10" styleClass="panelGrid"
 							id="grid0">
 
 							<p:selectOneMenu id="disciplina" style="width:260px"
-								value="#{mbPesquisaAvaliacaoAluno.disciplina.idDisciplina}">
+								value="#{mbPesquisaAvaliacaoProfessor.disciplina.idDisciplina}">
 								<f:selectItem itemLabel="Filtrar por Disciplina" itemValue="" />
 								<f:selectItems value="#{bbDisciplina.disciplinas}"
 									var="disciplina" itemValue="#{disciplina.idDisciplina}"
 									itemLabel="#{disciplina.dsDisciplina}" size="20" />
 								<p:ajax event="change" process="@this"
-									listener="#{mbPesquisaAvaliacaoAluno.aplicaFiltroAvaliacao()}"
+									listener="#{mbPesquisaAvaliacaoProfessor.aplicaFiltroAvaliacao()}"
 									update="formtable" />
 							</p:selectOneMenu>
 
 							<p:selectOneMenu id="statusAvaliacao" style="width:280px"
-								value="#{mbPesquisaAvaliacaoAluno.statusAvaliacao.idStatusAvaliacao}">
+								value="#{mbPesquisaAvaliacaoProfessor.statusAvaliacao.idStatusAvaliacao}">
 								<f:selectItem itemLabel="Filtrar por Status" itemValue="" />
 								<f:selectItems value="#{bbStatusAvaliacao.statusAvalicoes}"
 									var="status" itemValue="#{status.idStatusAvaliacao}"
 									itemLabel="#{status.dsStatusAvaliacao}" size="20" />
 								<p:ajax event="change" process="@this"
-									listener="#{mbPesquisaAvaliacaoAluno.aplicaFiltroAvaliacao()}"
+									listener="#{mbPesquisaAvaliacaoProfessor.aplicaFiltroAvaliacao()}"
 									update="formtable" />
 							</p:selectOneMenu>
-							
-						<h:panelGrid id="panenlBotoes" style="float:right; margin-left:530;"
-						columns="1"  >
 
-						<p:commandButton value="Voltar"
-							action="#{mbPesquisaAvaliacaoAluno.goBack()}"
-							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
-						</p:commandButton>
-					</h:panelGrid>
+							<p:selectOneMenu id="turma" style="width:310px"
+								value="#{mbPesquisaAvaliacaoProfessor.turma.idTurma}">
+								<f:selectItem itemLabel="Filtrar por Turma" itemValue="" />
+								<f:selectItems value="#{bbTurmas.turmas}"
+									var="turmas" itemValue="#{turmas.idTurma}"
+									itemLabel="#{turmas.dsTurma}" size="20" />
+								<p:ajax event="change" process="@this"
+									listener="#{mbPesquisaAvaliacaoProfessor.aplicaFiltroAvaliacao()}"
+									update="formtable" />
+							</p:selectOneMenu>
+
+							<h:panelGrid id="panenlBotoes"
+								style="float:right; margin-left:220;" columns="1">
+
+								<p:commandButton value="Voltar"
+									action="#{mbPesquisaAvaliacaoProfessor.goBack()}"
+									style="float:right" immediate="true"
+									icon="ui-icon ui-icon-close">
+								</p:commandButton>
+							</h:panelGrid>
 
 						</h:panelGrid>
 					</h:form>
@@ -54,7 +66,7 @@
 			</p:tabView>
 			<h:form id="formtable">
 				<p:dataTable id="table"
-					value="#{mbPesquisaAvaliacaoAluno.avaliacoes}" var="avaliacao"
+					value="#{mbPesquisaAvaliacaoProfessor.avaliacoes}" var="avaliacao"
 					widgetVar="tableAvaliacoes"
 					emptyMessage="Nenhuma questão encontrada com os determinados critérios">
 
@@ -90,14 +102,14 @@
 
 
 					<p:column style="width:130;text-align: center">
-						<p:commandButton icon="ui-icon-add" value="Responder" 
+						<p:commandButton icon="ui-icon-add" value="Corrigir"
 							rendered="#{!avaliacao.respondida}"
-							action="#{mbPesquisaAvaliacaoAluno.responderAvaliacao()}" update="@all"
-							title="Responder Avaliação">
-							<p:ajax listener="#{mbResponderAvaliacao.setaCaminhoOrigem(bbGlobal.PAGINA_AVALIACOES_ALUNO)}" />
+							action="#{mbPesquisaAvaliacaoProfessor.corrigirAvaliacao()}"
+							update="@all" title="Responder Avaliação">
+							<p:ajax
+								listener="#{mbCorrigirAvaliacao.setaCaminhoOrigem(bbGlobal.PAGINA_AVALIACOES_PROFESSOR)}" />
 							<f:setPropertyActionListener
-										target="#{mbResponderAvaliacao.avaliacao}"
-										value="#{avaliacao}" />
+								target="#{mbCorrigirAvaliacao.avaliacao}" value="#{avaliacao}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>

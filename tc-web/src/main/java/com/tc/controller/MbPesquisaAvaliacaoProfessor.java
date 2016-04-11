@@ -1,7 +1,7 @@
 package com.tc.controller;
 
+import static com.tc.util.IavaliarGlobal.PAGINA_CORRECAO_AVALIACAO;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
-import static com.tc.util.IavaliarGlobal.PAGINA_RESPONDER_AVALIACAO;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -18,6 +18,7 @@ import com.tc.data.AvaliacaoBeanDao;
 import com.tc.model.Avaliacao;
 import com.tc.model.Disciplina;
 import com.tc.model.StatusAvaliacao;
+import com.tc.model.Turma;
 
 @ManagedBean
 @SessionScoped
@@ -28,24 +29,27 @@ public class MbPesquisaAvaliacaoProfessor {
 
 	private StatusAvaliacao statusAvaliacao = new StatusAvaliacao();
 
-	private Disciplina disciplina = new Disciplina();
+	private Disciplina disciplina;
 
 	private List<Avaliacao> avaliacoes;
 
 	private Avaliacao avaliacao;
 
+	private Turma turma;
+	
 	private String caminhoOrigem;
 
 	@PostConstruct
 	public void init() {
 		setAvaliacao(new Avaliacao());
+		setDisciplina(new Disciplina());
+		setTurma(new Turma());
 		// Carrega as avaliações para o aluno logado
 		try {
-			setAvaliacoes(daoAvaliacao.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado(), getStatusAvaliacao(),
-					getDisciplina()));
+			setAvaliacoes(daoAvaliacao.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(), getStatusAvaliacao(), getDisciplina(), getTurma()) );
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(SEVERITY_ERROR, "Selecione uma disciplina para prosseguir!", e.getMessage()));
+					new FacesMessage(SEVERITY_ERROR, "Erro ao aplicar filtros!", e.getMessage()));
 			return;
 		}
 	}
@@ -56,16 +60,15 @@ public class MbPesquisaAvaliacaoProfessor {
 	 */
 	public void aplicaFiltroAvaliacao() {
 		try {
-			setAvaliacoes(daoAvaliacao.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado(), getStatusAvaliacao(),
-					getDisciplina()));
+			setAvaliacoes(daoAvaliacao.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(), getStatusAvaliacao(), getDisciplina(), getTurma()) );
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(SEVERITY_ERROR, "Erro ao aplicar filtro para as avaliações!", e.getMessage()));
+					new FacesMessage(SEVERITY_ERROR, "Erro ao aplicar filtros!", e.getMessage()));
 		}
 	}
 
-	public String responderAvaliacao() {
-		return PAGINA_RESPONDER_AVALIACAO;
+	public String corrigirAvaliacao() {
+		return PAGINA_CORRECAO_AVALIACAO;
 	}
 
 	public void setaCaminhoOrigem(String origem) {
@@ -125,4 +128,13 @@ public class MbPesquisaAvaliacaoProfessor {
 		this.avaliacao = avaliacao;
 	}
 
+	public Turma getTurma() {
+		return turma;
+	}
+
+	public void setTurma(Turma turma) {
+		this.turma = turma;
+	}
+	
+	
 }

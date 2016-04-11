@@ -45,7 +45,7 @@ public class MbPesquisaAvaliacaoAluno {
 					getDisciplina()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(SEVERITY_ERROR, "Selecione uma disciplina para prosseguir!", e.getMessage()));
+					new FacesMessage(SEVERITY_ERROR, "Erro ao aplicar filtros!", e.getMessage()));
 			return;
 		}
 	}
