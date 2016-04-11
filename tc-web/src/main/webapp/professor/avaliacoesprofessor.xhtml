@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+		<p:fieldset legend="AVALIAÇÕES DO PROFESSOR ">
+			<p:tabView id="tbv1" dynamic="true" cache="true">
+				<p:tab title="Filtros">
+					<h:form prependId="false" id="formFiltros">
+						<p:growl id="msg0" />
+						<h:panelGrid columns="3" cellpadding="10" styleClass="panelGrid"
+							id="grid0">
+
+							<p:selectOneMenu id="disciplina" style="width:260px"
+								value="#{mbPesquisaAvaliacaoAluno.disciplina.idDisciplina}">
+								<f:selectItem itemLabel="Filtrar por Disciplina" itemValue="" />
+								<f:selectItems value="#{bbDisciplina.disciplinas}"
+									var="disciplina" itemValue="#{disciplina.idDisciplina}"
+									itemLabel="#{disciplina.dsDisciplina}" size="20" />
+								<p:ajax event="change" process="@this"
+									listener="#{mbPesquisaAvaliacaoAluno.aplicaFiltroAvaliacao()}"
+									update="formtable" />
+							</p:selectOneMenu>
+
+							<p:selectOneMenu id="statusAvaliacao" style="width:280px"
+								value="#{mbPesquisaAvaliacaoAluno.statusAvaliacao.idStatusAvaliacao}">
+								<f:selectItem itemLabel="Filtrar por Status" itemValue="" />
+								<f:selectItems value="#{bbStatusAvaliacao.statusAvalicoes}"
+									var="status" itemValue="#{status.idStatusAvaliacao}"
+									itemLabel="#{status.dsStatusAvaliacao}" size="20" />
+								<p:ajax event="change" process="@this"
+									listener="#{mbPesquisaAvaliacaoAluno.aplicaFiltroAvaliacao()}"
+									update="formtable" />
+							</p:selectOneMenu>
+							
+						<h:panelGrid id="panenlBotoes" style="float:right; margin-left:530;"
+						columns="1"  >
+
+						<p:commandButton value="Voltar"
+							action="#{mbPesquisaAvaliacaoAluno.goBack()}"
+							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
+						</p:commandButton>
+					</h:panelGrid>
+
+						</h:panelGrid>
+					</h:form>
+				</p:tab>
+			</p:tabView>
+			<h:form id="formtable">
+				<p:dataTable id="table"
+					value="#{mbPesquisaAvaliacaoAluno.avaliacoes}" var="avaliacao"
+					widgetVar="tableAvaliacoes"
+					emptyMessage="Nenhuma questão encontrada com os determinados critérios">
+
+					<p:column headerText="Disciplinas" footerText="Disciplina"
+						style="width:250px;">
+						<f:facet name="filter1">
+							<p:selectOneMenu
+								onchange="#{mbPesqiosaAvaliacao.aplicaFiltroAvaliacao()}"
+								style="width:180px">
+								noSelectionOption="true" />
+							<f:selectItems value="#{bbDisciplina.disciplinas}" />
+							</p:selectOneMenu>
+						</f:facet>
+						<h:outputText value="#{avaliacao.disciplina.dsDisciplina}" />
+					</p:column>
+
+					<p:column width="250" headerText="Status da Avaliação"
+						footerText="Status da Avaliação">
+						<h:outputText
+							value="#{avaliacao.statusAvaliacao.dsStatusAvaliacao}" />
+					</p:column>
+
+					<p:column headerText="Turmas" footerText="Turma" style="width:280;">
+						<h:outputText value="#{avaliacao.turma.dsTurma}" />
+					</p:column>
+
+
+					<p:column width="160" headerText="Data Limite"
+						footerText="Encerramento">
+						<h:outputText value="#{avaliacao.dataFimAvaliacao}"
+							pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" />
+					</p:column>
+
+
+					<p:column style="width:130;text-align: center">
+						<p:commandButton icon="ui-icon-add" value="Responder" 
+							rendered="#{!avaliacao.respondida}"
+							action="#{mbPesquisaAvaliacaoAluno.responderAvaliacao()}" update="@all"
+							title="Responder Avaliação">
+							<p:ajax listener="#{mbResponderAvaliacao.setaCaminhoOrigem(bbGlobal.PAGINA_AVALIACOES_ALUNO)}" />
+							<f:setPropertyActionListener
+										target="#{mbResponderAvaliacao.avaliacao}"
+										value="#{avaliacao}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+
+		</p:fieldset>
+	</ui:define>
+
+</ui:composition>

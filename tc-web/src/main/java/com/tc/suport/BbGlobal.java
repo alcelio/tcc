@@ -265,6 +265,11 @@ public class BbGlobal {
 	 * Endereço da página para incluir turnos de aulas
 	 */
 	private  final String PAGINA_INCLUIR_TURNOS = "/professor/incluirturno.jsf";
+	
+	/**
+	 * Endereço da página para visualização de avalições
+	 */
+	private final String PAGINA_AVALIACOES_PROFESSOR = "/professor/avaliacoesprofessor.jsf";
 
 	public String getQUESTAO_DISSERTATIVA() {
 		return QUESTAO_DISSERTATIVA;
@@ -472,6 +477,10 @@ public class BbGlobal {
 
 	public static String getPaginaPesquisaAvaliacao() {
 		return PAGINA_PESQUISA_AVALIACAO;
+	}
+
+	public String getPAGINA_AVALIACOES_PROFESSOR() {
+		return PAGINA_AVALIACOES_PROFESSOR;
 	}
 	
 	

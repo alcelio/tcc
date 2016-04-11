@@ -251,6 +251,6 @@ public class IavaliarGlobal {
 	/**
 	 * Endereço da página para visualização de avalições
 	 */
-	public static final String PAGINA_PESQUISA_AVALIACAO = "/professor/pesquisaavaliacao.jsf";
+	public static final String PAGINA_AVALIACOES_PROFESSOR = "/professor/avaliacoesprofessor.jsf";
 	
 }
