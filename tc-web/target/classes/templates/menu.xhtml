@@ -11,8 +11,8 @@
 	<div id="menu">
 		<h:form>
 			<p:menubar styleClass="labelmenu">
-			
-				
+
+
 
 				<p:submenu label="Manutenção" rendered="#{mbLoginController.admin}">
 					<p:menuitem value="Usuarios" url="/admin/manutencaousuario.jsf"
@@ -35,46 +35,71 @@
 						ajax="false" />
 
 				</p:submenu>
-				
-				<p:submenu label="Questões" rendered="#{mbLoginController.professor}">
-					<p:menuitem value="Consultar Questões públicas" url="/restrito/atualizacadastro.jsf" /> 
-					<p:menuitem value="Buscador de Questão" url="/professor/pesquisaquestao.jsf" />
-					<p:submenu label="Incluir Questão" >
-							<p:menuitem value="Dissertativa" url="/professor/incluirquestaodissertativa.jsf" />
-							<p:menuitem value="Objetiva" url="/professor/incluirquestaoobjetiva.jsf" />
-							<p:menuitem value="Relacionar" url="/professor/incluirquestaorelacionar.jsf" />
-							<p:menuitem value="Verdadeiro ou Falso" url="/professor/incluirquestaoVF.jsf" />
-							<p:menuitem value="Ordenar" url="/professor/incluirquestaoordenar.jsf" />
+
+				<p:submenu label="Questões"
+					rendered="#{mbLoginController.professor}">
+					<p:menuitem value="Consultar Questões públicas"
+						url="/restrito/atualizacadastro.jsf" />
+					<p:menuitem value="Buscador de Questão"
+						url="/professor/pesquisaquestao.jsf" />
+					<p:submenu label="Incluir Questão">
+						<p:menuitem value="Dissertativa"
+							url="/professor/incluirquestaodissertativa.jsf" />
+						<p:menuitem value="Objetiva"
+							url="/professor/incluirquestaoobjetiva.jsf" />
+						<p:menuitem value="Relacionar"
+							url="/professor/incluirquestaorelacionar.jsf" />
+						<p:menuitem value="Verdadeiro ou Falso"
+							url="/professor/incluirquestaoVF.jsf" />
+						<p:menuitem value="Ordenar"
+							url="/professor/incluirquestaoordenar.jsf" />
 					</p:submenu>
 				</p:submenu>
 
-				<p:submenu label="Avaliações" rendered="#{mbLoginController.professor}">
-					<p:menuitem value="Criar Avaliação"	url="/professor/criaravaliacao.jsf" />
-					<p:menuitem value="Busca Avaliações" url="/professor/avaliacoesprofessor.jsf" />
-					<p:menuitem value="Corrigir Avaliação" url="/professor/correcaoavaliacao.jsf" />
-					<p:menuitem value="Estatísticas/Informações" url="/professor/estatisticas.jsf" />
-					
+				<p:submenu label="Avaliações"
+					rendered="#{mbLoginController.professor}">
+					<p:menuitem value="Criar Avaliação"
+						url="/professor/criaravaliacao.jsf" />
+					<p:menuitem value="Busca Avaliações"
+						url="/professor/avaliacoesprofessor.jsf" />
+					<p:menuitem value="Corrigir Avaliação"
+						url="/professor/correcaoavaliacao.jsf" />
+					<p:menuitem value="Estatísticas/Informações"
+						url="/professor/estatisticas.jsf" />
+
 				</p:submenu>
-				
-				<p:submenu label="Estatísticas" rendered="#{mbLoginController.professor}">
-					<p:menuitem value="Estatísticas/Informações" url="/professor/estatisticas.jsf" />
+
+				<p:submenu label="Estatísticas"
+					rendered="#{mbLoginController.professor}">
+					<p:menuitem value="Estatísticas/Informações"
+						url="/professor/estatisticas.jsf" />
 				</p:submenu>
 
 				<p:submenu label="Aluno" rendered="#{mbLoginController.aluno}">
-				<p:menuitem value="Minhas Avaliações" url="/aluno/avaliacoesaluno.jsf" />
-				<p:menuitem value="Responder Avaliação" url="/aluno/responderavaliacao.jsf" />
-				<p:menuitem value="Estatísticas/Informações" url="/aluno/estatisticasaluno.jsf" />
-				<p:submenu label="Participar">
-					<p:menuitem value="Turma, Grupo ou Curso" url="/aluno/entrarturma.jsf" />
-				</p:submenu>
+					<p:menuitem value="Minhas Avaliações"
+						url="/aluno/avaliacoesaluno.jsf" />
+					<p:menuitem value="Responder Avaliação"
+						url="/aluno/responderavaliacao.jsf" />
+					<p:menuitem value="Estatísticas/Informações"
+						url="/aluno/estatisticasaluno.jsf" />
+					<p:submenu label="Participar">
+						<p:menuitem value="Turma, Grupo ou Curso"
+							url="/aluno/entrarturma.jsf" />
+					</p:submenu>
 				</p:submenu>
 
 
 				<p:submenu label="Preferências">
 				</p:submenu>
-				
+
 				<p:submenu label="Perfil">
-					<p:menuitem value="Atualizar informações" url="/restrito/atualizacadastro.jsf" />
+					<p:menuitem value="Atualizar informações"
+						url="/restrito/atualizacadastro.jsf" />
+				</p:submenu>
+
+				<p:submenu label="Responder Questao">
+					<p:menuitem value="responder"
+						url="/aluno/responderavaliacao.jsf" />
 				</p:submenu>
 
 			</p:menubar>

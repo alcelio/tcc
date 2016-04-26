@@ -16,6 +16,7 @@ public class QuestaoDissertativa extends Questao implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String dsRespDissertativa;
+	private String dsRespostaAluno;
 
 	public QuestaoDissertativa() {
 	}
@@ -27,5 +28,14 @@ public class QuestaoDissertativa extends Questao implements Serializable {
 	public void setDsRespDissertativa(String dsRespDissertativa) {
 		this.dsRespDissertativa = dsRespDissertativa;
 	}
+
+	public String getDsRespostaAluno() {
+		return dsRespostaAluno;
+	}
+
+	public void setDsRespostaAluno(String dsRespostaAluno) {
+		this.dsRespostaAluno = dsRespostaAluno;
+	}
+	
 
 }

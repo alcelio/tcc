@@ -30,6 +30,10 @@ import com.tc.data.UsuarioBeanDao;
 import com.tc.model.QuestaoOrdenar;
 import com.tc.model.TopicoEstudo;
 
+/**
+ * @author alcelio
+ *
+ */
 @SessionScoped
 @ManagedBean
 public class MbQuestaoOrdenar implements Serializable {
@@ -51,10 +55,23 @@ public class MbQuestaoOrdenar implements Serializable {
 	private TopicoEstudo topico = new TopicoEstudo();
 
 	private List<TopicoEstudo> topicosEstudo;
+	
+	private String caminhoOrigem;
 
 	public MbQuestaoOrdenar() {
 	}
 
+	/**
+	 * Método que indica para que página deve seguir o programa
+	 * @return
+	 */
+	public String goBack(){
+		if(isBlank(getCaminhoOrigem())){
+			return PAGINA_HOME;
+		}else{
+			return getCaminhoOrigem();
+		}
+	}
 	/**
 	 * Método que recebe o tipo de qustão e atualiza o objeto questão com a
 	 * informação
@@ -373,5 +390,14 @@ public class MbQuestaoOrdenar implements Serializable {
 	public void setTopico(TopicoEstudo topico) {
 		this.topico = topico;
 	}
+
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
+	}
+
+	public void setCaminhoOrigem(String caminhoOrigem) {
+		this.caminhoOrigem = caminhoOrigem;
+	}
+	
 
 }

@@ -71,7 +71,7 @@ public class MbPesquisaAvaliacaoProfessor {
 	}
 	/**
 	 * Retorna veradeiro se o status da avaliação estiver como pendente
-	 * @return
+	 * @return boolean
 	 */
 	public boolean corrigir(Integer status) {
 		if (status != null && STATUS_AVALIACAO_2_PENDETE.equals(status))

@@ -34,7 +34,7 @@ public class QuestoesAvaliacao implements Serializable {
 	private Date dtaCorrecao;
 
 	//bi-directional many-to-one association to Avaliacao
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="idAvaliacao", insertable=false, updatable=false  )
 	private Avaliacao avaliacao;
 

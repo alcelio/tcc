@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AgentDiagram version="1.1" name="Agente Aluno" embedded="false">
+	<Agent id="aba153da-b15d-4225-92e0-4dc92e0aaadf" name="Aluno" x="364" y="112" width="-1" height="-1">
+		<possesses>
+			<child>e061f52d-bd95-4e89-ad3e-4d6d15c4c95d</child>
+		</possesses>
+		<possesses>
+			<child>6d15cdbb-abf7-4c27-a43a-eeda4aeee24f</child>
+		</possesses>
+		<possesses>
+			<child>0aaa33bd-09eb-4e17-8c49-e8ccf4ccc1cd</child>
+		</possesses>
+		<possesses>
+			<child>f99d246f-9b86-40da-bc77-8c7027a8aa8e</child>
+		</possesses>
+		<possesses>
+			<child>803f7d3d-6074-4cba-a21a-e5f4d7c81272</child>
+		</possesses>
+		<possesses>
+			<child>fdbd18be-ec64-4bee-a3ae-c6a88221227c</child>
+		</possesses>
+		<possesses>
+			<child>179d41fd-575a-4d7e-8455-ff20911df6eb</child>
+		</possesses>
+	</Agent>
+	<Capability id="fdbd18be-ec64-4bee-a3ae-c6a88221227c" name="Idenficar pontos Fracos" x="37" y="162" width="-1" height="-1">
+	</Capability>
+	<Capability id="803f7d3d-6074-4cba-a21a-e5f4d7c81272" name="Identificar pontos Alcançados" x="220" y="214" width="-1" height="-1">
+	</Capability>
+	<Capability id="0aaa33bd-09eb-4e17-8c49-e8ccf4ccc1cd" name="Buscar documentos e Conteudos" x="583" y="147" width="-1" height="-1">
+	</Capability>
+	<Capability id="f99d246f-9b86-40da-bc77-8c7027a8aa8e" name="Mostrar datas e eventos" x="467" y="209" width="-1" height="-1">
+	</Capability>
+	<Capability id="179d41fd-575a-4d7e-8455-ff20911df6eb" name="Propor inicio de Avaliação" x="33" y="70" width="-1" height="-1">
+	</Capability>
+	<Capability id="e061f52d-bd95-4e89-ad3e-4d6d15c4c95d" name="Perceber e comunicar anormalidades" x="261" y="12" width="-1" height="-1">
+	</Capability>
+	<Capability id="6d15cdbb-abf7-4c27-a43a-eeda4aeee24f" name="Informar Ausencias e resultados em atividades" x="549" y="57" width="-1" height="-1">
+	</Capability>
+</AgentDiagram>

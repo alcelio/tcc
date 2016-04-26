@@ -96,6 +96,13 @@
 			<version>1.0.8</version>
 		</dependency>
 
+		<!-- FrameWork JADE para programação de agentes -->
+		<dependency>
+			<groupId>net.sf.ingenias</groupId>
+			<artifactId>jade</artifactId>
+			<version>3.7</version>
+		</dependency>
+
 		<!-- jsoup HTML parser library @ http://jsoup.org/ -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -121,7 +128,7 @@
 			<artifactId>gson</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-<!-- 		STRING UTILS - MANIPULAÇÃO DE STRINGS -->
+		<!-- STRING UTILS - MANIPULAÇÃO DE STRINGS -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>

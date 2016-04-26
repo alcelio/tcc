@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AgentDiagram version="1.1" name="Agente Perfil" embedded="false">
+	<Agent id="aba153da-b15d-4225-92e0-4dc92e0aaadf" name="Perfil" x="364" y="112" width="-1" height="-1">
+		<possesses>
+			<child>e061f52d-bd95-4e89-ad3e-4d6d15c4c95d</child>
+		</possesses>
+		<possesses>
+			<child>f99d246f-9b86-40da-bc77-8c7027a8aa8e</child>
+		</possesses>
+		<possesses>
+			<child>179d41fd-575a-4d7e-8455-ff20911df6eb</child>
+		</possesses>
+	</Agent>
+	<Capability id="f99d246f-9b86-40da-bc77-8c7027a8aa8e" name="Identificar a apresentar performance" x="568" y="108" width="-1" height="-1">
+	</Capability>
+	<Capability id="179d41fd-575a-4d7e-8455-ff20911df6eb" name="Identificare apresentar Preferências" x="-2" y="106" width="-1" height="-1">
+	</Capability>
+	<Capability id="e061f52d-bd95-4e89-ad3e-4d6d15c4c95d" name="Monitoramento de Atividades do atores" x="258" y="234" width="-1" height="-1">
+	</Capability>
+</AgentDiagram>

@@ -38,15 +38,16 @@
 									listener="#{mbPesquisaAvaliacaoAluno.aplicaFiltroAvaliacao()}"
 									update="formtable" />
 							</p:selectOneMenu>
-							
-						<h:panelGrid id="panenlBotoes" style="float:right; margin-left:530;"
-						columns="1"  >
 
-						<p:commandButton value="Voltar"
-							action="#{mbPesquisaAvaliacaoAluno.goBack()}"
-							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
-						</p:commandButton>
-					</h:panelGrid>
+							<h:panelGrid id="panenlBotoes"
+								style="float:right; margin-left:530;" columns="1">
+
+								<p:commandButton value="Voltar"
+									action="#{mbPesquisaAvaliacaoAluno.goBack()}"
+									style="float:right" immediate="true"
+									icon="ui-icon ui-icon-close">
+								</p:commandButton>
+							</h:panelGrid>
 
 						</h:panelGrid>
 					</h:form>
@@ -90,14 +91,14 @@
 
 
 					<p:column style="width:130;text-align: center">
-						<p:commandButton icon="ui-icon-add" value="Responder" 
+						<p:commandButton icon="ui-icon-add" value="Responder"
 							rendered="#{!avaliacao.respondida}"
-							action="#{mbPesquisaAvaliacaoAluno.responderAvaliacao()}" update="@all"
-							title="Responder Avaliação">
-							<p:ajax listener="#{mbResponderAvaliacao.setaCaminhoOrigem(bbGlobal.PAGINA_AVALIACOES_ALUNO)}" />
+							action="#{mbPesquisaAvaliacaoAluno.responderAvaliacao()}"
+							update="@all" title="Responder Avaliação">
 							<f:setPropertyActionListener
-										target="#{mbResponderAvaliacao.avaliacao}"
-										value="#{avaliacao}" />
+								target="#{mbResponderAvaliacao.avaliacao}" value="#{avaliacao}" />
+							<p:ajax
+								listener="#{mbResponderAvaliacao.setaCaminhoOrigem(bbGlobal.PAGINA_AVALIACOES_ALUNO)}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>

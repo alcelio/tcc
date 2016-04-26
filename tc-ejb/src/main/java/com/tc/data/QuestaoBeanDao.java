@@ -9,7 +9,12 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
 import com.tc.model.Questao;
+import com.tc.util.CriaCriteria;
 
 /**
  * Session Bean implementation class EnderecoBeanDao
@@ -42,5 +47,15 @@ public class QuestaoBeanDao implements Serializable{
     	return em.createNamedQuery("Questao.findAll", Questao.class).getResultList();
     }
     
+	public Questao buscaPorId(Integer idQuestao) throws Exception {
+		final Session session = em.unwrap(Session.class);
+		try {
+			final Criteria crit = CriaCriteria.createCriteria(Questao.class, session);
+			crit.add(Restrictions.eq("idQuestao", idQuestao));
+			return (Questao) crit.uniqueResult();
+		} catch (final Exception e) {
+			throw new Exception("Erro ao carregar Questão no banco de dados.", e);
+		}
+	}
     
 }

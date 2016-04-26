@@ -49,8 +49,22 @@ public class MbQuestaoVF implements Serializable {
 	private BeanCabecalhoQuestoes beanCabecalhoQuestao = new BeanCabecalhoQuestoes();
 
 	private List<TopicoEstudo> topicosEstudo;
+	
+	private String caminhoOrigem;
 
 	public MbQuestaoVF() {
+	}
+	
+	/**
+	 * Método que indica para que página deve seguir o programa
+	 * @return
+	 */
+	public String goBack(){
+		if(isBlank(getCaminhoOrigem())){
+			return PAGINA_HOME;
+		}else{
+			return getCaminhoOrigem();
+		}
 	}
 
 	public void informaTipoQuestao(String tipoQuestao) {
@@ -327,5 +341,14 @@ public class MbQuestaoVF implements Serializable {
 	public void setTopico(TopicoEstudo topico) {
 		this.topico = topico;
 	}
+
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
+	}
+
+	public void setCaminhoOrigem(String caminhoOrigem) {
+		this.caminhoOrigem = caminhoOrigem;
+	}
+	
 
 }

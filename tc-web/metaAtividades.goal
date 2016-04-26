@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoalDiagram version="1.1" name="Goal Diagram" embedded="false">
+	<Goal id="68d00fe0-dcb0-4e8e-b553-f01177df39a7" name="Gerar log usuario" number="0" preference="1.0" x="306" y="41" width="-1" height="-1" definition="" description="" color="No">
+		<and>
+			<child>4d7d2dfb-79c5-4bb4-8467-8a61879b86be</child>
+		</and>
+		<and>
+			<child>88bf17aa-3896-4512-920e-601b23efda3a</child>
+		</and>
+	</Goal>
+	<Goal id="4d7d2dfb-79c5-4bb4-8467-8a61879b86be" name="login" number="1" preference="1.0" x="190" y="190" width="-1" height="-1" definition="Deve localizar as avaliações não respondidas pelo aluno" description="" color="No">
+			<parameter name="usuario" collection="" type="Usuario"/>
+		<precedes>
+			<child>88bf17aa-3896-4512-920e-601b23efda3a</child>
+		</precedes>
+	</Goal>
+	<Goal id="88bf17aa-3896-4512-920e-601b23efda3a" name="logout" number="2" preference="1.0" x="453" y="195" width="-1" height="-1" definition="" description="" color="No">
+			<parameter name="usuario" collection="" type="Usuario"/>
+	</Goal>
+</GoalDiagram>
