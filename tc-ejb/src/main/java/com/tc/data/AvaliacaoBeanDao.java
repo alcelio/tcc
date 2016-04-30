@@ -18,7 +18,6 @@ import org.hibernate.criterion.Restrictions;
 import com.tc.model.Avaliacao;
 import com.tc.model.Disciplina;
 import com.tc.model.QuestoesAvaliacao;
-import com.tc.model.StatusAvaliacao;
 import com.tc.model.Turma;
 import com.tc.model.Usuario;
 import com.tc.model.PK.QuestoesAvaliacaoPK;
@@ -88,24 +87,24 @@ public class AvaliacaoBeanDao implements Serializable {
 	 * @return {@link List} Avaliacao
 	 * @throws Exception
 	 */
-	public List<Avaliacao> listarAvaliacoesAluno(Usuario usuario, StatusAvaliacao statusAvaliacao,
+	public List<Avaliacao> listarAvaliacoesAluno(Usuario usuario, Integer statusAvaliacao,
 			Disciplina disciplina) throws Exception {
 
 		if (usuario != null && usuario.getIdUsuario() != null
-				&& (statusAvaliacao == null || statusAvaliacao.getIdStatusAvaliacao() == null)
+				&& (statusAvaliacao == null || statusAvaliacao == null)
 				&& (disciplina == null || disciplina.getIdDisciplina() == null))
 			return listarAvaliacoesAluno(usuario);
 
 		if (usuario != null && usuario.getIdUsuario() != null
-				&& (statusAvaliacao == null || statusAvaliacao.getIdStatusAvaliacao() == null) && disciplina != null
+				&& (statusAvaliacao == null || statusAvaliacao == null) && disciplina != null
 				&& disciplina.getIdDisciplina() != null)
 			return listarAvaliacoesAlunoPorDisciplina(listarAvaliacoesAluno(usuario), disciplina);
 
 		if (usuario.getIdUsuario() != null && (disciplina == null || disciplina.getIdDisciplina() == null)
-				&& statusAvaliacao != null && statusAvaliacao.getIdStatusAvaliacao() != null)
+				&& statusAvaliacao != null && statusAvaliacao != null)
 			return listarAvaliacoesAlunoPorStatusAvalicao(listarAvaliacoesAluno(usuario), statusAvaliacao);
 
-		if (usuario.getIdUsuario() != null && statusAvaliacao != null && statusAvaliacao.getIdStatusAvaliacao() != null
+		if (usuario.getIdUsuario() != null && statusAvaliacao != null && statusAvaliacao != null
 				&& disciplina != null && disciplina.getIdDisciplina() != null)
 			return listarAvaliacoesAlunoPorStatusAvalicaoDisciplina(listarAvaliacoesAluno(usuario), statusAvaliacao,
 					disciplina);
@@ -122,12 +121,12 @@ public class AvaliacaoBeanDao implements Serializable {
 	 * @return
 	 */
 	private List<Avaliacao> listarAvaliacoesAlunoPorStatusAvalicaoDisciplina(List<Avaliacao> avaliacoes,
-			StatusAvaliacao status, Disciplina disciplina) {
+			Integer status, Disciplina disciplina) {
 		List<Avaliacao> retorno = new ArrayList<>();
 
 		if (avaliacoes != null && status != null) {
 			for (Avaliacao avaliacao : avaliacoes) {
-				if (avaliacao.getStatusAvaliacao().getIdStatusAvaliacao().equals(status.getIdStatusAvaliacao())
+				if (avaliacao.getStatusAvaliacao().equals(status)
 						&& avaliacao.getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina()))
 					retorno.add(avaliacao);
 			}
@@ -147,12 +146,12 @@ public class AvaliacaoBeanDao implements Serializable {
 	 * @return
 	 */
 	private List<Avaliacao> listarAvaliacoesProfessorPorStatusAvalicaoDisciplinaTurma(List<Avaliacao> avaliacoes,
-			StatusAvaliacao status, Disciplina disciplina, Turma turma) {
+			Integer status, Disciplina disciplina, Turma turma) {
 		List<Avaliacao> retorno = new ArrayList<>();
 		
 		if (avaliacoes != null && status != null) {
 			for (Avaliacao avaliacao : avaliacoes) {
-				if (avaliacao.getStatusAvaliacao().getIdStatusAvaliacao().equals(status.getIdStatusAvaliacao())
+				if (avaliacao.getStatusAvaliacao().equals(status)
 						&& avaliacao.getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina())
 						&& avaliacao.getTurma().getIdTurma().equals(turma.getIdTurma()))
 					retorno.add(avaliacao);
@@ -171,12 +170,12 @@ public class AvaliacaoBeanDao implements Serializable {
 	 * @param status
 	 * @return
 	 */
-	private List<Avaliacao> listarAvaliacoesAlunoPorStatusAvalicao(List<Avaliacao> avaliacoes, StatusAvaliacao status) {
+	private List<Avaliacao> listarAvaliacoesAlunoPorStatusAvalicao(List<Avaliacao> avaliacoes, Integer status) {
 		List<Avaliacao> retorno = new ArrayList<>();
 
 		if (avaliacoes != null && status != null) {
 			for (Avaliacao avaliacao : avaliacoes) {
-				if (avaliacao.getStatusAvaliacao().getIdStatusAvaliacao().equals(status.getIdStatusAvaliacao()))
+				if (avaliacao.getStatusAvaliacao().equals(status))
 					retorno.add(avaliacao);
 			}
 			return retorno;
@@ -215,13 +214,13 @@ public class AvaliacaoBeanDao implements Serializable {
 	 * @param disciplina
 	 * @return
 	 */
-	private List<Avaliacao> listarAvaliacoesProfessorPorDisciplinaStatus(List<Avaliacao> avaliacoes, Disciplina disciplina, StatusAvaliacao statusAvaliacao) {
+	private List<Avaliacao> listarAvaliacoesProfessorPorDisciplinaStatus(List<Avaliacao> avaliacoes, Disciplina disciplina, Integer statusAvaliacao) {
 		List<Avaliacao> retorno = new ArrayList<>();
 
 		if (avaliacoes != null && disciplina != null) {
 			for (Avaliacao avaliacao : avaliacoes) {
 				if (avaliacao.getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina())
-						&& avaliacao.getStatusAvaliacao().getIdStatusAvaliacao().equals(statusAvaliacao.getIdStatusAvaliacao()))
+						&& avaliacao.getStatusAvaliacao().equals(statusAvaliacao))
 					retorno.add(avaliacao);
 			}
 			return retorno;
@@ -340,18 +339,18 @@ public class AvaliacaoBeanDao implements Serializable {
 	 * @return {@link List} Avaliacao
 	 * @throws Exception
 	 */
-	public List<Avaliacao> listarAvaliacoesProfessor(Usuario usuario, StatusAvaliacao statusAvaliacao,
+	public List<Avaliacao> listarAvaliacoesProfessor(Usuario usuario, Integer statusAvaliacao,
 			Disciplina disciplina, Turma turma) throws Exception {
 		// Caso someente seja informado um usuario
 		if (usuario != null && usuario.getIdUsuario() != null
-				&& (statusAvaliacao == null || statusAvaliacao.getIdStatusAvaliacao() == null)
+				&& (statusAvaliacao == null || statusAvaliacao == null)
 				&& (turma == null || turma.getIdTurma() == null)
 				&& (disciplina == null || disciplina.getIdDisciplina() == null))
 			return listarAvaliacoesProfessor(usuario);
 		
 		//Quando deve filtrar somente disciplina
 		if (usuario != null && usuario.getIdUsuario() != null
-				&& (statusAvaliacao == null || statusAvaliacao.getIdStatusAvaliacao() == null)
+				&& (statusAvaliacao == null || statusAvaliacao == null)
 				&& (turma == null || turma.getIdTurma() == null)
 				&& disciplina != null && disciplina.getIdDisciplina() != null)
 			return listarAvaliacoesProfessorPorDisciplina(listarAvaliacoesProfessor(usuario), disciplina);
@@ -359,20 +358,20 @@ public class AvaliacaoBeanDao implements Serializable {
 		//Quando deve filtrar somente o status da avaliação
 		if (usuario.getIdUsuario() != null && (disciplina == null || disciplina.getIdDisciplina() == null)
 				&& (turma == null || turma.getIdTurma() == null)
-				&& statusAvaliacao != null && statusAvaliacao.getIdStatusAvaliacao() != null)
+				&& statusAvaliacao != null && statusAvaliacao != null)
 			return listarAvaliacoesAlunoPorStatusAvalicao(listarAvaliacoesProfessor(usuario), statusAvaliacao);
 		
 		//Quando deve filtrar a turma
 		if (usuario.getIdUsuario() != null  
 				&& turma != null && turma.getIdTurma() != null
 				&& (disciplina == null || disciplina.getIdDisciplina() == null)
-				&& (statusAvaliacao == null || statusAvaliacao.getIdStatusAvaliacao() == null))
+				&& (statusAvaliacao == null || statusAvaliacao == null))
 			return listarAvaliacoesProfessorPorTurma(listarAvaliacoesProfessor(usuario), turma);
 		
 		//Quando deve filtrar disciplina e Status
 		if (usuario.getIdUsuario() != null  
 				&& disciplina != null && disciplina.getIdDisciplina() != null
-				&& statusAvaliacao != null && statusAvaliacao.getIdStatusAvaliacao() != null
+				&& statusAvaliacao != null && statusAvaliacao != null
 				&& (turma == null || turma.getIdTurma() == null))
 			return listarAvaliacoesProfessorPorDisciplinaStatus(listarAvaliacoesProfessor(usuario), disciplina, statusAvaliacao);
 		
@@ -380,12 +379,12 @@ public class AvaliacaoBeanDao implements Serializable {
 		if (usuario.getIdUsuario() != null  
 				&& disciplina != null && disciplina.getIdDisciplina() != null
 				&& turma != null && turma.getIdTurma() != null
-				&& (statusAvaliacao == null || statusAvaliacao.getIdStatusAvaliacao() == null))
+				&& (statusAvaliacao == null || statusAvaliacao == null))
 			return listarAvaliacoesProfessorPorDisciplinaTurma(listarAvaliacoesProfessor(usuario), disciplina, turma);
 		
 		//Quando deve filtrar status e turmas
 		if (usuario.getIdUsuario() != null 
-				&& statusAvaliacao != null && statusAvaliacao.getIdStatusAvaliacao() != null
+				&& statusAvaliacao != null && statusAvaliacao != null
 				&& turma != null && turma.getIdTurma() != null
 				&& (disciplina == null || disciplina.getIdDisciplina() == null))
 			return listarAvaliacoesProfessorPorStatusTurma(listarAvaliacoesProfessor(usuario), statusAvaliacao, turma);
@@ -393,7 +392,7 @@ public class AvaliacaoBeanDao implements Serializable {
 		
 		
 		//Quando deve filtar todos os parametros 
-		if (usuario.getIdUsuario() != null && statusAvaliacao != null && statusAvaliacao.getIdStatusAvaliacao() != null
+		if (usuario.getIdUsuario() != null && statusAvaliacao != null && statusAvaliacao != null
 				&& disciplina != null && disciplina.getIdDisciplina() != null
 				&& turma != null && turma.getIdTurma() != null)
 			return listarAvaliacoesProfessorPorStatusAvalicaoDisciplinaTurma(listarAvaliacoesProfessor(usuario), statusAvaliacao,
@@ -410,12 +409,12 @@ public class AvaliacaoBeanDao implements Serializable {
 	 *  * @param turma
 	 * @return
 	 */
-	private List<Avaliacao> listarAvaliacoesProfessorPorStatusTurma(List<Avaliacao> avaliacoes, StatusAvaliacao statusAvaliacao, Turma turma) {
+	private List<Avaliacao> listarAvaliacoesProfessorPorStatusTurma(List<Avaliacao> avaliacoes, Integer statusAvaliacao, Turma turma) {
 		List<Avaliacao> retorno = new ArrayList<>();
 
 		if (avaliacoes != null && statusAvaliacao != null && turma != null) {
 			for (Avaliacao avaliacao : avaliacoes) {
-				if (avaliacao.getStatusAvaliacao().getIdStatusAvaliacao().equals(statusAvaliacao.getIdStatusAvaliacao())
+				if (avaliacao.getStatusAvaliacao().equals(statusAvaliacao)
 						&& avaliacao.getTurma().getIdTurma().equals(turma.getIdTurma()))
 					retorno.add(avaliacao);
 			}
