@@ -1,5 +1,6 @@
 package com.tc.controller;
 
+import static com.tc.controller.MbLoginController.getUsuarioLogado;
 import static com.tc.util.IavaliarGlobal.PAGINA_CRIAR_AVALIACAO;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
 import static com.tc.util.IntegerUtil.ONE;
@@ -153,10 +154,9 @@ public class MbAvaliacao implements Serializable {
 
 	private void salvar() {
 		try {
-			getAvaliacao().setStatusAvaliacao(daoStatus.buscaStatusAvaliacaoPorId(3));
 			getAvaliacao().setRespondida(false);
 			getAvaliacao().setProfessor(MbLoginController.getUsuarioLogado());
-			dao.create(getAvaliacao());
+			dao.create(getUsuarioLogado(),getAvaliacao());
 
 			novaAvalicao();
 			FacesContext.getCurrentInstance().addMessage(null,

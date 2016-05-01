@@ -11,13 +11,15 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import com.tc.data.AvaliacaoBeanDao;
-import com.tc.model.Avaliacao;
+import com.tc.data.AvaliacoesBeanDao;
+import com.tc.model.Avaliacoes;
 import com.tc.model.Disciplina;
-import com.tc.model.StatusAvaliacao;
+import com.tc.suport.IavaliarService;
 
 @ManagedBean
 @SessionScoped
@@ -25,23 +27,26 @@ public class MbPesquisaAvaliacaoAluno {
 
 	@EJB
 	AvaliacaoBeanDao daoAvaliacao;
+	@EJB
+	AvaliacoesBeanDao daoAvaliacoes;
 
-	private StatusAvaliacao statusAvaliacao = new StatusAvaliacao();
 
 	private Disciplina disciplina = new Disciplina();
+	
+	@ManagedProperty("#{iavaliarService}")
+	private IavaliarService service;
+	
+	private String status;
 
-	private List<Avaliacao> avaliacoes;
-
-	private Avaliacao avaliacao;
+	private List<Avaliacoes> avaliacoes;
 
 	private String caminhoOrigem;
 
 	@PostConstruct
 	public void init() {
-		setAvaliacao(new Avaliacao());
 		// Carrega as avaliações para o aluno logado
 		try {
-			setAvaliacoes(daoAvaliacao.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado(), getStatusAvaliacao(),
+			setAvaliacoes(daoAvaliacoes.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado(), getStatus(),
 					getDisciplina()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
@@ -49,14 +54,14 @@ public class MbPesquisaAvaliacaoAluno {
 			return;
 		}
 	}
-
+	
 	/**
 	 * Método que aplica filtro nas avaliações de acordo disciplina e status de
 	 * avaliação selecionados;
 	 */
 	public void aplicaFiltroAvaliacao() {
 		try {
-			setAvaliacoes(daoAvaliacao.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado(), getStatusAvaliacao(),
+			setAvaliacoes(daoAvaliacoes.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado(), getStatus(),
 					getDisciplina()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
@@ -85,11 +90,11 @@ public class MbPesquisaAvaliacaoAluno {
 		}
 	}
 
-	public List<Avaliacao> getAvaliacoes() throws Exception {
+	public List<Avaliacoes> getAvaliacoes() {
 		return avaliacoes;
 	}
 
-	public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+	public void setAvaliacoes(List<Avaliacoes> avaliacoes) {
 		this.avaliacoes = avaliacoes;
 	}
 
@@ -109,20 +114,15 @@ public class MbPesquisaAvaliacaoAluno {
 		this.disciplina = disciplina;
 	}
 
-	public StatusAvaliacao getStatusAvaliacao() {
-		return statusAvaliacao;
+	public List<String> getStatusAvaliacao() {
+		return service.getStatusAvaliacao();
+	}
+	public String getStatus() {
+		return status;
 	}
 
-	public void setStatusAvaliacao(StatusAvaliacao statusAvaliacao) {
-		this.statusAvaliacao = statusAvaliacao;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-
-	public Avaliacao getAvaliacao() {
-		return avaliacao;
-	}
-
-	public void setAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
-	}
-
+	
 }

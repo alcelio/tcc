@@ -11,6 +11,7 @@
 	<ui:define name="tarefas">
 		<h:form style="margin-left:1188px; margin-top:5px">
 			<p:clock pattern="HH:mm:ss" mode="server" />
+			<p:growl id="msg0" showDetail="true" />
 		</h:form>
 
 		<h:form style="margin-top:10px"
@@ -36,9 +37,7 @@
 					<br />
 
 					<p:commandButton value="Iniciar Avaliação" update="@all"
-						style="margin-left:1060px"
-						action="#{mbResponderAvaliacao.posicionaQuestao()}">
-
+						style="margin-left:1060px">
 						<f:setPropertyActionListener
 							target="#{mbResponderAvaliacao.confirmouInicio}" value="#{true}" />
 
@@ -46,194 +45,219 @@
 				</h:panelGrid>
 			</p:panel>
 		</h:form>
+			<h:form id="formGeral">
 		<p:fieldset legend="FORMULÁRIO DE RESPOSTAS"
 			rendered="#{mbResponderAvaliacao.confirmouInicio}">
 
-			<p:tabView id="tbv1" dynamic="true" cache="true">
+				<p:tabView id="tbv1" dynamic="true" cache="true">
 
-				<!-- Formulario para responder quando for uma questão de ordenar -->
+					<!-- Formulario para responder quando for uma questão de ordenar -->
 
-				<p:tab id="tab5" title="Responder Questão Ordenar"
-					rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_ORDENACAO)}">
-					<h:form>
-					<br />
-						<h1>
-							<h:outputLabel for="editorPergunta" value="Pergunta: #{mbResponderAvaliacao.questaoOrdenar.pergunta}" />
-						</h1>
-						<br />
-						<h:panelGrid columns="2" cellspacing="5">
-							<p:selectBooleanButton
-								value="#{mbResponderAvaliacao.questaoOrdenar.respOrdemAlunoA}"
-								onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
-								offIcon="ui-icon-close" style="width:120px">
-							</p:selectBooleanButton>
-							<h:outputText value="#{mbResponderAvaliacao.questaoVF.opcaoA}" />
-						</h:panelGrid>
-						
-						
-					</h:form>
-				</p:tab>
+					<p:tab id="tab5" title="Responder Questão Ordenar"
+						rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_ORDENACAO)}">
+							<br />
+							<h1>
+								<h:outputLabel for="editorPergunta"
+									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
+							</h1>
+							<br />
 
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:spinner
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoA}"
+									min="1" max="5" size="1" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
+							</h:panelGrid>
 
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:spinner
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoB}"
+									min="1" max="5" size="1" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
+							</h:panelGrid>
 
-				<!-- Formulario para responder quando for uma questão relacionar -->
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:spinner
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoC}"
+									min="1" max="5" size="1" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
+							</h:panelGrid>
 
-				<p:tab id="tab4" title="Responder Questão Relacionar"
-					rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_RELACAO)}">
-					<h:form>
-						<br />
-						<h1>
-							<h:outputLabel for="editorPergunta"
-								value="Pergunta: #{mbResponderAvaliacao.questaoRelacionar.pergunta}" />
-						</h1>
-						<br />
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:spinner
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoD}"
+									min="1" max="5" size="1" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
+							</h:panelGrid>
 
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:spinner
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoE}"
+									min="1" max="5" size="1" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
+							</h:panelGrid>
+					</p:tab>
 
-					</h:form>
-				</p:tab>
+					<!-- Formulario para responder quando for uma questão relacionar -->
 
+					<p:tab id="tab4" title="Responder Questão Relacionar"
+						rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_RELACAO)}">
+							<br />
+							<h1>
+								<h:outputLabel for="editorPergunta"
+									value="Pergunta: #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
+							</h1>
+							<br />
 
-				<!-- Formulario para responder quando for uma questão VF -->
-
-				<p:tab id="tab3" title="Responder Questão Verdadeiro ou Falso"
-					rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_VF)}">
-					<h:form>
-						<br />
-						<h1>
-							<h:outputLabel for="editorPergunta"
-								value="Pergunta: #{mbResponderAvaliacao.questaoVF.pergunta}" />
-						</h1>
-						<br />
-
-						<h:panelGrid columns="2" cellspacing="5">
-							<p:selectBooleanButton
-								value="#{mbResponderAvaliacao.questaoVF.respAlunoOpcaoA}"
-								onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
-								offIcon="ui-icon-close" style="width:120px">
-							</p:selectBooleanButton>
-							<h:outputText value="#{mbResponderAvaliacao.questaoVF.opcaoA}" />
-						</h:panelGrid>
-
-
-						<h:panelGrid columns="2" cellspacing="5">
-							<p:selectBooleanButton
-								value="#{mbResponderAvaliacao.questaoVF.respAlunoOpcaoB}"
-								onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
-								offIcon="ui-icon-close" style="width:120px">
-							</p:selectBooleanButton>
-							<h:outputText value="#{mbResponderAvaliacao.questaoVF.opcaoB}" />
-						</h:panelGrid>
-
-						<h:panelGrid columns="2" cellspacing="5">
-							<p:selectBooleanButton
-								value="#{mbResponderAvaliacao.questaoVF.respAlunoOpcaoC}"
-								onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
-								offIcon="ui-icon-close" style="width:120px">
-							</p:selectBooleanButton>
-							<h:outputText value="#{mbResponderAvaliacao.questaoVF.opcaoC}" />
-						</h:panelGrid>
-
-						<h:panelGrid columns="2" cellspacing="5">
-							<p:selectBooleanButton
-								value="#{mbResponderAvaliacao.questaoVF.respAlunoOpcaoD}"
-								onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
-								offIcon="ui-icon-close" style="width:120px">
-							</p:selectBooleanButton>
-							<h:outputText value="#{mbResponderAvaliacao.questaoVF.opcaoD}" />
-						</h:panelGrid>
-
-						<h:panelGrid columns="2" cellspacing="5">
-							<p:selectBooleanButton
-								value="#{mbResponderAvaliacao.questaoVF.respAlunoOpcaoE}"
-								onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
-								offIcon="ui-icon-close" style="width:120px">
-							</p:selectBooleanButton>
-							<h:outputText value="#{mbResponderAvaliacao.questaoVF.opcaoE}" />
-						</h:panelGrid>
+					</p:tab>
 
 
-					</h:form>
-				</p:tab>
+					<!-- Formulario para responder quando for uma questão VF -->
+
+					<p:tab id="tab3" title="Responder Questão Verdadeiro ou Falso"
+						rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_VF)}">
+							<br />
+							<h1>
+								<h:outputLabel for="editorPergunta"
+									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
+							</h1>
+							<br />
+
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:selectBooleanButton
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoA}"
+									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
+									offIcon="ui-icon-close" style="width:120px">
+								</p:selectBooleanButton>
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
+							</h:panelGrid>
 
 
-				<!-- Formulário para resposta quando for uma questão objetiva -->
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:selectBooleanButton
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoB}"
+									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
+									offIcon="ui-icon-close" style="width:120px">
+								</p:selectBooleanButton>
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
+							</h:panelGrid>
 
-				<p:tab id="tab2" title="Responder Questão Objetiva"
-					rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_OBJETIVA)}">
-					<h:form>
-						<br />
-						<h1>
-							<h:outputLabel for="editorPergunta"
-								value="Pergunta: #{mbResponderAvaliacao.questaoObjetiva.pergunta}" />
-						</h1>
-						<br />
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:selectBooleanButton
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoC}"
+									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
+									offIcon="ui-icon-close" style="width:120px">
+								</p:selectBooleanButton>
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
+							</h:panelGrid>
 
-						<h:panelGrid columns="2" cellspacing="5">
-							<p:selectBooleanCheckbox selected="false"
-								value="#{mbResponderAvaliacao.questaoObjetiva.respAlunoOpcaoA}" />
-							<h:outputText
-								value="#{mbResponderAvaliacao.questaoObjetiva.opcaoA}" />
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:selectBooleanButton
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoD}"
+									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
+									offIcon="ui-icon-close" style="width:120px">
+								</p:selectBooleanButton>
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
+							</h:panelGrid>
 
-							<p:selectBooleanCheckbox selected="false"
-								value="#{mbResponderAvaliacao.questaoObjetiva.respAlunoOpcaoB}" />
-							<h:outputText
-								value="#{mbResponderAvaliacao.questaoObjetiva.opcaoB}" />
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:selectBooleanButton
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoE}"
+									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
+									offIcon="ui-icon-close" style="width:120px">
+								</p:selectBooleanButton>
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
+							</h:panelGrid>
 
-							<p:selectBooleanCheckbox selected="false"
-								value="#{mbResponderAvaliacao.questaoObjetiva.respAlunoOpcaoC}" />
-							<h:outputText
-								value="#{mbResponderAvaliacao.questaoObjetiva.opcaoC}" />
-
-							<p:selectBooleanCheckbox selected="false"
-								value="#{mbResponderAvaliacao.questaoObjetiva.respAlunoOpcaoD}" />
-							<h:outputText
-								value="#{mbResponderAvaliacao.questaoObjetiva.opcaoD}" />
-
-							<p:selectBooleanCheckbox selected="false"
-								value="#{mbResponderAvaliacao.questaoObjetiva.respAlunoOpcaoE}" />
-							<h:outputText
-								value="#{mbResponderAvaliacao.questaoObjetiva.opcaoE}" />
-						</h:panelGrid>
-					</h:form>
-				</p:tab>
-
-				<!-- Formulario para responder quando for uma questão dissertativa -->
-
-				<p:tab id="tab1" title="Responder Questão Dissertativa"
-					rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_DISSERTATIVA)}">
-					<h:form>
-						<br />
-						<h1>
-							<h:outputLabel for="editorPergunta"
-								value="Pergunta: #{mbResponderAvaliacao.questaoDissertativa.pergunta}" />
-						</h1>
-						<br />
-						<h:outputLabel for="editorResposta" value="SUA RESPOSTA:" />
-						<p:editor id="editorResposta" widgetVar="editorResposta"
-							value="#{mbResposnderAvaliacao.questaoDissertativa.dsRespostaAluno}"
-							width="1180" height="120" required="false"
-							requiredMessage="O Campo [Resposta] é obrigatório"
-							rendered="true" />
-						<p:separator style="widht:1150; height: 20;" />
-						<br />
-					</h:form>
-
-				</p:tab>
-			</p:tabView>
+					</p:tab>
 
 
+					<!-- Formulário para resposta quando for uma questão objetiva -->
+
+					<p:tab id="tab2" title="Responder Questão Objetiva"
+						rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_OBJETIVA)}">
+							<br />
+							<h1>
+								<h:outputLabel for="editorPergunta"
+									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
+							</h1>
+							<br />
+
+							<h:panelGrid columns="2" cellspacing="5">
+								<p:selectBooleanCheckbox selected="false"
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoA}" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
+
+								<p:selectBooleanCheckbox selected="false"
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoB}" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
+
+								<p:selectBooleanCheckbox selected="false"
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoC}" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
+
+								<p:selectBooleanCheckbox selected="false"
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoD}" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
+
+								<p:selectBooleanCheckbox selected="false"
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoE}" />
+								<h:outputText
+									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
+							</h:panelGrid>
+					</p:tab>
+
+					<!-- Formulario para responder quando for uma questão dissertativa -->
+
+					<p:tab id="tab1" title="Responder Questão Dissertativa"
+						rendered="#{mbResponderAvaliacao.qualTipoQuestao(bbGlobal.QUESTAO_DISSERTATIVA)}">
+							<br />
+							<h1>
+								<h:outputLabel for="editorPergunta"
+									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta }" />
+							</h1>
+							<br />
+							<h:outputLabel for="editorResposta" value="SUA RESPOSTA:" />
+							<p:editor id="editorResposta" widgetVar="editorResposta"
+								value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respDissetativa}"
+								width="1180" height="120" required="false"
+								requiredMessage="O Campo [Resposta] é obrigatório"
+								rendered="true" />
+							<p:separator style="widht:1150; height: 20;" />
+							<br />
+
+					</p:tab>
+				</p:tabView>
+
+			
 		</p:fieldset>
 
 		<!-- 		Barra de botões inferior -->
 		<h:form rendered="#{mbResponderAvaliacao.confirmouInicio}">
 			<p:panel id="basic" style="margin-bottom:20px">
 
-				<h:panelGrid columns="3">
-					<p:commandLink process="@this" update="@all"
+				<h:panelGrid columns="4">
+					<p:commandLink process="@form :formGeral" update="@form: formGeral"
 						action="#{mbResponderAvaliacao.retarnaQuestao()}"
 						title="Questão Anterior">
 						<p:graphicImage library="imagens" name="seta_esquerda.png"
 							style="border:0" />
+							<p:confirm header="Atenção" message="Deseja gravar resposta e retornar?"
+								icon="ui-icon-alert" />
 					</p:commandLink>
 
 					<h:panelGrid columns="30">
@@ -260,7 +284,7 @@
 								value="#{serie}" />
 						</p:commandLink>
 
-						<p:commandLink process="@this" update="@all"
+						<p:commandLink process="@all" update="@all"
 							rendered="#{mbResponderAvaliacao.indicaVisibilidadeBotao(3)}">
 							<p:graphicImage library="imagens" name="edit.png"
 								style="border:0" />
@@ -285,18 +309,36 @@
 						</p:commandLink>
 					</h:panelGrid>
 
-					<p:commandLink process="@this" update="@all"
+
+					<p:commandLink process="@form :formGeral" update="@form: formGeral"
 						action="#{mbResponderAvaliacao.avanvaQuestao()}"
 						title="Próxima Questão">
 						<p:graphicImage library="imagens" name="seta_direita.png"
 							style="border:0" />
+						<p:confirm header="Atenção" message="Deseja gravar resposta e avançar?"
+								icon="ui-icon-alert" />
 					</p:commandLink>
+					
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Sim" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+						
+				<h:panelGrid style="float:left; margin-right:20" >
+					<p:commandButton value="Conlcuir Avaliação"
+							action="#{mbResponderAvaliacao.concluirAvaliacao()}" icon="ui-icon-disk" >
+							<p:ajax update="@all" />
+						</p:commandButton>
+				</h:panelGrid>
 
 				</h:panelGrid>
 
 
 
 			</p:panel>
+		</h:form>
 		</h:form>
 	</ui:define>
 

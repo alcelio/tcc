@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,31 +34,26 @@ public abstract class Questao implements Serializable {
 	private Integer idQuestao;
 
 	private boolean publica = true;
+	@Column(length= 2000) 
 	private String pergunta;
+	@Column(length= 30)
 	private String tipoQuestao;
+	@Column(length= 30)
 	private String grauDificuldade;
 	@Temporal(TemporalType.DATE)
 	private Date dataInclusao;
+	
+	@Column(length= 1000)
 	private String opcaoA;
+	@Column(length= 1000)
 	private String opcaoB;
+	@Column(length= 1000)
 	private String opcaoC;
+	@Column(length= 1000)
 	private String opcaoD;
+	@Column(length= 1000)
 	private String opcaoE;
 	
-	private boolean respAlunoOpcaoA = false;
-	private boolean respAlunoOpcaoB = false;
-	private boolean respAlunoOpcaoC = false;
-	private boolean respAlunoOpcaoD = false;
-	private boolean respAlunoOpcaoE = false;
-	
-	private int respOrdemAlunoA;
-	private int respOrdemAlunoB;
-	private int respOrdemAlunoC;
-	private int respOrdemAlunoD;
-	private int respOrdemAlunoE;
-	
-	
-
 	@ManyToOne
 	@JoinColumn(name = "idProfessor")
 	private Usuario professor;
@@ -74,8 +70,10 @@ public abstract class Questao implements Serializable {
 	@OneToMany(mappedBy="questao")
 	private List<QuestoesAvaliacao> questoesAvaliacao;
 	
+	@Column(length= 1000)
 	private String recomendacaoErro;
 	
+	@Column(length= 1000)
 	private String recomendacaoAcerto;
 
 	public Questao() {
@@ -220,87 +218,6 @@ public abstract class Questao implements Serializable {
 	public void setProfessor(Usuario professor) {
 		this.professor = professor;
 	}
-	
-
-	public boolean isRespAlunoOpcaoA() {
-		return respAlunoOpcaoA;
-	}
-
-	public void setRespAlunoOpcaoA(boolean respAlunoOpcaoA) {
-		this.respAlunoOpcaoA = respAlunoOpcaoA;
-	}
-
-	public boolean isRespAlunoOpcaoB() {
-		return respAlunoOpcaoB;
-	}
-
-	public void setRespAlunoOpcaoB(boolean respAlunoOpcaoB) {
-		this.respAlunoOpcaoB = respAlunoOpcaoB;
-	}
-
-	public boolean isRespAlunoOpcaoC() {
-		return respAlunoOpcaoC;
-	}
-
-	public void setRespAlunoOpcaoC(boolean respAlunoOpcaoC) {
-		this.respAlunoOpcaoC = respAlunoOpcaoC;
-	}
-
-	public boolean isRespAlunoOpcaoD() {
-		return respAlunoOpcaoD;
-	}
-
-	public void setRespAlunoOpcaoD(boolean respAlunoOpcaoD) {
-		this.respAlunoOpcaoD = respAlunoOpcaoD;
-	}
-
-	public boolean isRespAlunoOpcaoE() {
-		return respAlunoOpcaoE;
-	}
-
-	public void setRespAlunoOpcaoE(boolean respAlunoOpcaoE) {
-		this.respAlunoOpcaoE = respAlunoOpcaoE;
-	}
-
-	public int getRespOrdemAlunoA() {
-		return respOrdemAlunoA;
-	}
-
-	public void setRespOrdemAlunoA(int respOrdemAlunoA) {
-		this.respOrdemAlunoA = respOrdemAlunoA;
-	}
-
-	public int getRespOrdemAlunoB() {
-		return respOrdemAlunoB;
-	}
-
-	public void setRespOrdemAlunoB(int respOrdemAlunoB) {
-		this.respOrdemAlunoB = respOrdemAlunoB;
-	}
-
-	public int getRespOrdemAlunoC() {
-		return respOrdemAlunoC;
-	}
-
-	public void setRespOrdemAlunoC(int respOrdemAlunoC) {
-		this.respOrdemAlunoC = respOrdemAlunoC;
-	}
-
-	public int getRespOrdemAlunoD() {
-		return respOrdemAlunoD;
-	}
-
-	public void setRespOrdemAlunoD(int respOrdemAlunoD) {
-		this.respOrdemAlunoD = respOrdemAlunoD;
-	}
-
-	public int getRespOrdemAlunoE() {
-		return respOrdemAlunoE;
-	}
-
-	public void setRespOrdemAlunoE(int respOrdemAlunoE) {
-		this.respOrdemAlunoE = respOrdemAlunoE;
-	}
 
 	@Override
 	public int hashCode() {
@@ -321,16 +238,6 @@ public abstract class Questao implements Serializable {
 		result = prime * result + ((questoesAvaliacao == null) ? 0 : questoesAvaliacao.hashCode());
 		result = prime * result + ((recomendacaoAcerto == null) ? 0 : recomendacaoAcerto.hashCode());
 		result = prime * result + ((recomendacaoErro == null) ? 0 : recomendacaoErro.hashCode());
-		result = prime * result + (respAlunoOpcaoA ? 1231 : 1237);
-		result = prime * result + (respAlunoOpcaoB ? 1231 : 1237);
-		result = prime * result + (respAlunoOpcaoC ? 1231 : 1237);
-		result = prime * result + (respAlunoOpcaoD ? 1231 : 1237);
-		result = prime * result + (respAlunoOpcaoE ? 1231 : 1237);
-		result = prime * result + respOrdemAlunoA;
-		result = prime * result + respOrdemAlunoB;
-		result = prime * result + respOrdemAlunoC;
-		result = prime * result + respOrdemAlunoD;
-		result = prime * result + respOrdemAlunoE;
 		result = prime * result + ((tipoQuestao == null) ? 0 : tipoQuestao.hashCode());
 		result = prime * result + ((topicoEstudo == null) ? 0 : topicoEstudo.hashCode());
 		return result;
@@ -417,26 +324,6 @@ public abstract class Questao implements Serializable {
 				return false;
 		} else if (!recomendacaoErro.equals(other.recomendacaoErro))
 			return false;
-		if (respAlunoOpcaoA != other.respAlunoOpcaoA)
-			return false;
-		if (respAlunoOpcaoB != other.respAlunoOpcaoB)
-			return false;
-		if (respAlunoOpcaoC != other.respAlunoOpcaoC)
-			return false;
-		if (respAlunoOpcaoD != other.respAlunoOpcaoD)
-			return false;
-		if (respAlunoOpcaoE != other.respAlunoOpcaoE)
-			return false;
-		if (respOrdemAlunoA != other.respOrdemAlunoA)
-			return false;
-		if (respOrdemAlunoB != other.respOrdemAlunoB)
-			return false;
-		if (respOrdemAlunoC != other.respOrdemAlunoC)
-			return false;
-		if (respOrdemAlunoD != other.respOrdemAlunoD)
-			return false;
-		if (respOrdemAlunoE != other.respOrdemAlunoE)
-			return false;
 		if (tipoQuestao == null) {
 			if (other.tipoQuestao != null)
 				return false;
@@ -449,6 +336,7 @@ public abstract class Questao implements Serializable {
 			return false;
 		return true;
 	}
-
+	
+	
 	
 }

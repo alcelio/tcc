@@ -1,10 +1,10 @@
 package com.tc.controller;
 
-import static com.tc.util.IavaliarGlobal.OPACAO_A;
-import static com.tc.util.IavaliarGlobal.OPACAO_B;
-import static com.tc.util.IavaliarGlobal.OPACAO_C;
-import static com.tc.util.IavaliarGlobal.OPACAO_D;
-import static com.tc.util.IavaliarGlobal.OPACAO_E;
+import static com.tc.util.IavaliarGlobal.OPCAO_A;
+import static com.tc.util.IavaliarGlobal.OPCAO_B;
+import static com.tc.util.IavaliarGlobal.OPCAO_C;
+import static com.tc.util.IavaliarGlobal.OPCAO_D;
+import static com.tc.util.IavaliarGlobal.OPCAO_E;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
 import static com.tc.util.IavaliarGlobal.PAGINA_INCLUI_QUESTAO_DISSERTATIVA;
 import static com.tc.util.IavaliarGlobal.QUESTAO_OBJETIVA;
@@ -115,7 +115,7 @@ public class MbQuestaoObjetiva implements Serializable {
 	
 	public void trocaValorRespostaObjetiva(String opcao) {
 		switch (opcao) {
-		case OPACAO_A: {
+		case OPCAO_A: {
 			if (getQuestao().isRespObjOpcaoA()) {
 				getQuestao().setRespObjOpcaoA(false);
 			} else {
@@ -123,7 +123,7 @@ public class MbQuestaoObjetiva implements Serializable {
 			}
 			break;
 		}
-		case OPACAO_B: {
+		case OPCAO_B: {
 			if (getQuestao().isRespObjOpcaoB()) {
 				getQuestao().setRespObjOpcaoB(false);
 			} else {
@@ -131,7 +131,7 @@ public class MbQuestaoObjetiva implements Serializable {
 			}
 			break;
 		}
-		case OPACAO_C: {
+		case OPCAO_C: {
 			if (getQuestao().isRespObjOpcaoC()) {
 				getQuestao().setRespObjOpcaoC(false);
 			} else {
@@ -139,7 +139,7 @@ public class MbQuestaoObjetiva implements Serializable {
 			}
 			break;
 		}
-		case OPACAO_D: {
+		case OPCAO_D: {
 			if (getQuestao().isRespObjOpcaoD()) {
 				getQuestao().setRespObjOpcaoD(false);
 			} else {
@@ -147,7 +147,7 @@ public class MbQuestaoObjetiva implements Serializable {
 			}
 			break;
 		}
-		case OPACAO_E: {
+		case OPCAO_E: {
 			if (getQuestao().isRespObjOpcaoE()) {
 				getQuestao().setRespObjOpcaoE(false);
 			} else {
@@ -166,15 +166,15 @@ public class MbQuestaoObjetiva implements Serializable {
 			return false;
 		}
 		switch (opcao) {
-		case OPACAO_A:
+		case OPCAO_A:
 			return getQuestao().isRespObjOpcaoA();
-		case OPACAO_B:
+		case OPCAO_B:
 			return getQuestao().isRespObjOpcaoB();
-		case OPACAO_C:
+		case OPCAO_C:
 			return getQuestao().isRespObjOpcaoC();
-		case OPACAO_D:
+		case OPCAO_D:
 			return getQuestao().isRespObjOpcaoD();
-		case OPACAO_E:
+		case OPCAO_E:
 			return getQuestao().isRespObjOpcaoE();
 		default:
 			return false;

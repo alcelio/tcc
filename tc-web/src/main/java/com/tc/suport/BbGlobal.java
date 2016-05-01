@@ -204,7 +204,13 @@ public class BbGlobal {
 	 * Endereço da página para criar avaliações
 	 */
 	private  final String PAGINA_CRIAR_AVALIACAO = "/professor/criaravaliacao.jsf";
-
+	
+	
+	/**
+	 * Endereço da página que apresenta as turmas de um professor
+	 */
+	private final String PAGINA_TURMAS_PROFESSOR = "/professor/turmasprofessor.jsf";
+	
 	/**
 	 * Endereço da página de estatÍsticas para para o professor
 	 */
@@ -481,6 +487,10 @@ public class BbGlobal {
 
 	public String getPAGINA_AVALIACOES_PROFESSOR() {
 		return PAGINA_AVALIACOES_PROFESSOR;
+	}
+
+	public String getPAGINA_TURMAS_PROFESSOR() {
+		return PAGINA_TURMAS_PROFESSOR;
 	}
 	
 	

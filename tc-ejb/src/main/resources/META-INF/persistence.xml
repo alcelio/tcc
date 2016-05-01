@@ -17,8 +17,10 @@
       <class>com.tc.model.Endereco</class>
       <class>com.tc.model.Historico</class>
       <class>com.tc.model.Instituicao</class>
+      <class>com.tc.model.Avaliacoes</class>
       <class>com.tc.model.Member</class>
       <class>com.tc.model.PK.AlunosTurmaPK</class>
+      <class>com.tc.model.PK.AvalicoesPK</class>
       <class>com.tc.model.PK.ParametrosUsuarioPK</class>
       <class>com.tc.model.PK.QuestoesAvaliacaoPK</class>
       <class>com.tc.model.Parametros</class>

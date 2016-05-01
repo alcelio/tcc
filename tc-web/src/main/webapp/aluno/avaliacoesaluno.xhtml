@@ -29,11 +29,11 @@
 							</p:selectOneMenu>
 
 							<p:selectOneMenu id="statusAvaliacao" style="width:280px"
-								value="#{mbPesquisaAvaliacaoAluno.statusAvaliacao.idStatusAvaliacao}">
+								value="#{mbPesquisaAvaliacaoAluno.status}">
 								<f:selectItem itemLabel="Filtrar por Status" itemValue="" />
-								<f:selectItems value="#{bbStatusAvaliacao.statusAvalicoes}"
-									var="status" itemValue="#{status.idStatusAvaliacao}"
-									itemLabel="#{status.dsStatusAvaliacao}" size="20" />
+								<f:selectItems value="#{mbPesquisaAvaliacaoAluno.statusAvaliacao}"
+									var="status" itemValue="#{status}"
+									itemLabel="#{status}" size="20" />
 								<p:ajax event="change" process="@this"
 									listener="#{mbPesquisaAvaliacaoAluno.aplicaFiltroAvaliacao()}"
 									update="formtable" />
@@ -69,23 +69,23 @@
 							<f:selectItems value="#{bbDisciplina.disciplinas}" />
 							</p:selectOneMenu>
 						</f:facet>
-						<h:outputText value="#{avaliacao.disciplina.dsDisciplina}" />
+						<h:outputText value="#{avaliacao.avaliacao.disciplina.dsDisciplina}" />
 					</p:column>
 
 					<p:column width="250" headerText="Status da Avaliação"
 						footerText="Status da Avaliação">
 						<h:outputText
-							value="#{avaliacao.statusAvaliacao.dsStatusAvaliacao}" />
+							value="#{avaliacao.statusAvaliacao}" />
 					</p:column>
 
 					<p:column headerText="Turmas" footerText="Turma" style="width:280;">
-						<h:outputText value="#{avaliacao.turma.dsTurma}" />
+						<h:outputText value="#{avaliacao.avaliacao.turma.dsTurma}" />
 					</p:column>
 
 
 					<p:column width="160" headerText="Data Limite"
 						footerText="Encerramento">
-						<h:outputText value="#{avaliacao.dataFimAvaliacao}"
+						<h:outputText value="#{avaliacao.avaliacao.dataFimAvaliacao}"
 							pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" />
 					</p:column>
 

@@ -18,52 +18,52 @@ import javax.persistence.Entity;
 public class QuestaoOrdenar extends Questao implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private String respOrPrimeira;
-	private String respOrSegunda;
-	private String respOrTerceira;
-	private String respOrQuarta;
-	private String respOrQuinta;
+	private int respOrPrimeira;
+	private int respOrSegunda;
+	private int respOrTerceira;
+	private int respOrQuarta;
+	private int respOrQuinta;
 
 	public QuestaoOrdenar() {
 	}
 
-	public String getRespOrPrimeira() {
+	public int getRespOrPrimeira() {
 		return respOrPrimeira;
 	}
 
-	public void setRespOrPrimeira(String respOrPrimeira) {
+	public void setRespOrPrimeira(int respOrPrimeira) {
 		this.respOrPrimeira = respOrPrimeira;
 	}
 
-	public String getRespOrSegunda() {
+	public int getRespOrSegunda() {
 		return respOrSegunda;
 	}
 
-	public void setRespOrSegunda(String respOrSsegundo) {
-		this.respOrSegunda = respOrSsegundo;
+	public void setRespOrSegunda(int respOrSegunda) {
+		this.respOrSegunda = respOrSegunda;
 	}
 
-	public String getRespOrTerceira() {
+	public int getRespOrTerceira() {
 		return respOrTerceira;
 	}
 
-	public void setRespOrTerceira(String respOrTerceira) {
+	public void setRespOrTerceira(int respOrTerceira) {
 		this.respOrTerceira = respOrTerceira;
 	}
 
-	public String getRespOrQuarta() {
+	public int getRespOrQuarta() {
 		return respOrQuarta;
 	}
 
-	public void setRespOrQuarta(String respOrQuarta) {
+	public void setRespOrQuarta(int respOrQuarta) {
 		this.respOrQuarta = respOrQuarta;
 	}
 
-	public String getRespOrQuinta() {
+	public int getRespOrQuinta() {
 		return respOrQuinta;
 	}
 
-	public void setRespOrQuinta(String respOrQuinta) {
+	public void setRespOrQuinta(int respOrQuinta) {
 		this.respOrQuinta = respOrQuinta;
 	}
 

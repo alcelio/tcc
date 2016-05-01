@@ -2,6 +2,7 @@ package com.tc.controller;
 
 import static com.tc.util.WebGlobals.PAGINA_HOME;
 import static com.tc.util.WebGlobals.PATH_APLICACAO;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,8 +12,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.tc.data.UsuarioBeanDao;
 import com.tc.model.Aluno;
@@ -53,7 +52,7 @@ public class MbCadastroAluno implements Serializable {
 	}
 	
 	public String goBack() {
-		if(StringUtils.isBlank(caminhoOrigem)){
+		if(isBlank(caminhoOrigem)){
 			return PAGINA_HOME;
 		}else{
 			return getCaminhoOrigem();

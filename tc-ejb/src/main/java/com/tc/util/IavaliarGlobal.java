@@ -4,42 +4,49 @@ public class IavaliarGlobal {
 	/**
 	 * Indica o status de avaliação corrigida
 	 */
-	public static final Integer STATUS_AVALIACAO_1_CORRIGIDA = 1;
-	
+	public static final String STATUS_AVALIACAO_CORRIGIDA = "CORRIGIDA";
+
 	/**
 	 * Indica o status de avaliação PENDENTE DE CORREÇÃO
 	 */
-	public static final Integer STATUS_AVALIACAO_2_PENDETE = 2;
+	public static final String STATUS_AVALIACAO_PENDETE = "PENDENTE DE CORREÇÃO";
 	
 	/**
-	 * Indica o status de avaliação AGUARDANDO INÍCIO
+	 * Indica o status de avaliação AGUARDANDO INÍCIO(aguardando para ser respondida)
 	 */
-	public static final Integer STATUS_AVALIACAO_3_AGUARDANTO = 3;
+	public static final String STATUS_AVALIACAO_AGUARDANDO_INICIO = "AGUARDANDO INÍCIO";
+	
+	/**
+	 * Indica que a avaliação com este status já foi respondida pelo aluno
+	 */
+	public static final Integer STATUS_AVALIACAO_4_RESPONDIDA = 4;
+	
+	
 	
 	/**
 	 * Indica a opção 'A' para as respostas
 	 */
-	public static  final String OPACAO_A = "A";
+	public static  final String OPCAO_A = "A";
 	
 	/**
 	 * Indica a opção 'B' para as respostas
 	 */
-	public static  final String OPACAO_B = "B";
+	public static  final String OPCAO_B = "B";
 	
 	/**
 	 * Indica a opção 'C' para as respostas
 	 */
-	public static  final String OPACAO_C = "C";
+	public static  final String OPCAO_C = "C";
 	
 	/**
 	 * Indica a opção 'D' para as respostas
 	 */
-	public static  final String OPACAO_D = "D";
+	public static  final String OPCAO_D = "D";
 	
 	/**
 	 * Indica a opção 'E' para as respostas
 	 */
-	public static  final String OPACAO_E = "E";
+	public static  final String OPCAO_E = "E";
 	
 	/**
 	 * Indica tipo de questão dissertativa.
@@ -172,6 +179,12 @@ public class IavaliarGlobal {
 	 * Endereço da página inclusao de novas questoes
 	 */
 	public static final String PAGINA_CADASTRO_QUESTAO = "/professor/cadastroquestao.jsf";
+	
+	/**
+	 * Endereço da página que apresenta as turmas de um professor
+	 */
+	public static final String PAGINA_TURMAS_PROFESSOR = "/professor/turmasprofessor.jsf";
+	
 	
 	/**
 	 * Endereço da página inclusao de novas turmas

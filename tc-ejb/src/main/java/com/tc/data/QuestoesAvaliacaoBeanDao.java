@@ -10,17 +10,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.tc.model.QuestoesAvaliacao;
-
 import com.tc.model.PK.QuestoesAvaliacaoPK;
 
 /**
- * Session Bean implementation class EnderecoBeanDao
+ * Session Bean implementation class RespostasAvalicao
  */
 
 @Stateless
 @LocalBean
 @Remote
 public class QuestoesAvaliacaoBeanDao implements Serializable{
+
 
 	private static final long serialVersionUID = 1L;
 	@PersistenceContext

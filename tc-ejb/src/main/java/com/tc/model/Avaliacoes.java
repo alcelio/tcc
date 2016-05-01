@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,106 +14,110 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.tc.model.PK.QuestoesAvaliacaoPK;
+import com.tc.model.PK.AvalicoesPK;
 
 /**
- * Entity implementation class for Entity: QuestoesAvaliacao
+ * Entity implementation class for Entity: Avaliacoes
  *
  */
 @Entity
-@NamedQuery(name = "QuestoesAvaliacao.findAll", query = "SELECT q FROM QuestoesAvaliacao q")
-public class QuestoesAvaliacao implements Serializable {
+@NamedQuery(name = "Avaliacoes.findAll", query = "SELECT l FROM Avaliacoes l")
+public class Avaliacoes implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private QuestoesAvaliacaoPK id;
+	private AvalicoesPK id;
 
-	private boolean corrigida;
-	private boolean respondida;
-	private  Float vlrQuestao;
-	private String vlrConceito;
+	private boolean avaliacaoCorrigida;
+
+	private boolean avalicaoRespondida;
+	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dtaCorrecao;
+	private Date dtaCorrecaoSistema;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dtaCorrecaoProfessor;
+	
+	@Column(length=1000)
+	private String obsAlunoQuestao;
+	
+	private boolean respondida;
+	@Column(length=30)
+	private String statusAvaliacao;
+	
 	private boolean respAlunoOpcaoA = false;
 	private boolean respAlunoOpcaoB = false;
 	private boolean respAlunoOpcaoC = false;
 	private boolean respAlunoOpcaoD = false;
 	private boolean respAlunoOpcaoE = false;
-	private String respOrdemAlunoA;
-	private String respOrdemAlunoB;
-	private String respOrdemAlunoC;
-	private String respOrdemAlunoD;
-	private String respOrdemAlunoE;
+	
+	private int respOrdemAlunoA;
+	private int respOrdemAlunoB;
+	private int respOrdemAlunoC;
+	private int respOrdemAlunoD;
+	private int respOrdemAlunoE;
+	
+	@Column(length=2000)
 	private String respDissetativa;
-	private String obsAlunoQuestao;
+	
+	
 
 	//bi-directional many-to-one association to Avaliacao
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="idAvaliacao", insertable=false, updatable=false  )
 	private Avaliacao avaliacao;
-
-	//bi-directional many-to-one association to Questao
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="idQuestao", insertable=false, updatable=false)
-	private Questao questao;
 	
-	public QuestoesAvaliacao() {
+	//bi-directional many-to-one association to Aluno
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="idAluno", insertable=false, updatable=false  )
+	private Usuario aluno;
+	
+	//bi-directional many-to-one association to Aluno
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="idProfessor" )
+	private Usuario professor;
+		
+	public Avaliacoes() {
 	}
 
-	public QuestoesAvaliacaoPK getId() {
+	public AvalicoesPK getId() {
 		return id;
 	}
 
-	public void setId(QuestoesAvaliacaoPK id) {
+	public void setId(AvalicoesPK id) {
 		this.id = id;
 	}
 
-	public boolean isCorrigida() {
-		return corrigida;
+	public boolean isAvaliacaoCorrigida() {
+		return avaliacaoCorrigida;
 	}
 
-	public void setCorrigida(boolean corrigida) {
-		this.corrigida = corrigida;
+	public void setAvaliacaoCorrigida(boolean avaliacaoCorrigida) {
+		this.avaliacaoCorrigida = avaliacaoCorrigida;
 	}
 
-	public Float getVlrQuestao() {
-		return vlrQuestao;
+	public boolean isAvalicaoRespondida() {
+		return avalicaoRespondida;
 	}
 
-	public void setVlrQuestao(Float vlrQuestao) {
-		this.vlrQuestao = vlrQuestao;
+	public void setAvalicaoRespondida(boolean avalicaoRespondida) {
+		this.avalicaoRespondida = avalicaoRespondida;
 	}
 
-	public String getVlrConceito() {
-		return vlrConceito;
+	public Date getDtaCorrecaoSistema() {
+		return dtaCorrecaoSistema;
 	}
 
-	public void setVlrConceito(String vlrConceito) {
-		this.vlrConceito = vlrConceito;
+	public void setDtaCorrecaoSistema(Date dtaCorrecaoSistema) {
+		this.dtaCorrecaoSistema = dtaCorrecaoSistema;
 	}
 
-	public Date getDtaCorrecao() {
-		return dtaCorrecao;
+	public Date getDtaCorrecaoProfessor() {
+		return dtaCorrecaoProfessor;
 	}
 
-	public void setDtaCorrecao(Date dtaCorrecao) {
-		this.dtaCorrecao = dtaCorrecao;
-	}
-
-	public Avaliacao getAvaliacao() {
-		return avaliacao;
-	}
-
-	public void setAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
-	}
-
-	public Questao getQuestao() {
-		return questao;
-	}
-
-	public void setQuestao(Questao questao) {
-		this.questao = questao;
+	public void setDtaCorrecaoProfessor(Date dtaCorrecaoProfessor) {
+		this.dtaCorrecaoProfessor = dtaCorrecaoProfessor;
 	}
 
 	public boolean isRespAlunoOpcaoA() {
@@ -154,44 +159,44 @@ public class QuestoesAvaliacao implements Serializable {
 	public void setRespAlunoOpcaoE(boolean respAlunoOpcaoE) {
 		this.respAlunoOpcaoE = respAlunoOpcaoE;
 	}
-
-	public String getRespOrdemAlunoA() {
+	
+	public int getRespOrdemAlunoA() {
 		return respOrdemAlunoA;
 	}
 
-	public void setRespOrdemAlunoA(String respOrdemAlunoA) {
+	public void setRespOrdemAlunoA(int respOrdemAlunoA) {
 		this.respOrdemAlunoA = respOrdemAlunoA;
 	}
 
-	public String getRespOrdemAlunoB() {
+	public int getRespOrdemAlunoB() {
 		return respOrdemAlunoB;
 	}
 
-	public void setRespOrdemAlunoB(String respOrdemAlunoB) {
+	public void setRespOrdemAlunoB(int respOrdemAlunoB) {
 		this.respOrdemAlunoB = respOrdemAlunoB;
 	}
 
-	public String getRespOrdemAlunoC() {
+	public int getRespOrdemAlunoC() {
 		return respOrdemAlunoC;
 	}
 
-	public void setRespOrdemAlunoC(String respOrdemAlunoC) {
+	public void setRespOrdemAlunoC(int respOrdemAlunoC) {
 		this.respOrdemAlunoC = respOrdemAlunoC;
 	}
 
-	public String getRespOrdemAlunoD() {
+	public int getRespOrdemAlunoD() {
 		return respOrdemAlunoD;
 	}
 
-	public void setRespOrdemAlunoD(String respOrdemAlunoD) {
+	public void setRespOrdemAlunoD(int respOrdemAlunoD) {
 		this.respOrdemAlunoD = respOrdemAlunoD;
 	}
 
-	public String getRespOrdemAlunoE() {
+	public int getRespOrdemAlunoE() {
 		return respOrdemAlunoE;
 	}
 
-	public void setRespOrdemAlunoE(String respOrdemAlunoE) {
+	public void setRespOrdemAlunoE(int respOrdemAlunoE) {
 		this.respOrdemAlunoE = respOrdemAlunoE;
 	}
 
@@ -210,7 +215,31 @@ public class QuestoesAvaliacao implements Serializable {
 	public void setObsAlunoQuestao(String obsAlunoQuestao) {
 		this.obsAlunoQuestao = obsAlunoQuestao;
 	}
-	
+
+	public Avaliacao getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
+	}
+
+	public Usuario getProfessor() {
+		return professor;
+	}
+	public void setProfessor(Usuario professor) {
+		this.professor = professor;
+	}
+
+	public Usuario getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(Usuario aluno) {
+		this.aluno = aluno;
+	}
+
+
 	public boolean isRespondida() {
 		return respondida;
 	}
@@ -218,31 +247,42 @@ public class QuestoesAvaliacao implements Serializable {
 	public void setRespondida(boolean respondida) {
 		this.respondida = respondida;
 	}
+	
+
+	public String getStatusAvaliacao() {
+		return statusAvaliacao;
+	}
+
+	public void setStatusAvaliacao(String statusAvaliacao) {
+		this.statusAvaliacao = statusAvaliacao;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((aluno == null) ? 0 : aluno.hashCode());
 		result = prime * result + ((avaliacao == null) ? 0 : avaliacao.hashCode());
-		result = prime * result + (corrigida ? 1231 : 1237);
-		result = prime * result + ((dtaCorrecao == null) ? 0 : dtaCorrecao.hashCode());
+		result = prime * result + (avaliacaoCorrigida ? 1231 : 1237);
+		result = prime * result + (avalicaoRespondida ? 1231 : 1237);
+		result = prime * result + ((dtaCorrecaoProfessor == null) ? 0 : dtaCorrecaoProfessor.hashCode());
+		result = prime * result + ((dtaCorrecaoSistema == null) ? 0 : dtaCorrecaoSistema.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((obsAlunoQuestao == null) ? 0 : obsAlunoQuestao.hashCode());
-		result = prime * result + ((questao == null) ? 0 : questao.hashCode());
+		result = prime * result + ((professor == null) ? 0 : professor.hashCode());
 		result = prime * result + (respAlunoOpcaoA ? 1231 : 1237);
 		result = prime * result + (respAlunoOpcaoB ? 1231 : 1237);
 		result = prime * result + (respAlunoOpcaoC ? 1231 : 1237);
 		result = prime * result + (respAlunoOpcaoD ? 1231 : 1237);
 		result = prime * result + (respAlunoOpcaoE ? 1231 : 1237);
 		result = prime * result + ((respDissetativa == null) ? 0 : respDissetativa.hashCode());
-		result = prime * result + ((respOrdemAlunoA == null) ? 0 : respOrdemAlunoA.hashCode());
-		result = prime * result + ((respOrdemAlunoB == null) ? 0 : respOrdemAlunoB.hashCode());
-		result = prime * result + ((respOrdemAlunoC == null) ? 0 : respOrdemAlunoC.hashCode());
-		result = prime * result + ((respOrdemAlunoD == null) ? 0 : respOrdemAlunoD.hashCode());
-		result = prime * result + ((respOrdemAlunoE == null) ? 0 : respOrdemAlunoE.hashCode());
+		result = prime * result + respOrdemAlunoA;
+		result = prime * result + respOrdemAlunoB;
+		result = prime * result + respOrdemAlunoC;
+		result = prime * result + respOrdemAlunoD;
+		result = prime * result + respOrdemAlunoE;
 		result = prime * result + (respondida ? 1231 : 1237);
-		result = prime * result + ((vlrConceito == null) ? 0 : vlrConceito.hashCode());
-		result = prime * result + ((vlrQuestao == null) ? 0 : vlrQuestao.hashCode());
+		result = prime * result + ((statusAvaliacao == null) ? 0 : statusAvaliacao.hashCode());
 		return result;
 	}
 
@@ -254,18 +294,30 @@ public class QuestoesAvaliacao implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		QuestoesAvaliacao other = (QuestoesAvaliacao) obj;
+		Avaliacoes other = (Avaliacoes) obj;
+		if (aluno == null) {
+			if (other.aluno != null)
+				return false;
+		} else if (!aluno.equals(other.aluno))
+			return false;
 		if (avaliacao == null) {
 			if (other.avaliacao != null)
 				return false;
 		} else if (!avaliacao.equals(other.avaliacao))
 			return false;
-		if (corrigida != other.corrigida)
+		if (avaliacaoCorrigida != other.avaliacaoCorrigida)
 			return false;
-		if (dtaCorrecao == null) {
-			if (other.dtaCorrecao != null)
+		if (avalicaoRespondida != other.avalicaoRespondida)
+			return false;
+		if (dtaCorrecaoProfessor == null) {
+			if (other.dtaCorrecaoProfessor != null)
 				return false;
-		} else if (!dtaCorrecao.equals(other.dtaCorrecao))
+		} else if (!dtaCorrecaoProfessor.equals(other.dtaCorrecaoProfessor))
+			return false;
+		if (dtaCorrecaoSistema == null) {
+			if (other.dtaCorrecaoSistema != null)
+				return false;
+		} else if (!dtaCorrecaoSistema.equals(other.dtaCorrecaoSistema))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -277,10 +329,10 @@ public class QuestoesAvaliacao implements Serializable {
 				return false;
 		} else if (!obsAlunoQuestao.equals(other.obsAlunoQuestao))
 			return false;
-		if (questao == null) {
-			if (other.questao != null)
+		if (professor == null) {
+			if (other.professor != null)
 				return false;
-		} else if (!questao.equals(other.questao))
+		} else if (!professor.equals(other.professor))
 			return false;
 		if (respAlunoOpcaoA != other.respAlunoOpcaoA)
 			return false;
@@ -297,46 +349,24 @@ public class QuestoesAvaliacao implements Serializable {
 				return false;
 		} else if (!respDissetativa.equals(other.respDissetativa))
 			return false;
-		if (respOrdemAlunoA == null) {
-			if (other.respOrdemAlunoA != null)
-				return false;
-		} else if (!respOrdemAlunoA.equals(other.respOrdemAlunoA))
+		if (respOrdemAlunoA != other.respOrdemAlunoA)
 			return false;
-		if (respOrdemAlunoB == null) {
-			if (other.respOrdemAlunoB != null)
-				return false;
-		} else if (!respOrdemAlunoB.equals(other.respOrdemAlunoB))
+		if (respOrdemAlunoB != other.respOrdemAlunoB)
 			return false;
-		if (respOrdemAlunoC == null) {
-			if (other.respOrdemAlunoC != null)
-				return false;
-		} else if (!respOrdemAlunoC.equals(other.respOrdemAlunoC))
+		if (respOrdemAlunoC != other.respOrdemAlunoC)
 			return false;
-		if (respOrdemAlunoD == null) {
-			if (other.respOrdemAlunoD != null)
-				return false;
-		} else if (!respOrdemAlunoD.equals(other.respOrdemAlunoD))
+		if (respOrdemAlunoD != other.respOrdemAlunoD)
 			return false;
-		if (respOrdemAlunoE == null) {
-			if (other.respOrdemAlunoE != null)
-				return false;
-		} else if (!respOrdemAlunoE.equals(other.respOrdemAlunoE))
+		if (respOrdemAlunoE != other.respOrdemAlunoE)
 			return false;
 		if (respondida != other.respondida)
 			return false;
-		if (vlrConceito == null) {
-			if (other.vlrConceito != null)
+		if (statusAvaliacao == null) {
+			if (other.statusAvaliacao != null)
 				return false;
-		} else if (!vlrConceito.equals(other.vlrConceito))
-			return false;
-		if (vlrQuestao == null) {
-			if (other.vlrQuestao != null)
-				return false;
-		} else if (!vlrQuestao.equals(other.vlrQuestao))
+		} else if (!statusAvaliacao.equals(other.statusAvaliacao))
 			return false;
 		return true;
 	}
 
-
-	
 }

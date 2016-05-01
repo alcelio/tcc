@@ -90,7 +90,7 @@ public class MbQuestaoOrdenar implements Serializable {
 	 */
 	public boolean qualTipoQuestao(String tipoQuestao) {
 		boolean tem = false;
-		if (getQuestao().getTipoQuestao() != null && getQuestao().getTipoQuestao().equals(tipoQuestao)) {
+		if (getQuestao().getTipoQuestao() != null && getQuestao().getTipoQuestao() == (tipoQuestao)) {
 			tem = true;
 		}
 		return tem;
@@ -104,7 +104,7 @@ public class MbQuestaoOrdenar implements Serializable {
 	public boolean testaGrauDificuldade(String grauDificuldade) {
 		boolean ret = false;
 		if (getBeanCabecalhoQuestao().getGrauDificuldade() != null
-				&& getBeanCabecalhoQuestao().getGrauDificuldade().equals(grauDificuldade)
+				&& getBeanCabecalhoQuestao().getGrauDificuldade() == (grauDificuldade)
 				&& !StringUtils.isEmpty(grauDificuldade)) {
 			ret = true;
 		}
@@ -214,40 +214,40 @@ public class MbQuestaoOrdenar implements Serializable {
 
 	private boolean isOrdemRepetida() {
 		//Garante que não exista soente uma questão com ordem 1
-		if (getQuestao().getRespOrPrimeira().equals(getQuestao().getRespOrSegunda())
-				|| getQuestao().getRespOrPrimeira().equals(getQuestao().getRespOrTerceira())
-				|| getQuestao().getRespOrPrimeira().equals(getQuestao().getRespOrQuarta())
-				|| getQuestao().getRespOrPrimeira().equals(getQuestao().getRespOrQuinta())) {
+		if (getQuestao().getRespOrPrimeira() == (getQuestao().getRespOrSegunda())
+				|| getQuestao().getRespOrPrimeira() == (getQuestao().getRespOrTerceira())
+				|| getQuestao().getRespOrPrimeira() == (getQuestao().getRespOrQuarta())
+				|| getQuestao().getRespOrPrimeira() == (getQuestao().getRespOrQuinta())) {
 			return true;
 		}
 		//Garante que não exista somente uma questão com ordem 2
-		if (getQuestao().getRespOrSegunda().equals(getQuestao().getRespOrPrimeira())
-				|| getQuestao().getRespOrSegunda().equals(getQuestao().getRespOrTerceira())
-				|| getQuestao().getRespOrSegunda().equals(getQuestao().getRespOrQuarta())
-				|| getQuestao().getRespOrSegunda().equals(getQuestao().getRespOrQuinta())) {
+		if (getQuestao().getRespOrSegunda() == (getQuestao().getRespOrPrimeira())
+				|| getQuestao().getRespOrSegunda() == (getQuestao().getRespOrTerceira())
+				|| getQuestao().getRespOrSegunda() == (getQuestao().getRespOrQuarta())
+				|| getQuestao().getRespOrSegunda() == (getQuestao().getRespOrQuinta())) {
 			return true;
 		}
 		
 		//Garante que não exista somente uma questão com ordem 3
-		if (getQuestao().getRespOrTerceira().equals(getQuestao().getRespOrSegunda())
-				|| getQuestao().getRespOrTerceira().equals(getQuestao().getRespOrPrimeira())
-				|| getQuestao().getRespOrTerceira().equals(getQuestao().getRespOrQuarta())
-				|| getQuestao().getRespOrTerceira().equals(getQuestao().getRespOrQuinta())) {
+		if (getQuestao().getRespOrTerceira()== (getQuestao().getRespOrSegunda())
+				|| getQuestao().getRespOrTerceira() == (getQuestao().getRespOrPrimeira())
+				|| getQuestao().getRespOrTerceira()== (getQuestao().getRespOrQuarta())
+				|| getQuestao().getRespOrTerceira() == (getQuestao().getRespOrQuinta())) {
 			return true;
 		}
 		//Garante que não exista somente uma questão com ordem 4
-		if (getQuestao().getRespOrQuarta().equals(getQuestao().getRespOrSegunda())
-				|| getQuestao().getRespOrQuarta().equals(getQuestao().getRespOrTerceira())
-				|| getQuestao().getRespOrQuarta().equals(getQuestao().getRespOrPrimeira())
-				|| getQuestao().getRespOrQuarta().equals(getQuestao().getRespOrQuinta())) {
+		if (getQuestao().getRespOrQuarta() == (getQuestao().getRespOrSegunda())
+				|| getQuestao().getRespOrQuarta() == (getQuestao().getRespOrTerceira())
+				|| getQuestao().getRespOrQuarta() == (getQuestao().getRespOrPrimeira())
+				|| getQuestao().getRespOrQuarta() == (getQuestao().getRespOrQuinta())) {
 			return true;
 		}
 		
 		//Garante que não exista somente uma questão com ordem 5
-		if (getQuestao().getRespOrQuinta().equals(getQuestao().getRespOrSegunda())
-				|| getQuestao().getRespOrQuinta().equals(getQuestao().getRespOrTerceira())
-				|| getQuestao().getRespOrQuinta().equals(getQuestao().getRespOrQuarta())
-				|| getQuestao().getRespOrQuinta().equals(getQuestao().getRespOrPrimeira())) {
+		if (getQuestao().getRespOrQuinta() == (getQuestao().getRespOrSegunda())
+				|| getQuestao().getRespOrQuinta() == (getQuestao().getRespOrTerceira())
+				|| getQuestao().getRespOrQuinta() == (getQuestao().getRespOrQuarta())
+				|| getQuestao().getRespOrQuinta() == (getQuestao().getRespOrPrimeira())) {
 			return true;
 		}
 		

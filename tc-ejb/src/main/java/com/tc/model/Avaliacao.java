@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -66,16 +65,11 @@ public class Avaliacao implements Serializable {
 	@JoinColumn(name = "idAluno")
 	private Aluno aluno;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "idStatusAvaliacao")
-	private StatusAvaliacao statusAvaliacao;
-	
 	//bi-directional many-to-one association to Questoesavaliacao
 	@OneToMany(mappedBy="avaliacao", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<QuestoesAvaliacao> questoesAvaliacao;
 
 	public Avaliacao() {
-		statusAvaliacao = new StatusAvaliacao();
 		turma = new Turma();
 		questoesAvaliacao = new ArrayList<QuestoesAvaliacao>();
 		disciplina = new Disciplina();
@@ -193,14 +187,6 @@ public class Avaliacao implements Serializable {
 		this.aluno = aluno;
 	}
 
-	public StatusAvaliacao getStatusAvaliacao() {
-		return statusAvaliacao;
-	}
-
-	public void setStatusAvaliacao(StatusAvaliacao statusAvaliacao) {
-		this.statusAvaliacao = statusAvaliacao;
-	}
-
 	public List<QuestoesAvaliacao> getQuestoesAvaliacao() {
 		return questoesAvaliacao;
 	}
@@ -235,7 +221,6 @@ public class Avaliacao implements Serializable {
 		result = prime * result + ((professor == null) ? 0 : professor.hashCode());
 		result = prime * result + ((questoesAvaliacao == null) ? 0 : questoesAvaliacao.hashCode());
 		result = prime * result + (respondida ? 1231 : 1237);
-		result = prime * result + ((statusAvaliacao == null) ? 0 : statusAvaliacao.hashCode());
 		result = prime * result + ((tituloAvaliacao == null) ? 0 : tituloAvaliacao.hashCode());
 		result = prime * result + ((turma == null) ? 0 : turma.hashCode());
 		return result;
@@ -317,11 +302,6 @@ public class Avaliacao implements Serializable {
 			return false;
 		if (respondida != other.respondida)
 			return false;
-		if (statusAvaliacao == null) {
-			if (other.statusAvaliacao != null)
-				return false;
-		} else if (!statusAvaliacao.equals(other.statusAvaliacao))
-			return false;
 		if (tituloAvaliacao == null) {
 			if (other.tituloAvaliacao != null)
 				return false;
@@ -334,5 +314,5 @@ public class Avaliacao implements Serializable {
 			return false;
 		return true;
 	}
-
+	
 }

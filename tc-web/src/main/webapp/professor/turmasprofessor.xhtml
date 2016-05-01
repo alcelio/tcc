@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/principal.xhtml">
+
+	<ui:define name="tarefas">
+
+		<p:fieldset legend="Cadastrar Turmas">
+			<br />
+			<p:tabView id="tbv1" dynamic="true" cache="true">
+				<p:tab title="Área de Inserção">
+					<h:form prependId="false" id="formTurma">
+						<p:growl id="msg0" />
+						<h:panelGrid columns="2" cellpadding="10" styleClass="panelGrid"
+							id="grid0">
+
+							<h:outputLabel />
+							<h:inputHidden id="idcidade"
+								value="#{mbCadastroTurma.turma.idTurma}" />
+
+							<h:outputLabel for="nometurma" value="Nome da Turma" />
+							<h:outputLabel for="serie" value="Série/Ano/Curso/Módulo" />
+
+							<p:inputText id="nometurma" size="50" style="margin-bottom:20"
+								value="#{mbCadastroTurma.turma.dsTurma}"
+								onkeyup="this.value = this.value.toUpperCase()" required="false"
+								requiredMessage="O campo [Nome da Turma] é obrigatório." />
+
+
+							<h:panelGrid columns="2" style="margin-bottom:20">
+								<p:selectOneMenu id="serie" style="width:400px" required="false"
+									requiredMessage="O campo [Série/Ano/Curso/Módulo] é obrigatório."
+									value="#{mbCadastroTurma.turma.serie.idSerie}">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{bbSerie.serie}" var="serie"
+										itemValue="#{serie.idSerie}" itemLabel="#{serie.dsSerie}"
+										size="20" />
+								</p:selectOneMenu>
+
+								<p:commandButton 
+									id="inluirserie" value="+"
+									style="float:right" 
+									action="#{mbCadastroTurma.adicionarSerie()}"
+									update="@all">
+									<p:ajax
+										listener="#{mbCadastroSerie.setaCaminhoOrigem(bbGlobal.PAGINA_CADASTRO_TURMA)}" />
+								</p:commandButton>
+							</h:panelGrid>
+
+
+							<h:outputLabel for="turno" value="Turno" />
+							<h:outputLabel for="instituicao" value="Instituição de Ensino" />
+
+
+							<h:panelGrid columns="2" style="margin-bottom:20">
+								<p:selectOneMenu id="turno" style="width:400px" required="false"
+									requiredMessage="O campo [Turno] é obrigatório."
+									value="#{mbCadastroTurma.turma.turno.idTurno}">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{bbTurno.turnos}" var="turno"
+										itemValue="#{turno.idTurno}" itemLabel="#{turno.dsTurno}" size="20" />
+								</p:selectOneMenu>
+
+								<p:commandButton id="adicionarTurno" value="+"
+									style="float:right" 
+									action="#{mbCadastroTurma.adicionarTurno()}" update="@all">
+									<p:ajax
+										listener="#{mbCadastroTurno.setaCaminhoOrigem(bbGlobal.PAGINA_CADASTRO_TURMA)}" />
+								</p:commandButton>
+							</h:panelGrid>
+
+
+							<h:panelGrid columns="2" style="margin-bottom:20">
+								<p:selectOneMenu id="instituicao" style="width:400px"
+									required="false"
+									requiredMessage="O campo [Instituição] é obrigatório."
+									value="#{mbCadastroTurma.turma.instituicao.idInstituicao}">
+									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItems value="#{bbInstituicao.instituicoes}" var="instituicao"
+										itemValue="#{instituicao.idInstituicao}" itemLabel="#{instituicao.dsNomeInstituicao}"  />
+								</p:selectOneMenu>
+
+								<p:commandButton id="adicionarInstituicao" value="+"
+									style="float:right"  
+									action="#{mbCadastroTurma.adicionarInstituicao()}" update="@all">
+									<p:ajax listener="#{mbCadastroInstiuicao.setaCaminhoOrigem(bbGlobal.PAGINA_CADASTRO_TURMA)}" />
+								</p:commandButton>
+							</h:panelGrid>
+
+							<h:panelGrid>
+								<h:outputLabel value="Ano Letivo"/>
+								<p:inputText id="anoletivo" size="20" style="margin-bottom:20"
+								value="#{mbCadastroTurma.turma.anoLetivo}"
+								onkeyup="this.value = this.value.toUpperCase()" required="false"
+								requiredMessage="O campo [Ano Letivo] é obrigatório." />
+							
+							</h:panelGrid>
+							<p:panel>
+								<p:commandButton value="Salvar"
+									action="#{mbCadastroTurma.addTurma()}"
+									image="ui-icon ui-icon-disk" update="@form :formtable" />
+								<p:commandButton value="Limpar"
+									actionListener="#{mbCadastroTurma.novaTurma()}" imediate="true"
+									image="ui-icon ui-icon-close" update="@form" />
+								 <p:commandButton value="Voltar" immediate="true"  action="#{mbCadastroTurma.goBack()}"
+                                    icon="ui-icon ui-icon-close" update="@all">
+                                    </p:commandButton>
+							</p:panel>
+						</h:panelGrid>
+					</h:form>
+				</p:tab>
+			</p:tabView>
+
+			<h:form id="formtable">
+				<p:growl id="msg1" />
+				<p:dataTable id="idTabela" var="turma" value="#{mbCadastroTurma.turmas}"
+					paginator="true" rows="10"
+					emptyMessage="Nenhum registro encontrado"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15">
+
+					<f:facet name="header">Lista de Turmas</f:facet>
+					<p:column width = "200">
+						<f:facet name="header">
+							<h:outputText value="Turma" />
+						</f:facet>
+						<h:outputText value="#{turma.dsTurma}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Série" />
+						</f:facet>
+						<h:outputText value="#{turma.serie.dsSerie}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Turno" />
+						</f:facet>
+						<h:outputText value="#{turma.turno.dsTurno}" />
+					</p:column>
+
+					<p:column width="305">
+						<f:facet name="header"  >
+							<h:outputText value="Instituição" />
+						</f:facet>
+						<h:outputText value="#{turma.instituicao.dsNomeInstituicao}" />
+					</p:column>
+					<p:column width="40">
+						<f:facet name="header"  >
+							<h:outputText value="Ano" />
+						</f:facet>
+						<h:outputText value="#{turma.anoLetivo}" />
+					</p:column>
+					
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Editar" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink process="@this" update=":tbv1:formTurma">
+								<p:graphicImage library="imagens" name="edit.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroTurma.turma}" value="#{turma}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+
+					<p:column width="50">
+						<f:facet name="header">
+							<h:outputText value="Excluir" />
+						</f:facet>
+						<div align="center">
+							<p:commandLink action="#{mbCadastroTurma.deletar()}"
+								onclick="if (!confirm('Confirma a exclusão da turma #{turma.dsTurma}?')) return false;"
+								update="@form"> 
+								<p:graphicImage library="imagens" name="trash.png"
+									style="border:0" />
+								<f:setPropertyActionListener
+									target="#{mbCadastroTurma.turma}" value="#{turma}" />
+							</p:commandLink>
+						</div>
+					</p:column>
+					
+				</p:dataTable>
+
+			</h:form>
+
+		</p:fieldset>
+
+	</ui:define>
+
+</ui:composition>

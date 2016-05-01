@@ -6,13 +6,15 @@ import java.util.List;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
-@ManagedBean(name = "questaoService")
+@ManagedBean(name = "iavaliarService")
 @ApplicationScoped
-public class QuestaoService {
+public class IavaliarService {
 	
 	 private final static String[] grauDificuldade;
      
 	 private final static String[] tipoQuestao;
+
+	 private final static String[] statusAvaliacao;
 	 
 	 static {
 	        grauDificuldade = new String[5];
@@ -28,9 +30,17 @@ public class QuestaoService {
 	        tipoQuestao[2] = "OBJETIVA";
 	        tipoQuestao[3] = "RELACAIONAR";
 	        tipoQuestao[4] = "ORDENAR";
-	      
+	        
+			 statusAvaliacao = new String[5];
+			 statusAvaliacao[0] = "CORRIGIDA";
+			 statusAvaliacao[1] = "PENDENTE DE CORREÇÃO";
+			 statusAvaliacao[2] = "AGUARDANDO INÍCIO";
+	        
 	    }
 	 
+	   public List<String> getStatusAvaliacao() {
+	        return Arrays.asList(statusAvaliacao);
+	    }
 	   public List<String> getGrauDificuldade() {
 	        return Arrays.asList(grauDificuldade);
 	    }

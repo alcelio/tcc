@@ -14,10 +14,15 @@ import com.tc.model.Questao;
 @DiscriminatorValue("Relacionar")
 public class QuestaoRelacionar extends Questao implements Serializable {
 	private static final long serialVersionUID = 1L;
+	@Column(length= 1000)
 	private String respRelOpcaoA;
+	@Column(length= 1000)
 	private String respRelOpcaoB;
+	@Column(length= 1000)
 	private String respRelOpcaoC;
+	@Column(length= 1000)
 	private String respRelOpcaoD;
+	@Column(length= 1000)
 	private String respRelOpcaoE;
 
 	public QuestaoRelacionar() {

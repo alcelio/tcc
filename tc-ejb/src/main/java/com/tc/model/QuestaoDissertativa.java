@@ -14,10 +14,9 @@ import com.tc.model.Questao;
 @DiscriminatorValue("Dissertativa")
 public class QuestaoDissertativa extends Questao implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	@Column(length= 2000)
 	private String dsRespDissertativa;
-	private String dsRespostaAluno;
-
+	
 	public QuestaoDissertativa() {
 	}
 
@@ -28,14 +27,4 @@ public class QuestaoDissertativa extends Questao implements Serializable {
 	public void setDsRespDissertativa(String dsRespDissertativa) {
 		this.dsRespDissertativa = dsRespDissertativa;
 	}
-
-	public String getDsRespostaAluno() {
-		return dsRespostaAluno;
-	}
-
-	public void setDsRespostaAluno(String dsRespostaAluno) {
-		this.dsRespostaAluno = dsRespostaAluno;
-	}
-	
-
 }

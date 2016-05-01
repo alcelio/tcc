@@ -28,7 +28,7 @@ import com.tc.model.QuestaoOrdenar;
 import com.tc.model.QuestaoRelacionar;
 import com.tc.model.QuestaoVF;
 import com.tc.model.TopicoEstudo;
-import com.tc.suport.QuestaoService;
+import com.tc.suport.IavaliarService;
 
 @ManagedBean(name = "dtFilterView")
 @SessionScoped
@@ -40,8 +40,8 @@ public class MbPesquisaQuestao {
 	@EJB
 	DisciplinaBeanDao daoDisciplina;
 
-	@ManagedProperty("#{questaoService}")
-	private QuestaoService service;
+	@ManagedProperty("#{iavaliarService}")
+	private IavaliarService service;
 
 	private List<Questao> questoes;
 	private List<Disciplina> disciplinas;
@@ -127,7 +127,7 @@ public class MbPesquisaQuestao {
 		this.filtroQuestao = filtroQuestao;
 	}
 
-	public void setService(QuestaoService service) {
+	public void setService(IavaliarService service) {
 		this.service = service;
 	}
 

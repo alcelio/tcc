@@ -68,6 +68,13 @@
 						url="/professor/estatisticas.jsf" />
 
 				</p:submenu>
+				
+					<p:submenu label="Turmas"
+					rendered="#{mbLoginController.professor}">
+					<p:menuitem value="Minhas turmas"
+						url="/professor/turmasprofessor.jsf" />
+
+				</p:submenu>
 
 				<p:submenu label="Estatísticas"
 					rendered="#{mbLoginController.professor}">

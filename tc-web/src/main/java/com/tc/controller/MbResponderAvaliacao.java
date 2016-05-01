@@ -1,6 +1,7 @@
 package com.tc.controller;
 
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.STATUS_AVALIACAO_4_RESPONDIDA;
 import static com.tc.util.IntegerUtil.ZERO;
 import static javax.faces.application.FacesMessage.SEVERITY_INFO;
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -14,13 +15,8 @@ import javax.faces.context.FacesContext;
 
 import com.tc.data.AvaliacaoBeanDao;
 import com.tc.data.QuestaoBeanDao;
+import com.tc.exceptions.ScreenException;
 import com.tc.model.Avaliacao;
-import com.tc.model.QuestaoDissertativa;
-import com.tc.model.QuestaoObjetiva;
-import com.tc.model.QuestaoOrdenar;
-import com.tc.model.QuestaoRelacionar;
-import com.tc.model.QuestaoVF;
-import com.tc.model.QuestoesAvaliacao;
 
 @ManagedBean
 @SessionScoped
@@ -35,114 +31,107 @@ public class MbResponderAvaliacao {
 
 	private String caminhoOrigem;
 
-	private QuestaoDissertativa questaoDissertativa;
-
-	private QuestaoObjetiva questaoObjetiva;
-
-	private QuestaoOrdenar questaoOrdenar;
-
-	private QuestaoRelacionar questaoRelacionar;
-
-	private QuestaoVF questaoVF;
-
 	private int indiceQuestao;
-
-	private String tipoQuestao;
 	
+	private int indiceQuestaoAnterior;
+
 	private boolean confirmouInicio;
 
 	@PostConstruct
 	public void init() {
 		setAvaliacao(new Avaliacao());
 		setIndiceQuestao(0);
-		setQuestaoDissertativa(new QuestaoDissertativa());
-		setQuestaoObjetiva(new QuestaoObjetiva());
-		setQuestaoOrdenar(new QuestaoOrdenar());
-		setQuestaoVF(new QuestaoVF());
-		setQuestaoRelacionar(new QuestaoRelacionar());
+		setIndiceQuestaoAnterior(0);
 	}
 	
+
 	/**
-	 * Método que retora true se houver uma questão para o vetor na posição informada no parametro
+	 * Método que retora true se houver uma questão para o vetor na posição
+	 * informada no parametro
 	 * 
 	 * @param indice
 	 * @return
 	 */
-	public boolean indicaVisibilidadeBotao(Integer indice){
-		
-		if(getAvaliacao() != null && getAvaliacao().getQuestoesAvaliacao() != null && getAvaliacao().getQuestoesAvaliacao().size() > ZERO  && indice < getAvaliacao().getQuestoesAvaliacao().size()){
-			if(getAvaliacao().getQuestoesAvaliacao().get(indice).getQuestao().getIdQuestao() != null)
+	public boolean indicaVisibilidadeBotao(Integer indice) {
+
+		if (getAvaliacao() != null && getAvaliacao().getQuestoesAvaliacao() != null
+				&& getAvaliacao().getQuestoesAvaliacao().size() > ZERO
+				&& indice < getAvaliacao().getQuestoesAvaliacao().size()) {
+			if (getAvaliacao().getQuestoesAvaliacao().get(indice).getQuestao().getIdQuestao() != null)
 				return true;
 		}
-		
+
 		return false;
 	}
 
 	/**
-	 * Método que posiciona na questão anterior da lista de questões
+	 * Método atualiza indice de questões da avaliação
 	 */
 	public void retarnaQuestao() {
+		//Atualiza indice
 		try {
+			setIndiceQuestaoAnterior(getIndiceQuestao());
 			setIndiceQuestao(getIndiceQuestao() - 1);
-			if (getIndiceQuestao() < ZERO)
+			atualizaRespostas();
+			if (getIndiceQuestao() < ZERO) {
 				setIndiceQuestao(ZERO);
-			posicionaQuestao();
+				throw new Exception("Limite mínimo atingido.");
+			}
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(SEVERITY_INFO, "Erro ao localizar questão anterior!", ""));
+					new FacesMessage(SEVERITY_INFO, "Erro ao localizar questão anterior.", e.getMessage()));
 		}
+		
 	}
-
+	
 	/**
-	 * Método que posiciona na próxima questão da lista de questões
+	 * Método atualiza indice de questões da avaliação
 	 */
 	public void avanvaQuestao() {
 		try {
+			setIndiceQuestaoAnterior(getIndiceQuestao());
 			setIndiceQuestao(getIndiceQuestao() + 1);
-			if (getIndiceQuestao() > getAvaliacao().getQuestoesAvaliacao().size())
-				setIndiceQuestao(getAvaliacao().getQuestoesAvaliacao().size());
-			posicionaQuestao();
+			atualizaRespostas();
+			if (getIndiceQuestao() > getAvaliacao().getQuestoesAvaliacao().size()-1) {
+				setIndiceQuestao(getAvaliacao().getQuestoesAvaliacao().size()-1);
+				throw new Exception("Limite máximo atingido.");
+			}
+		
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(SEVERITY_INFO, "Erro ao localizar a próxima questão!", ""));
+					new FacesMessage(SEVERITY_INFO, "Erro ao localizar a próxima questão!", e.getMessage()));
 		}
+		
+	}
+	
+	public String concluirAvaliacao(){
+		setAvaliacao(new Avaliacao());
+		setIndiceQuestao(0);
+		setIndiceQuestaoAnterior(0);
+		
+//		getAvaliacao().setDataRespondida(new Date());
+		getAvaliacao().setRespondida(true);
+		getAvaliacao().setStatusAvaliacao(STATUS_AVALIACAO_4_RESPONDIDA);
+		//Salava a avaliação
+		daoAvaliacao.update(getAvaliacao());
+		
+		
+		return goBack();
 	}
 
 	/**
-	 * Método que posiciona a questão conforme o indice indicado na vavirável
-	 * indiceQuestao
-	 * 
-	 * @throws Exception
+	 * Método que atualiza os dados da avaliação no banco de dados
+	 * @throws ScreenException 
 	 */
-	public void posicionaQuestao() {
-		QuestoesAvaliacao questaoAvaliacao = getAvaliacao().getQuestoesAvaliacao().get(getIndiceQuestao());
-		if (questaoAvaliacao == null)
-			return;
-
-		// Seta retorna quando for uma questão Vf
-		if (questaoAvaliacao.getQuestao() != null && questaoAvaliacao.getQuestao() instanceof QuestaoVF) {
-			setQuestaoVF((QuestaoVF) questaoAvaliacao.getQuestao());
-			setTipoQuestao(getQuestaoVF().getTipoQuestao());
-		}
-		// Seta retorna quando for uma questão Ordenar
-		if (questaoAvaliacao.getQuestao() != null && questaoAvaliacao.getQuestao() instanceof QuestaoOrdenar) {
-			setQuestaoOrdenar((QuestaoOrdenar) questaoAvaliacao.getQuestao());
-			setTipoQuestao(getQuestaoOrdenar().getTipoQuestao());
-		}
-		// Seta retorna quando for uma questão Relacionar
-		if (questaoAvaliacao.getQuestao() != null && questaoAvaliacao.getQuestao() instanceof QuestaoRelacionar) {
-			setQuestaoRelacionar((QuestaoRelacionar) questaoAvaliacao.getQuestao());
-			setTipoQuestao(getQuestaoRelacionar().getTipoQuestao());
-		}
-		// Seta retorna quando for uma questão Objetiva
-		if (questaoAvaliacao.getQuestao() != null && questaoAvaliacao.getQuestao() instanceof QuestaoObjetiva) {
-			setQuestaoObjetiva((QuestaoObjetiva) questaoAvaliacao.getQuestao());
-			setTipoQuestao(getQuestaoObjetiva().getTipoQuestao());
-		}
-		// Seta retorna quando for uma questão Dissertativa
-		if (questaoAvaliacao.getQuestao() != null && questaoAvaliacao.getQuestao() instanceof QuestaoDissertativa) {
-			setQuestaoDissertativa((QuestaoDissertativa) questaoAvaliacao.getQuestao());
-			setTipoQuestao(getQuestaoDissertativa().getTipoQuestao());
+	private void atualizaRespostas() throws ScreenException{
+		getAvaliacao().getQuestoesAvaliacao().get(getIndiceQuestaoAnterior()).setRespondida(true);
+		daoAvaliacao.update(getAvaliacao());
+		if(getAvaliacao() != null && getAvaliacao().getIdAvaliacao() != null){
+			try {
+				setAvaliacao(daoAvaliacao.buscaPorId(getAvaliacao().getIdAvaliacao()));
+			} catch (Exception e) {
+				throw new ScreenException("Erro ao recarregar dados atualizados da avaliação.");
+			}
 		}
 	}
 
@@ -170,7 +159,7 @@ public class MbResponderAvaliacao {
 	 * @param tipoQuestao
 	 */
 	public boolean qualTipoQuestao(String tipoQuestao) {
-		if (!isBlank(getTipoQuestao()) && !isBlank(tipoQuestao)  &&  getTipoQuestao().equals(tipoQuestao)) {
+		if (!isBlank(tipoQuestao) && getAvaliacao().getQuestoesAvaliacao().get(getIndiceQuestao()).getQuestao().getTipoQuestao().equals(tipoQuestao)) {
 			return true;
 		}
 		return false;
@@ -188,61 +177,15 @@ public class MbResponderAvaliacao {
 		this.avaliacao = avaliacao;
 	}
 
-	public QuestaoDissertativa getQuestaoDissertativa() {
-		return questaoDissertativa;
-	}
 
-	public void setQuestaoDissertativa(QuestaoDissertativa questaoDissertativa) {
-		this.questaoDissertativa = questaoDissertativa;
-	}
-
-	public QuestaoObjetiva getQuestaoObjetiva() {
-		return questaoObjetiva;
-	}
-
-	public void setQuestaoObjetiva(QuestaoObjetiva questaoObjetiva) {
-		this.questaoObjetiva = questaoObjetiva;
-	}
-
-	public QuestaoOrdenar getQuestaoOrdenar() {
-		return questaoOrdenar;
-	}
-
-	public void setQuestaoOrdenar(QuestaoOrdenar questaoOrdenar) {
-		this.questaoOrdenar = questaoOrdenar;
-	}
-
-	public QuestaoRelacionar getQuestaoRelacionar() {
-		return questaoRelacionar;
-	}
-
-	public void setQuestaoRelacionar(QuestaoRelacionar questaoRelacionar) {
-		this.questaoRelacionar = questaoRelacionar;
-	}
-
-	public QuestaoVF getQuestaoVF() {
-		return questaoVF;
-	}
-
-	public void setQuestaoVF(QuestaoVF questaoVF) {
-		this.questaoVF = questaoVF;
-	}
-
-	private int getIndiceQuestao() {
+	public int getIndiceQuestao() {
 		return indiceQuestao;
 	}
 
-	private void setIndiceQuestao(int indiceQuestao) {
+	public void setIndiceQuestao(int indiceQuestao) {
 		this.indiceQuestao = indiceQuestao;
 	}
 
-	public String getTipoQuestao() {
-		return tipoQuestao;
-	}
-
-	public void setTipoQuestao(String tipoQuestao) {
-		this.tipoQuestao = tipoQuestao;
-	}
 
 	public boolean isConfirmouInicio() {
 		return confirmouInicio;
@@ -251,6 +194,15 @@ public class MbResponderAvaliacao {
 	public void setConfirmouInicio(boolean confirmouInicio) {
 		this.confirmouInicio = confirmouInicio;
 	}
+
+	public int getIndiceQuestaoAnterior() {
+		return indiceQuestaoAnterior;
+	}
+
+	public void setIndiceQuestaoAnterior(int indiceQuestaoAnterior) {
+		this.indiceQuestaoAnterior = indiceQuestaoAnterior;
+	}
+
 	
 
 }
