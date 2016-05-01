@@ -81,7 +81,7 @@ public class AlunosTurmaBeanDao implements Serializable{
 //    }
     
     /**
-     * Métod que lista todas a entidades AlunosTurma em que um aluno está lotado
+     * Método que lista todas a entidades AlunosTurma em que um aluno está lotado
      * @param aluno
      * @return
      * @throws Exception
