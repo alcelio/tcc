@@ -21,7 +21,7 @@ import com.tc.model.PK.AlunosTurmaPK;
 import com.tc.util.CriaCriteria;
 
 /**
- * Session Bean implementation class EnderecoBeanDao
+ * Session Bean implementation class EnderecoBeanDao 
  */
 
 @Stateless
