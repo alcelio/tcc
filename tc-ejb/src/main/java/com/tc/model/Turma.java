@@ -16,6 +16,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQuery(name = "Turma.findAll", query = "SELECT d FROM Turma d")
 public class Turma implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
@@ -36,7 +37,10 @@ public class Turma implements Serializable {
 	
 	private Integer anoLetivo;
 	
-	private static final long serialVersionUID = 1L;
+	@ManyToOne
+	@JoinColumn(name = "idProfessor")
+	private Usuario professor;
+	
 
 	public Turma() {
 		instituicao = new Instituicao();
@@ -92,6 +96,14 @@ public class Turma implements Serializable {
 		this.anoLetivo = anoLetivo;
 	}
 
+	public Usuario getProfessor() {
+		return professor;
+	}
+
+	public void setProfessor(Usuario professor) {
+		this.professor = professor;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -100,6 +112,7 @@ public class Turma implements Serializable {
 		result = prime * result + ((dsTurma == null) ? 0 : dsTurma.hashCode());
 		result = prime * result + ((idTurma == null) ? 0 : idTurma.hashCode());
 		result = prime * result + ((instituicao == null) ? 0 : instituicao.hashCode());
+		result = prime * result + ((professor == null) ? 0 : professor.hashCode());
 		result = prime * result + ((serie == null) ? 0 : serie.hashCode());
 		result = prime * result + ((turno == null) ? 0 : turno.hashCode());
 		return result;
@@ -134,6 +147,11 @@ public class Turma implements Serializable {
 				return false;
 		} else if (!instituicao.equals(other.instituicao))
 			return false;
+		if (professor == null) {
+			if (other.professor != null)
+				return false;
+		} else if (!professor.equals(other.professor))
+			return false;
 		if (serie == null) {
 			if (other.serie != null)
 				return false;
@@ -146,6 +164,6 @@ public class Turma implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 	
 }
