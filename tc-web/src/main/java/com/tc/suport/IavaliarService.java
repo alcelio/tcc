@@ -31,7 +31,7 @@ public class IavaliarService {
 	        tipoQuestao[3] = "RELACAIONAR";
 	        tipoQuestao[4] = "ORDENAR";
 	        
-			 statusAvaliacao = new String[5];
+			 statusAvaliacao = new String[3];
 			 statusAvaliacao[0] = "CORRIGIDA";
 			 statusAvaliacao[1] = "PENDENTE DE CORREÇÃO";
 			 statusAvaliacao[2] = "AGUARDANDO INÍCIO";

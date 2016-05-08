@@ -1,28 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AgentDiagram version="1.1" name="Agente iAvaliar" embedded="false">
-	<Actor id="bb2a1a75-4e41-496f-bf9d-f5fce8b775cf" name="Aluno" x="42" y="48" width="-1" height="-1">
+	<Actor id="bb2a1a75-4e41-496f-bf9d-f5fce8b775cf" name="Ator Aluno" x="159" y="38" width="-1" height="-1">
 	</Actor>
-	<Actor id="ac9b45a6-b982-4b77-a166-38306e2306d7" name="Professor" x="567" y="36" width="-1" height="-1">
+	<Actor id="ac9b45a6-b982-4b77-a166-38306e2306d7" name="Ator Professor" x="567" y="36" width="-1" height="-1">
 	</Actor>
-	<Agent id="216d99fb-4433-4283-925c-adf59525e04c" name="Aluno" x="137" y="137" width="-1" height="-1">
-		<plays>
-			<child>89f37515-4142-426e-a81d-290c984052a4</child>
-		</plays>
+	<Agent id="216d99fb-4433-4283-925c-adf59525e04c" name="Aluno" x="170" y="208" width="-1" height="-1">
 	</Agent>
-	<Agent id="b9fa8d4a-8887-499f-961b-887ab81752b8" name="Professor" x="489" y="137" width="-1" height="-1">
-		<plays>
-			<child>dd544d50-4e28-40da-9a56-1d336e14e6d1</child>
-		</plays>
+	<Agent id="b9fa8d4a-8887-499f-961b-887ab81752b8" name="Professor" x="585" y="197" width="-1" height="-1">
 	</Agent>
-	<Agent id="0b368a53-14bb-490d-9ca9-58e3a241ba77" name="Perfil" x="311" y="130" width="-1" height="-1">
-		<plays>
-			<child>3b33982f-3183-41df-ab58-61179c8ef0e0</child>
-		</plays>
-	</Agent>
-	<Role id="89f37515-4142-426e-a81d-290c984052a4" name="Responder Avaliacao" x="89" y="243" width="-1" height="-1">
-	</Role>
-	<Role id="3b33982f-3183-41df-ab58-61179c8ef0e0" name="Identificar Usuario" x="279" y="243" width="-1" height="-1">
-	</Role>
-	<Role id="dd544d50-4e28-40da-9a56-1d336e14e6d1" name="Criar Avalicoes" x="476" y="241" width="-1" height="-1">
-	</Role>
 </AgentDiagram>

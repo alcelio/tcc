@@ -96,12 +96,6 @@
 			<version>1.0.8</version>
 		</dependency>
 
-		<!-- FrameWork JADE para programação de agentes -->
-		<dependency>
-			<groupId>net.sf.ingenias</groupId>
-			<artifactId>jade</artifactId>
-			<version>3.7</version>
-		</dependency>
 
 		<!-- jsoup HTML parser library @ http://jsoup.org/ -->
 		<dependency>

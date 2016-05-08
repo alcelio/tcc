@@ -17,8 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 /**
- * Classe para implementada para a entidade Avaliacao
+ * Classe implementada para a entidade Avaliacao
  *
  */
 @Entity
@@ -44,7 +47,6 @@ public class Avaliacao implements Serializable {
 	private String criteriosCorrecao;
 	private Long notaMaxima;
 	private String conceitoGeral;
-	private boolean respondida;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idDisciplina")
@@ -53,26 +55,34 @@ public class Avaliacao implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idTurma")
 	private Turma turma;
-	
-	@OneToMany(mappedBy = "avaliacao")
-	private List<Aluno> alunos;
 
 	@ManyToOne
 	@JoinColumn(name = "idProfessor")
 	private Usuario professor;
 
-	@ManyToOne
-	@JoinColumn(name = "idAluno")
-	private Aluno aluno;
-
 	//bi-directional many-to-one association to Questoesavaliacao
 	@OneToMany(mappedBy="avaliacao", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT) 
 	private List<QuestoesAvaliacao> questoesAvaliacao;
-
+	
+	//bi-directional many-to-one association to Questoesavaliacao
+	@OneToMany(mappedBy="avaliacao", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT) 
+	private List<Respostas> respostas;
+	
 	public Avaliacao() {
 		turma = new Turma();
 		questoesAvaliacao = new ArrayList<QuestoesAvaliacao>();
 		disciplina = new Disciplina();
+		respostas = new ArrayList<Respostas>();
+	}
+
+	public List<Respostas> getRespostas() {
+		return respostas;
+	}
+
+	public void setRespostas(List<Respostas> respostas) {
+		this.respostas = respostas;
 	}
 
 	public Integer getIdAvaliacao() {
@@ -163,28 +173,12 @@ public class Avaliacao implements Serializable {
 		this.turma = turma;
 	}
 
-	public List<Aluno> getAlunos() {
-		return alunos;
-	}
-
-	public void setAlunos(List<Aluno> alunos) {
-		this.alunos = alunos;
-	}
-
 	public Usuario getProfessor() {
 		return professor;
 	}
 
 	public void setProfessor(Usuario professor) {
 		this.professor = professor;
-	}
-
-	public Aluno getAluno() {
-		return aluno;
-	}
-
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
 	}
 
 	public List<QuestoesAvaliacao> getQuestoesAvaliacao() {
@@ -195,20 +189,10 @@ public class Avaliacao implements Serializable {
 		this.questoesAvaliacao = questoesAvaliacao;
 	}
 
-	public boolean isRespondida() {
-		return respondida;
-	}
-
-	public void setRespondida(boolean respondida) {
-		this.respondida = respondida;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((aluno == null) ? 0 : aluno.hashCode());
-		result = prime * result + ((alunos == null) ? 0 : alunos.hashCode());
 		result = prime * result + ((conceitoGeral == null) ? 0 : conceitoGeral.hashCode());
 		result = prime * result + ((criteriosCorrecao == null) ? 0 : criteriosCorrecao.hashCode());
 		result = prime * result + ((dataAvaliacao == null) ? 0 : dataAvaliacao.hashCode());
@@ -220,7 +204,7 @@ public class Avaliacao implements Serializable {
 		result = prime * result + ((orientacoes == null) ? 0 : orientacoes.hashCode());
 		result = prime * result + ((professor == null) ? 0 : professor.hashCode());
 		result = prime * result + ((questoesAvaliacao == null) ? 0 : questoesAvaliacao.hashCode());
-		result = prime * result + (respondida ? 1231 : 1237);
+		result = prime * result + ((respostas == null) ? 0 : respostas.hashCode());
 		result = prime * result + ((tituloAvaliacao == null) ? 0 : tituloAvaliacao.hashCode());
 		result = prime * result + ((turma == null) ? 0 : turma.hashCode());
 		return result;
@@ -235,16 +219,6 @@ public class Avaliacao implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Avaliacao other = (Avaliacao) obj;
-		if (aluno == null) {
-			if (other.aluno != null)
-				return false;
-		} else if (!aluno.equals(other.aluno))
-			return false;
-		if (alunos == null) {
-			if (other.alunos != null)
-				return false;
-		} else if (!alunos.equals(other.alunos))
-			return false;
 		if (conceitoGeral == null) {
 			if (other.conceitoGeral != null)
 				return false;
@@ -300,7 +274,10 @@ public class Avaliacao implements Serializable {
 				return false;
 		} else if (!questoesAvaliacao.equals(other.questoesAvaliacao))
 			return false;
-		if (respondida != other.respondida)
+		if (respostas == null) {
+			if (other.respostas != null)
+				return false;
+		} else if (!respostas.equals(other.respostas))
 			return false;
 		if (tituloAvaliacao == null) {
 			if (other.tituloAvaliacao != null)
@@ -314,5 +291,6 @@ public class Avaliacao implements Serializable {
 			return false;
 		return true;
 	}
+	
 	
 }

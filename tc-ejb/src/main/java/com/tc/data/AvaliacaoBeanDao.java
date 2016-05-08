@@ -1,6 +1,7 @@
 package com.tc.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -14,11 +15,14 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import com.tc.model.AlunosTurma;
 import com.tc.model.Avaliacao;
 import com.tc.model.QuestoesAvaliacao;
+import com.tc.model.Respostas;
 import com.tc.model.Turma;
 import com.tc.model.Usuario;
 import com.tc.model.PK.QuestoesAvaliacaoPK;
+import com.tc.model.PK.RespostaPK;
 import com.tc.util.CriaCriteria;
 
 /**
@@ -60,15 +64,43 @@ public class AvaliacaoBeanDao implements Serializable {
 			}
 			avaliacao.setQuestoesAvaliacao(listaQuestoes);
 
-			em.merge(entidade);
+			em.merge(avaliacao);
 			// inclui uma avaliação cada aluno na turma
 			daoAvaliacoes.incluiAvalicoesParaTurma(usuario, entidade);
 		} catch (Exception e) {
 			em.remove(avaliacao);
+			e.printStackTrace();
+			throw new Exception("Erro ao persistir dados da avaliação." + e.getMessage());
 		}
-	}
 
-	
+		try {
+			List<Respostas> listaRespostas = new ArrayList<Respostas>();
+			List<AlunosTurma> alunosTurmas = daoAlunosTurma.listarAlunosPorTurma(entidade.getTurma());
+			Respostas resp;
+			RespostaPK pk;
+			for (AlunosTurma alunosTurma : alunosTurmas) {
+				for (QuestoesAvaliacao questaoAvaliacao : avaliacao.getQuestoesAvaliacao()) {
+					resp = new Respostas();
+					pk = new RespostaPK();
+					pk.setIdAluno(alunosTurma.getAluno().getIdUsuario());
+					pk.setIdAvaliacao(questaoAvaliacao.getId().getIdAvaliacao());
+					pk.setIdQuestao(questaoAvaliacao.getId().getIdQuestao());
+					resp.setId(pk);
+					resp.setQuestao(questaoAvaliacao.getQuestao());
+					resp.setAvaliacao(questaoAvaliacao.getAvaliacao());
+					resp.setAluno(alunosTurma.getAluno());
+					listaRespostas.add(resp);
+				}
+			}
+			avaliacao.setRespostas(listaRespostas);
+			em.merge(avaliacao);
+		} catch (Exception e) {
+			em.remove(avaliacao);
+			e.printStackTrace();
+			throw new Exception("Erro ao persistir dados da avaliação." + e.getMessage());
+		}
+
+	}
 
 	public void update(Avaliacao entidade) {
 		em.merge(entidade);

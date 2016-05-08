@@ -46,13 +46,23 @@ public abstract class Questao implements Serializable {
 	@Column(length= 1000)
 	private String opcaoA;
 	@Column(length= 1000)
+	private String recomendacaoErroOpcaoA;
+	@Column(length= 1000)
 	private String opcaoB;
+	@Column(length= 1000)
+	private String recomendacaoErroOpcaoB;
 	@Column(length= 1000)
 	private String opcaoC;
 	@Column(length= 1000)
+	private String recomendacaoErroOpcaoC;
+	@Column(length= 1000)
 	private String opcaoD;
 	@Column(length= 1000)
+	private String recomendacaoErroOpcaoD;
+	@Column(length= 1000)
 	private String opcaoE;
+	@Column(length= 1000)
+	private String recomendacaoErroOpcaoE;
 	
 	@ManyToOne
 	@JoinColumn(name = "idProfessor")
@@ -75,6 +85,10 @@ public abstract class Questao implements Serializable {
 	
 	@Column(length= 1000)
 	private String recomendacaoAcerto;
+	
+	@Temporal(TemporalType.TIME)
+	private Date tempoEstimadoResponder;
+	
 
 	public Questao() {
 		professor = new Usuario();
@@ -219,6 +233,54 @@ public abstract class Questao implements Serializable {
 		this.professor = professor;
 	}
 
+	public String getRecomendacaoErroOpcaoA() {
+		return recomendacaoErroOpcaoA;
+	}
+
+	public void setRecomendacaoErroOpcaoA(String recomendacaoErroOpcaoA) {
+		this.recomendacaoErroOpcaoA = recomendacaoErroOpcaoA;
+	}
+
+	public String getRecomendacaoErroOpcaoB() {
+		return recomendacaoErroOpcaoB;
+	}
+
+	public void setRecomendacaoErroOpcaoB(String recomendacaoErroOpcaoB) {
+		this.recomendacaoErroOpcaoB = recomendacaoErroOpcaoB;
+	}
+
+	public String getRecomendacaoErroOpcaoC() {
+		return recomendacaoErroOpcaoC;
+	}
+
+	public void setRecomendacaoErroOpcaoC(String recomendacaoErroOpcaoC) {
+		this.recomendacaoErroOpcaoC = recomendacaoErroOpcaoC;
+	}
+
+	public String getRecomendacaoErroOpcaoD() {
+		return recomendacaoErroOpcaoD;
+	}
+
+	public void setRecomendacaoErroOpcaoD(String recomendacaoErroOpcaoD) {
+		this.recomendacaoErroOpcaoD = recomendacaoErroOpcaoD;
+	}
+
+	public String getRecomendacaoErroOpcaoE() {
+		return recomendacaoErroOpcaoE;
+	}
+
+	public void setRecomendacaoErroOpcaoE(String recomendacaoErroOpcaoE) {
+		this.recomendacaoErroOpcaoE = recomendacaoErroOpcaoE;
+	}
+
+	public Date getTempoEstimadoResponder() {
+		return tempoEstimadoResponder;
+	}
+
+	public void setTempoEstimadoResponder(Date tempoEstimadoResponder) {
+		this.tempoEstimadoResponder = tempoEstimadoResponder;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -238,6 +300,12 @@ public abstract class Questao implements Serializable {
 		result = prime * result + ((questoesAvaliacao == null) ? 0 : questoesAvaliacao.hashCode());
 		result = prime * result + ((recomendacaoAcerto == null) ? 0 : recomendacaoAcerto.hashCode());
 		result = prime * result + ((recomendacaoErro == null) ? 0 : recomendacaoErro.hashCode());
+		result = prime * result + ((recomendacaoErroOpcaoA == null) ? 0 : recomendacaoErroOpcaoA.hashCode());
+		result = prime * result + ((recomendacaoErroOpcaoB == null) ? 0 : recomendacaoErroOpcaoB.hashCode());
+		result = prime * result + ((recomendacaoErroOpcaoC == null) ? 0 : recomendacaoErroOpcaoC.hashCode());
+		result = prime * result + ((recomendacaoErroOpcaoD == null) ? 0 : recomendacaoErroOpcaoD.hashCode());
+		result = prime * result + ((recomendacaoErroOpcaoE == null) ? 0 : recomendacaoErroOpcaoE.hashCode());
+		result = prime * result + ((tempoEstimadoResponder == null) ? 0 : tempoEstimadoResponder.hashCode());
 		result = prime * result + ((tipoQuestao == null) ? 0 : tipoQuestao.hashCode());
 		result = prime * result + ((topicoEstudo == null) ? 0 : topicoEstudo.hashCode());
 		return result;
@@ -324,6 +392,36 @@ public abstract class Questao implements Serializable {
 				return false;
 		} else if (!recomendacaoErro.equals(other.recomendacaoErro))
 			return false;
+		if (recomendacaoErroOpcaoA == null) {
+			if (other.recomendacaoErroOpcaoA != null)
+				return false;
+		} else if (!recomendacaoErroOpcaoA.equals(other.recomendacaoErroOpcaoA))
+			return false;
+		if (recomendacaoErroOpcaoB == null) {
+			if (other.recomendacaoErroOpcaoB != null)
+				return false;
+		} else if (!recomendacaoErroOpcaoB.equals(other.recomendacaoErroOpcaoB))
+			return false;
+		if (recomendacaoErroOpcaoC == null) {
+			if (other.recomendacaoErroOpcaoC != null)
+				return false;
+		} else if (!recomendacaoErroOpcaoC.equals(other.recomendacaoErroOpcaoC))
+			return false;
+		if (recomendacaoErroOpcaoD == null) {
+			if (other.recomendacaoErroOpcaoD != null)
+				return false;
+		} else if (!recomendacaoErroOpcaoD.equals(other.recomendacaoErroOpcaoD))
+			return false;
+		if (recomendacaoErroOpcaoE == null) {
+			if (other.recomendacaoErroOpcaoE != null)
+				return false;
+		} else if (!recomendacaoErroOpcaoE.equals(other.recomendacaoErroOpcaoE))
+			return false;
+		if (tempoEstimadoResponder == null) {
+			if (other.tempoEstimadoResponder != null)
+				return false;
+		} else if (!tempoEstimadoResponder.equals(other.tempoEstimadoResponder))
+			return false;
 		if (tipoQuestao == null) {
 			if (other.tipoQuestao != null)
 				return false;
@@ -336,7 +434,6 @@ public abstract class Questao implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
 	
 }

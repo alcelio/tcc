@@ -15,10 +15,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link
 		href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css"
-		rel="stylesheet" type="text/css"/>
+		rel="stylesheet" type="text/css" />
 	<link
 		href="#{facesContext.externalContext.requestContextPath}/recursos/restrito/imagens/favicon.ico"
 		rel="shortcut icon" type="image/x-icon" />
+
+		<h:outputScript library="js" name="locale.js" />
 </h:head>
 
 <h:body>
@@ -50,21 +52,21 @@
 		<ui:include src="/templates/menu.xhtml" />
 	</ui:insert>
 
-<!-- 	<div> -->
-<!-- 		<h:form> -->
-<!-- 			<p:themeSwitcher value="#{temaBean.tema}"> -->
-<!-- 				<f:selectItems value="#{temaBean.temas}" /> -->
-<!-- 				<f:selectItem itemLabel="Escolha o Tema" itemValue="" /> -->
-<!-- 				<f:selectItem itemLabel="Aristo" itemValue="aristo" /> -->
-<!-- 				<f:selectItem itemLabel="Bluesky" itemValue="bluesky" /> -->
-<!-- 				<f:selectItem itemLabel="Cupertino" itemValue="cupertino" /> -->
-<!-- 				<f:selectItem itemLabel="Sam" itemValue="sam" /> -->
-<!-- 				<f:selectItem itemLabel="UI-Lightness" itemValue="ui-lightness" /> -->
-<!-- 				<f:selectItem itemLabel="Affterdark" itemValue="afterdark" /> -->
-<!-- 				<f:ajax /> -->
-<!-- 			</p:themeSwitcher> -->
-<!-- 		</h:form> -->
-<!-- 	</div> -->
+	<!-- 	<div> -->
+	<!-- 		<h:form> -->
+	<!-- 			<p:themeSwitcher value="#{temaBean.tema}"> -->
+	<!-- 				<f:selectItems value="#{temaBean.temas}" /> -->
+	<!-- 				<f:selectItem itemLabel="Escolha o Tema" itemValue="" /> -->
+	<!-- 				<f:selectItem itemLabel="Aristo" itemValue="aristo" /> -->
+	<!-- 				<f:selectItem itemLabel="Bluesky" itemValue="bluesky" /> -->
+	<!-- 				<f:selectItem itemLabel="Cupertino" itemValue="cupertino" /> -->
+	<!-- 				<f:selectItem itemLabel="Sam" itemValue="sam" /> -->
+	<!-- 				<f:selectItem itemLabel="UI-Lightness" itemValue="ui-lightness" /> -->
+	<!-- 				<f:selectItem itemLabel="Affterdark" itemValue="afterdark" /> -->
+	<!-- 				<f:ajax /> -->
+	<!-- 			</p:themeSwitcher> -->
+	<!-- 		</h:form> -->
+	<!-- 	</div> -->
 
 
 	<div id="tarefas">
@@ -75,13 +77,13 @@
 		<ui:include src="/templates/rodape.xhtml" />
 	</ui:insert>
 
-<!-- 	<p:stack icon="/resources/imagens/stack.png" expanded="true"> -->
-<!-- 		<p:menuitem value="Home" icon="/resources/imagens/home.png" -->
-<!-- 			url="/restrito/home.jsf" /> -->
-<!-- 		<p:menuitem value="Email" icon="/resources/imagens/email.png" -->
-<!-- 			url="mailto:doalcelio@gmail.com" /> -->
+	<!-- 	<p:stack icon="/resources/imagens/stack.png" expanded="true"> -->
+	<!-- 		<p:menuitem value="Home" icon="/resources/imagens/home.png" -->
+	<!-- 			url="/restrito/home.jsf" /> -->
+	<!-- 		<p:menuitem value="Email" icon="/resources/imagens/email.png" -->
+	<!-- 			url="mailto:doalcelio@gmail.com" /> -->
 
-<!-- 	</p:stack> -->
+	<!-- 	</p:stack> -->
 
 </h:body>
 

@@ -4,6 +4,7 @@ import static com.tc.util.IavaliarGlobal.STATUS_AVALIACAO_AGUARDANDO_INICIO;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -21,6 +22,7 @@ import com.tc.model.AlunosTurma;
 import com.tc.model.Avaliacao;
 import com.tc.model.Avaliacoes;
 import com.tc.model.Disciplina;
+import com.tc.model.Professor;
 import com.tc.model.Usuario;
 import com.tc.model.PK.AvalicoesPK;
 import com.tc.util.CriaCriteria;
@@ -37,17 +39,25 @@ public class AvaliacoesBeanDao implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@EJB
 	AvaliacaoBeanDao daoAvaliacao;
 	@EJB
 	UsuarioBeanDao daoUsuario;
 	@EJB
 	AlunosTurmaBeanDao daoAlunosTurma;
+	@EJB
+	RespostasBeanDao daoRespostas;
 
 	public AvaliacoesBeanDao() {
 	}
 
+	/**
+	 * Método para criar uma nova instancia de avaliações.
+	 * 
+	 * @param entidade
+	 * @throws Exception
+	 */
 	public void create(Avaliacoes entidade) throws Exception {
 		try {
 			em.persist(entidade);
@@ -56,6 +66,12 @@ public class AvaliacoesBeanDao implements Serializable {
 		}
 	}
 
+	/**
+	 * Método para atualizar a avaliações já gravados no banco
+	 * 
+	 * @param entidade
+	 * @throws Exception
+	 */
 	public void update(Avaliacoes entidade) throws Exception {
 		try {
 			em.merge(entidade);
@@ -64,6 +80,29 @@ public class AvaliacoesBeanDao implements Serializable {
 		}
 	}
 
+	public Avaliacoes buscarAvaliacoesPorPK(Avaliacoes avaliacoes) throws Exception {
+		final Session session = em.unwrap(Session.class);
+		try {
+			final Criteria crit = CriaCriteria.createCriteria(Avaliacoes.class, session);
+
+			crit.add(Restrictions.eq("id", avaliacoes.getId()));
+
+			return (Avaliacoes) crit.uniqueResult();
+		} catch (Exception e) {
+			throw new Exception(
+					"Erro ao buscar  a entidade avaliações [" + avaliacoes.getId().toString() + "]. " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Método que retorna uma lista de avaliações para alunos.
+	 * 
+	 * @param usuarioLogado
+	 * @param status
+	 * @param disciplina
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Avaliacoes> listarAvaliacoesAluno(Usuario usuarioLogado, String status, Disciplina disciplina)
 			throws Exception {
@@ -71,19 +110,41 @@ public class AvaliacoesBeanDao implements Serializable {
 		try {
 			final Criteria crit = CriaCriteria.createCriteria(Avaliacoes.class, session);
 
-			crit.add(Restrictions.eq("aluno", usuarioLogado));
+			if (usuarioLogado != null && usuarioLogado.getIdUsuario() != null)
+				crit.add(Restrictions.eq("aluno", usuarioLogado));
 
 			if (!isBlank(status))
 				crit.add(Restrictions.eq("statusAvaliacao", status));
 
 			if (disciplina != null && disciplina.getIdDisciplina() != null)
-				crit.add(Restrictions.eq("avaliacao.disciplina", disciplina));
+				return buscaAvaliacoesPorDisciplina(crit.list(), disciplina);
 
 			return crit.list();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception("Erro ao obeter lista de avaliações." + e.getMessage());
 		}
 
+	}
+
+	/**
+	 * Método que retorna uma lista de avaliacoes que contenham para a
+	 * disciplina informada como aprametro
+	 * 
+	 * @param listaAvaliacoes
+	 * @param disciplina
+	 * @return
+	 */
+	private List<Avaliacoes> buscaAvaliacoesPorDisciplina(List<Avaliacoes> listaAvaliacoes, Disciplina disciplina) {
+		List<Avaliacoes> listaRetorno = new ArrayList<Avaliacoes>();
+
+		if (listaAvaliacoes != null && listaAvaliacoes.size() > 0) {
+			for (Avaliacoes avaliacoes : listaAvaliacoes) {
+				if (avaliacoes.getAvaliacao().getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina()))
+					listaRetorno.add(avaliacoes);
+			}
+		}
+		return listaRetorno;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -93,17 +154,18 @@ public class AvaliacoesBeanDao implements Serializable {
 		try {
 			final Criteria crit = CriaCriteria.createCriteria(Avaliacoes.class, session);
 
-			crit.add(Restrictions.eq("professor", usuarioLogado));
+			if (usuarioLogado != null && usuarioLogado.getIdUsuario() != null)
+				crit.add(Restrictions.eq("professor", usuarioLogado));
 
 			if (!isBlank(status))
 				crit.add(Restrictions.eq("statusAvaliacao", status));
 
 			if (disciplina != null && disciplina.getIdDisciplina() != null)
-				crit.add(Restrictions.eq("avaliacao.disciplina", disciplina));
+				return buscaAvaliacoesPorDisciplina(crit.list(), disciplina);
 
 			return crit.list();
 		} catch (Exception e) {
-			throw new Exception("Erro ao obeter lista de avaliações." + e.getMessage());
+			throw new Exception("Erro ao obter lista de avaliações." + e.getMessage());
 		}
 
 	}
@@ -120,9 +182,9 @@ public class AvaliacoesBeanDao implements Serializable {
 			AvalicoesPK pk = new AvalicoesPK();
 			pk.setIdAluno(usuario.getIdUsuario());
 			pk.setIdAvaliacao(entidade.getIdAvaliacao());
-			
+
 			Avaliacao avaliacao = daoAvaliacao.buscaPorId(entidade.getIdAvaliacao());
-			
+
 			Avaliacoes avaliacoes = new Avaliacoes();
 			avaliacoes.setId(pk);
 			avaliacoes.setAluno(daoUsuario.buscaUsuarioPorId(usuario.getIdUsuario()));
@@ -135,7 +197,7 @@ public class AvaliacoesBeanDao implements Serializable {
 		}
 
 	}
-	
+
 	/**
 	 * Método que inclui uma avaliação para cada aluno que participa da turma
 	 * para a qual a avliação foi criada
@@ -145,34 +207,44 @@ public class AvaliacoesBeanDao implements Serializable {
 	 */
 	public void incluiAvalicoesParaTurma(Usuario usuario, Avaliacao entidade) throws Exception {
 		List<AlunosTurma> alunosTurmas;
+		Professor professor;
 		// Obetem a lista de alunos
 		try {
 			alunosTurmas = daoAlunosTurma.listarAlunosPorTurma(entidade.getTurma());
 		} catch (Exception e) {
 			throw new Exception("Erro ao obter lista de alunos da turma");
 		}
+		// Busca a isntancia de professor;
+		try {
+			professor = (Professor) daoUsuario.buscaUsuarioPorId(entidade.getProfessor().getIdUsuario());
+		} catch (Exception e) {
+			throw new Exception("Erro ao obter buscar professor [" + entidade.getProfessor().getIdUsuario() + "]");
+		}
 		// Grava as avalições no banco conforme lista de alunos que precisarão
 		// responder
 		try {
-			
+
 			Avaliacoes avaliacoes;
-			
-			
+
 			for (AlunosTurma alunosTurma : alunosTurmas) {
-				Avaliacao avaliacao = daoAvaliacao.buscaPorId(entidade.getIdAvaliacao());
+				// Avaliacao avaliacao =
+				// daoAvaliacao.buscaPorId(entidade.getIdAvaliacao());
 				avaliacoes = new Avaliacoes();
 				AvalicoesPK pk = new AvalicoesPK();
 				pk.setIdAluno(alunosTurma.getAluno().getIdUsuario());
-				pk.setIdAvaliacao(avaliacao.getIdAvaliacao());
+				pk.setIdAvaliacao(entidade.getIdAvaliacao());
 				avaliacoes.setId(pk);
-				avaliacoes.setProfessor(daoUsuario.buscaUsuarioPorId(avaliacao.getProfessor().getIdUsuario()));
-				avaliacoes.setAvaliacao(avaliacao);
+				avaliacoes.setAluno(daoUsuario.buscaUsuarioPorId(alunosTurma.getAluno().getIdUsuario()));
+				avaliacoes.setProfessor(professor);
+				avaliacoes.setAvaliacao(entidade);
 				avaliacoes.setStatusAvaliacao(STATUS_AVALIACAO_AGUARDANDO_INICIO);
 				create(avaliacoes);
 			}
+
 		} catch (Exception e) {
-			throw new Exception(
-					"Erro ao salvar as avaliações para os alunos da turma [" + entidade.getTurma().getDsTurma() + "]");
+			e.printStackTrace();
+			throw new Exception("Erro ao salvar as avaliações para os alunos da turma ["
+					+ entidade.getTurma().getDsTurma() + "]" + e.getMessage());
 		}
 
 	}

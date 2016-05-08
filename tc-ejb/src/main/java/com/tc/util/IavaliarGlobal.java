@@ -17,13 +17,6 @@ public class IavaliarGlobal {
 	public static final String STATUS_AVALIACAO_AGUARDANDO_INICIO = "AGUARDANDO INÍCIO";
 	
 	/**
-	 * Indica que a avaliação com este status já foi respondida pelo aluno
-	 */
-	public static final Integer STATUS_AVALIACAO_4_RESPONDIDA = 4;
-	
-	
-	
-	/**
 	 * Indica a opção 'A' para as respostas
 	 */
 	public static  final String OPCAO_A = "A";

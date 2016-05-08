@@ -112,13 +112,14 @@
 							<p:messages for="telefone" />
 
 							<h:outputLabel for="dataNascimento" value="Data de Nascimento:" style="float:right;" />
-							<p:calendar id="dataNascimento" 
+							<p:calendar id="dataNascimento"  
 								size="12"
 								yearRange="c-100:c-7"
 								value="#{mbCadastroAluno.aluno.dataNascimento}"
 								required="true"
 								requiredMessage="O campo [Data de Nascimento] é obrigatório!"
-								locale="pt_BR" navigator="true" effect="explode"
+								locale="pt_BR"
+								navigator="true" effect="explode"
 								pattern="dd/MM/yyyy" />
 							<p:messages for="dataNascimento" />
 

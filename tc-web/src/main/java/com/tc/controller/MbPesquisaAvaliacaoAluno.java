@@ -1,5 +1,6 @@
 package com.tc.controller;
 
+import static com.tc.controller.MbLoginController.getUsuarioLogado;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
 import static com.tc.util.IavaliarGlobal.PAGINA_RESPONDER_AVALIACAO;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
@@ -30,13 +31,13 @@ public class MbPesquisaAvaliacaoAluno {
 	@EJB
 	AvaliacoesBeanDao daoAvaliacoes;
 
+	@ManagedProperty("#{iavaliarService}")
+	private IavaliarService service;
 
 	private Disciplina disciplina = new Disciplina();
 	
-	@ManagedProperty("#{iavaliarService}")
-	private IavaliarService service;
 	
-	private String status;
+	private String status="";
 
 	private List<Avaliacoes> avaliacoes;
 
@@ -46,7 +47,7 @@ public class MbPesquisaAvaliacaoAluno {
 	public void init() {
 		// Carrega as avaliações para o aluno logado
 		try {
-			setAvaliacoes(daoAvaliacoes.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado(), getStatus(),
+			setAvaliacoes(daoAvaliacoes.listarAvaliacoesAluno(getUsuarioLogado(), getStatus(),
 					getDisciplina()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
@@ -61,7 +62,7 @@ public class MbPesquisaAvaliacaoAluno {
 	 */
 	public void aplicaFiltroAvaliacao() {
 		try {
-			setAvaliacoes(daoAvaliacoes.listarAvaliacoesAluno(MbLoginController.getUsuarioLogado(), getStatus(),
+			setAvaliacoes(daoAvaliacoes.listarAvaliacoesAluno(getUsuarioLogado(), getStatus(),
 					getDisciplina()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
@@ -123,6 +124,9 @@ public class MbPesquisaAvaliacaoAluno {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public void setService(IavaliarService service) {
+		this.service = service;
 	}
 	
 }

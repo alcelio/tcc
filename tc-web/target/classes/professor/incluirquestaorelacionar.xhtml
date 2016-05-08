@@ -27,7 +27,7 @@
 							<h:outputLabel />
 							<h:outputLabel />
 
-														<p:commandButton value="Fácil"
+							<p:commandButton value="Fácil"
 								action="#{mbQuestaoRelacionar.setaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}"
 								update="@form"
 								disabled="#{mbQuestaoRelacionar.testaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}">
@@ -79,8 +79,10 @@
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarDisciplina" value="+"
 									style="float:right" immediate="true"
-									action="#{mbQuestaoRelacionar.incluiNovaDisciplina()}" update="@all">
-									<p:ajax listener="#{mbCadastroDisciplina.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR)}" />
+									action="#{mbQuestaoRelacionar.incluiNovaDisciplina()}"
+									update="@all">
+									<p:ajax
+										listener="#{mbCadastroDisciplina.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR)}" />
 								</p:commandButton>
 							</h:panelGrid>
 
@@ -92,15 +94,19 @@
 									<f:selectItems value="#{mbQuestaoRelacionar.topicosEstudo}"
 										var="topico" itemValue="#{topico.idTopicoEstudo}"
 										itemLabel="#{topico.dsTopicoEstudo}" size="20" />
-										<p:ajax event="change" process="@this"
-											listener="#{mbQuestaoObjetiva.selecionaTopicoEstudo()}" />
+									<p:ajax event="change" process="@this"
+										listener="#{mbQuestaoObjetiva.selecionaTopicoEstudo()}" />
 
 								</p:selectOneMenu>
 								<p:commandButton id="adicionarTopicoEstudo" value="+"
 									style="float:right" immediate="true"
-									action="#{mbQuestaoRelacionar.incluiTopicoDeEstudo()}" update="@all">
-									<p:ajax listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR)}" />
-									<f:setPropertyActionListener target="#{mbCadastroTopicoEstudo.beanCabecalho}" value="#{mbQuestaoRelacionar.beanCabecalhoQuestao}" />
+									action="#{mbQuestaoRelacionar.incluiTopicoDeEstudo()}"
+									update="@all">
+									<p:ajax
+										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_RELACIONAR)}" />
+									<f:setPropertyActionListener
+										target="#{mbCadastroTopicoEstudo.beanCabecalho}"
+										value="#{mbQuestaoRelacionar.beanCabecalhoQuestao}" />
 								</p:commandButton>
 							</h:panelGrid>
 						</h:panelGrid>
@@ -109,7 +115,7 @@
 				<h:outputLabel />
 			</h:panelGrid>
 			<h:form id="formQuestao">
-				<p:growl id="msg0" />
+				<p:growl id="msg0" showDetail="true"/>
 
 				<h:panelGrid id="gridQuestao">
 					<h:panelGrid id="panenlBotoes" style="float:right; margin-top:10;"
@@ -127,11 +133,17 @@
 							<p:ajax update="formGrauDificuldade" />
 						</p:commandButton>
 
-						<p:commandButton value="Voltar" action="#{mbQuestaoRelacionar.goBack()}"
-							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
+						<p:commandButton value="Voltar"
+							action="#{mbQuestaoRelacionar.goBack()}" style="float:right"
+							immediate="true" icon="ui-icon ui-icon-close">
 						</p:commandButton>
 					</h:panelGrid>
 
+					<p:outputLabel for="time" value="Tempo estimado para responder:" />
+					<p:calendar id="time" locale="pt_BR"
+						value="#{mbQuestaoRelacionar.questao.tempoEstimadoResponder}"
+						pattern="HH:mm:ss" timeOnly="true" required="true"
+						requiredMessage="O campo [Tempo estimado para responder] é obrigatório" />
 
 					<h:outputLabel for="editorPergunta" value="Pergunta:" />
 					<p:editor id="editorPergunta" widgetVar="editorPergunta"
@@ -144,9 +156,10 @@
 					<h:outputLabel for="editorRecomendacaoErro"
 						value="Recomendação para Resposta errada:" />
 					<p:editor id="editorRecomendacao" widgetVar="editorRecomendacao"
-						value="#{mbQuestaoRelacionar.questao.recomendacaoErro}" width="1230"
-						height="100" required="false"
-						requiredMessage="O Campo [Recomendação] é obrigatório" rendered="true" />
+						value="#{mbQuestaoRelacionar.questao.recomendacaoErro}"
+						width="1230" height="100" required="false"
+						requiredMessage="O Campo [Recomendação] é obrigatório"
+						rendered="true" />
 					<p:separator style="widht:1230; height: 20;" />
 					<br />
 

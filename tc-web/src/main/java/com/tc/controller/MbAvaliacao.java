@@ -154,8 +154,7 @@ public class MbAvaliacao implements Serializable {
 
 	private void salvar() {
 		try {
-			getAvaliacao().setRespondida(false);
-			getAvaliacao().setProfessor(MbLoginController.getUsuarioLogado());
+			getAvaliacao().setProfessor(getUsuarioLogado());
 			dao.create(getUsuarioLogado(),getAvaliacao());
 
 			novaAvalicao();

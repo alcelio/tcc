@@ -21,23 +21,23 @@
 
 				<h:panelGrid columns="1" cellpadding="10" size="100px">
 					<h:outputText
-						value="Título   : #{mbResponderAvaliacao.avaliacao.tituloAvaliacao}" />
+						value="Título   : #{mbResponderAvaliacao.avaliacoes.avaliacao.tituloAvaliacao}" />
 					<br />
 					<h:outputText
-						value="Professor: #{mbResponderAvaliacao.avaliacao.professor.nome}" />
+						value="Professor: #{mbResponderAvaliacao.avaliacoes.avaliacao.professor.nome}" />
 					<br />
 					<h:outputText
-						value="Turma: #{mbResponderAvaliacao.avaliacao.turma.dsTurma}" />
+						value="Turma: #{mbResponderAvaliacao.avaliacoes.avaliacao.turma.dsTurma}" />
 					<br />
 					<h:outputText
-						value="Disciplina: #{mbResponderAvaliacao.avaliacao.disciplina.dsDisciplina}" />
+						value="Disciplina: #{mbResponderAvaliacao.avaliacoes.avaliacao.disciplina.dsDisciplina}" />
 					<br />
 					<h:outputText value="Orientações:" />
-					<h:outputText value="#{mbResponderAvaliacao.avaliacao.orientacoes}" />
+					<h:outputText value="#{mbResponderAvaliacao.avaliacoes.avaliacao.orientacoes}" />
 					<br />
 
 					<p:commandButton value="Iniciar Avaliação" update="@all"
-						style="margin-left:1060px">
+						style="margin-left:1060px" actionListener="#{mbResponderAvaliacao.inicializaListaDeRespostas()}">
 						<f:setPropertyActionListener
 							target="#{mbResponderAvaliacao.confirmouInicio}" value="#{true}" />
 
@@ -58,48 +58,48 @@
 							<br />
 							<h1>
 								<h:outputLabel for="editorPergunta"
-									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
+									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
 							</h1>
 							<br />
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:spinner
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoA}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoA}"
 									min="1" max="5" size="1" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:spinner
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoB}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoB}"
 									min="1" max="5" size="1" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:spinner
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoC}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoC}"
 									min="1" max="5" size="1" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:spinner
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoD}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoD}"
 									min="1" max="5" size="1" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:spinner
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoE}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respOrdemAlunoE}"
 									min="1" max="5" size="1" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
 							</h:panelGrid>
 					</p:tab>
 
@@ -110,7 +110,7 @@
 							<br />
 							<h1>
 								<h:outputLabel for="editorPergunta"
-									value="Pergunta: #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
+									value="Pergunta: #{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
 							</h1>
 							<br />
 
@@ -124,59 +124,59 @@
 							<br />
 							<h1>
 								<h:outputLabel for="editorPergunta"
-									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
+									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
 							</h1>
 							<br />
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:selectBooleanButton
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoA}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoA}"
 									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
 									offIcon="ui-icon-close" style="width:120px">
 								</p:selectBooleanButton>
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
 							</h:panelGrid>
 
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:selectBooleanButton
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoB}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoB}"
 									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
 									offIcon="ui-icon-close" style="width:120px">
 								</p:selectBooleanButton>
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:selectBooleanButton
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoC}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoC}"
 									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
 									offIcon="ui-icon-close" style="width:120px">
 								</p:selectBooleanButton>
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:selectBooleanButton
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoD}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoD}"
 									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
 									offIcon="ui-icon-close" style="width:120px">
 								</p:selectBooleanButton>
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:selectBooleanButton
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoE}"
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoE}"
 									onLabel="Verdadeiro" offLabel="Falso" onIcon="ui-icon-check"
 									offIcon="ui-icon-close" style="width:120px">
 								</p:selectBooleanButton>
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
 							</h:panelGrid>
 
 					</p:tab>
@@ -189,35 +189,35 @@
 							<br />
 							<h1>
 								<h:outputLabel for="editorPergunta"
-									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
+									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta}" />
 							</h1>
 							<br />
 
 							<h:panelGrid columns="2" cellspacing="5">
 								<p:selectBooleanCheckbox selected="false"
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoA}" />
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoA}" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoA}" />
 
 								<p:selectBooleanCheckbox selected="false"
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoB}" />
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoB}" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoB}" />
 
 								<p:selectBooleanCheckbox selected="false"
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoC}" />
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoC}" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoC}" />
 
 								<p:selectBooleanCheckbox selected="false"
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoD}" />
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoD}" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoD}" />
 
 								<p:selectBooleanCheckbox selected="false"
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoE}" />
+									value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respAlunoOpcaoE}" />
 								<h:outputText
-									value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
+									value="#{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.opcaoE}" />
 							</h:panelGrid>
 					</p:tab>
 
@@ -228,12 +228,12 @@
 							<br />
 							<h1>
 								<h:outputLabel for="editorPergunta"
-									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta }" />
+									value="Pergunta(#{mbResponderAvaliacao.indiceQuestao+1}): #{mbResponderAvaliacao.avaliacoes.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).questao.pergunta }" />
 							</h1>
 							<br />
 							<h:outputLabel for="editorResposta" value="SUA RESPOSTA:" />
 							<p:editor id="editorResposta" widgetVar="editorResposta"
-								value="#{mbResponderAvaliacao.avaliacao.questoesAvaliacao.get(mbResponderAvaliacao.indiceQuestao).respDissetativa}"
+								value="#{mbResponderAvaliacao.respostas.get(mbResponderAvaliacao.indiceQuestao).respDissetativa}"
 								width="1180" height="120" required="false"
 								requiredMessage="O Campo [Resposta] é obrigatório"
 								rendered="true" />
@@ -256,8 +256,6 @@
 						title="Questão Anterior">
 						<p:graphicImage library="imagens" name="seta_esquerda.png"
 							style="border:0" />
-							<p:confirm header="Atenção" message="Deseja gravar resposta e retornar?"
-								icon="ui-icon-alert" />
 					</p:commandLink>
 
 					<h:panelGrid columns="30">
@@ -315,8 +313,7 @@
 						title="Próxima Questão">
 						<p:graphicImage library="imagens" name="seta_direita.png"
 							style="border:0" />
-						<p:confirm header="Atenção" message="Deseja gravar resposta e avançar?"
-								icon="ui-icon-alert" />
+						
 					</p:commandLink>
 					
 					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -327,9 +324,10 @@
 						</p:confirmDialog>
 						
 				<h:panelGrid style="float:left; margin-right:20" >
-					<p:commandButton value="Conlcuir Avaliação"
-							action="#{mbResponderAvaliacao.concluirAvaliacao()}" icon="ui-icon-disk" >
-							<p:ajax update="@all" />
+					<p:commandButton value="Conlcuir Avaliação" process="@all" update="@all"
+							actionListener="#{mbResponderAvaliacao.concluirAvaliacao()}" icon="ui-icon-disk" >
+							<p:confirm header="Atenção" message="Deseja gravar respostas e encerrar a avaliação?"
+								icon="ui-icon-alert" />
 						</p:commandButton>
 				</h:panelGrid>
 

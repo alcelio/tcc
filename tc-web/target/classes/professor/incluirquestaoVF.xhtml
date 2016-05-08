@@ -114,7 +114,7 @@
 
 			</h:panelGrid>
 			<h:form id="formQuestao">
-				<p:growl id="msg0" />
+				<p:growl id="msg0" showDetail="true"/>
 
 				<h:panelGrid id="gridQuestao">
 					<h:panelGrid id="panenlBotoes" style="float:right; margin-top:10;"
@@ -137,6 +137,11 @@
 						</p:commandButton>
 					</h:panelGrid>
 
+					<p:outputLabel for="time" value="Tempo estimado para responder:" />
+					<p:calendar id="time" locale="pt_BR"
+						value="#{mbQuestaoVF.questao.tempoEstimadoResponder}"
+						pattern="HH:mm:ss" timeOnly="true" required="true"
+						requiredMessage="O campo [Tempo estimado para responder] é obrigatório" />
 
 					<h:outputLabel for="editorPergunta" value="Pergunta:" />
 					<p:editor id="editorPergunta" widgetVar="editorPergunta"

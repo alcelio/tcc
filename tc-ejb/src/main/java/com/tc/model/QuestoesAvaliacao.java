@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -33,26 +32,15 @@ public class QuestoesAvaliacao implements Serializable {
 	private String vlrConceito;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dtaCorrecao;
-	private boolean respAlunoOpcaoA = false;
-	private boolean respAlunoOpcaoB = false;
-	private boolean respAlunoOpcaoC = false;
-	private boolean respAlunoOpcaoD = false;
-	private boolean respAlunoOpcaoE = false;
-	private String respOrdemAlunoA;
-	private String respOrdemAlunoB;
-	private String respOrdemAlunoC;
-	private String respOrdemAlunoD;
-	private String respOrdemAlunoE;
-	private String respDissetativa;
 	private String obsAlunoQuestao;
 
 	//bi-directional many-to-one association to Avaliacao
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="idAvaliacao", insertable=false, updatable=false  )
 	private Avaliacao avaliacao;
 
 	//bi-directional many-to-one association to Questao
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne//(fetch = FetchType.EAGER)
 	@JoinColumn(name="idQuestao", insertable=false, updatable=false)
 	private Questao questao;
 	
@@ -115,92 +103,12 @@ public class QuestoesAvaliacao implements Serializable {
 		this.questao = questao;
 	}
 
-	public boolean isRespAlunoOpcaoA() {
-		return respAlunoOpcaoA;
+	public boolean isRespondida() {
+		return respondida;
 	}
 
-	public void setRespAlunoOpcaoA(boolean respAlunoOpcaoA) {
-		this.respAlunoOpcaoA = respAlunoOpcaoA;
-	}
-
-	public boolean isRespAlunoOpcaoB() {
-		return respAlunoOpcaoB;
-	}
-
-	public void setRespAlunoOpcaoB(boolean respAlunoOpcaoB) {
-		this.respAlunoOpcaoB = respAlunoOpcaoB;
-	}
-
-	public boolean isRespAlunoOpcaoC() {
-		return respAlunoOpcaoC;
-	}
-
-	public void setRespAlunoOpcaoC(boolean respAlunoOpcaoC) {
-		this.respAlunoOpcaoC = respAlunoOpcaoC;
-	}
-
-	public boolean isRespAlunoOpcaoD() {
-		return respAlunoOpcaoD;
-	}
-
-	public void setRespAlunoOpcaoD(boolean respAlunoOpcaoD) {
-		this.respAlunoOpcaoD = respAlunoOpcaoD;
-	}
-
-	public boolean isRespAlunoOpcaoE() {
-		return respAlunoOpcaoE;
-	}
-
-	public void setRespAlunoOpcaoE(boolean respAlunoOpcaoE) {
-		this.respAlunoOpcaoE = respAlunoOpcaoE;
-	}
-
-	public String getRespOrdemAlunoA() {
-		return respOrdemAlunoA;
-	}
-
-	public void setRespOrdemAlunoA(String respOrdemAlunoA) {
-		this.respOrdemAlunoA = respOrdemAlunoA;
-	}
-
-	public String getRespOrdemAlunoB() {
-		return respOrdemAlunoB;
-	}
-
-	public void setRespOrdemAlunoB(String respOrdemAlunoB) {
-		this.respOrdemAlunoB = respOrdemAlunoB;
-	}
-
-	public String getRespOrdemAlunoC() {
-		return respOrdemAlunoC;
-	}
-
-	public void setRespOrdemAlunoC(String respOrdemAlunoC) {
-		this.respOrdemAlunoC = respOrdemAlunoC;
-	}
-
-	public String getRespOrdemAlunoD() {
-		return respOrdemAlunoD;
-	}
-
-	public void setRespOrdemAlunoD(String respOrdemAlunoD) {
-		this.respOrdemAlunoD = respOrdemAlunoD;
-	}
-
-	public String getRespOrdemAlunoE() {
-		return respOrdemAlunoE;
-	}
-
-	public void setRespOrdemAlunoE(String respOrdemAlunoE) {
-		this.respOrdemAlunoE = respOrdemAlunoE;
-	}
-
-	public String getRespDissetativa() {
-		return respDissetativa;
-	}
-
-	public void setRespDissetativa(String respDissetativa) {
-		this.respDissetativa = respDissetativa;
+	public void setRespondida(boolean respondida) {
+		this.respondida = respondida;
 	}
 
 	public String getObsAlunoQuestao() {
@@ -209,14 +117,6 @@ public class QuestoesAvaliacao implements Serializable {
 
 	public void setObsAlunoQuestao(String obsAlunoQuestao) {
 		this.obsAlunoQuestao = obsAlunoQuestao;
-	}
-	
-	public boolean isRespondida() {
-		return respondida;
-	}
-
-	public void setRespondida(boolean respondida) {
-		this.respondida = respondida;
 	}
 
 	@Override
@@ -229,17 +129,6 @@ public class QuestoesAvaliacao implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((obsAlunoQuestao == null) ? 0 : obsAlunoQuestao.hashCode());
 		result = prime * result + ((questao == null) ? 0 : questao.hashCode());
-		result = prime * result + (respAlunoOpcaoA ? 1231 : 1237);
-		result = prime * result + (respAlunoOpcaoB ? 1231 : 1237);
-		result = prime * result + (respAlunoOpcaoC ? 1231 : 1237);
-		result = prime * result + (respAlunoOpcaoD ? 1231 : 1237);
-		result = prime * result + (respAlunoOpcaoE ? 1231 : 1237);
-		result = prime * result + ((respDissetativa == null) ? 0 : respDissetativa.hashCode());
-		result = prime * result + ((respOrdemAlunoA == null) ? 0 : respOrdemAlunoA.hashCode());
-		result = prime * result + ((respOrdemAlunoB == null) ? 0 : respOrdemAlunoB.hashCode());
-		result = prime * result + ((respOrdemAlunoC == null) ? 0 : respOrdemAlunoC.hashCode());
-		result = prime * result + ((respOrdemAlunoD == null) ? 0 : respOrdemAlunoD.hashCode());
-		result = prime * result + ((respOrdemAlunoE == null) ? 0 : respOrdemAlunoE.hashCode());
 		result = prime * result + (respondida ? 1231 : 1237);
 		result = prime * result + ((vlrConceito == null) ? 0 : vlrConceito.hashCode());
 		result = prime * result + ((vlrQuestao == null) ? 0 : vlrQuestao.hashCode());
@@ -282,46 +171,6 @@ public class QuestoesAvaliacao implements Serializable {
 				return false;
 		} else if (!questao.equals(other.questao))
 			return false;
-		if (respAlunoOpcaoA != other.respAlunoOpcaoA)
-			return false;
-		if (respAlunoOpcaoB != other.respAlunoOpcaoB)
-			return false;
-		if (respAlunoOpcaoC != other.respAlunoOpcaoC)
-			return false;
-		if (respAlunoOpcaoD != other.respAlunoOpcaoD)
-			return false;
-		if (respAlunoOpcaoE != other.respAlunoOpcaoE)
-			return false;
-		if (respDissetativa == null) {
-			if (other.respDissetativa != null)
-				return false;
-		} else if (!respDissetativa.equals(other.respDissetativa))
-			return false;
-		if (respOrdemAlunoA == null) {
-			if (other.respOrdemAlunoA != null)
-				return false;
-		} else if (!respOrdemAlunoA.equals(other.respOrdemAlunoA))
-			return false;
-		if (respOrdemAlunoB == null) {
-			if (other.respOrdemAlunoB != null)
-				return false;
-		} else if (!respOrdemAlunoB.equals(other.respOrdemAlunoB))
-			return false;
-		if (respOrdemAlunoC == null) {
-			if (other.respOrdemAlunoC != null)
-				return false;
-		} else if (!respOrdemAlunoC.equals(other.respOrdemAlunoC))
-			return false;
-		if (respOrdemAlunoD == null) {
-			if (other.respOrdemAlunoD != null)
-				return false;
-		} else if (!respOrdemAlunoD.equals(other.respOrdemAlunoD))
-			return false;
-		if (respOrdemAlunoE == null) {
-			if (other.respOrdemAlunoE != null)
-				return false;
-		} else if (!respOrdemAlunoE.equals(other.respOrdemAlunoE))
-			return false;
 		if (respondida != other.respondida)
 			return false;
 		if (vlrConceito == null) {
@@ -336,7 +185,6 @@ public class QuestoesAvaliacao implements Serializable {
 			return false;
 		return true;
 	}
-
 
 	
 }

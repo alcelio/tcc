@@ -1,38 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GoalDiagram version="1.1" name="Goal Diagram" embedded="false">
-	<Actor id="005ef43b-7c14-42ac-9c06-7233ef15f9b3" name="Aluno" x="76" y="92" width="-1" height="-1">
-	</Actor>
-	<Goal id="68d00fe0-dcb0-4e8e-b553-f01177df39a7" name="Concluir Avaliacao" number="0" preference="1.0" x="341" y="3" width="-1" height="-1" definition="" description="" color="No">
+	<Goal id="68d00fe0-dcb0-4e8e-b553-f01177df39a7" name="corrigir avaliação" number="0" preference="1.0" x="496" y="51" width="-1" height="-1" definition="" description="" color="No">
 			<parameter name="Avaliacao" collection="Collection" type="Avaliacao"/>
+		<and>
+			<child>88bf17aa-3896-4512-920e-601b23efda3a</child>
+		</and>
+		<and>
+			<child>44158566-7d93-488f-9932-10a4870bc1d7</child>
+		</and>
 		<and>
 			<child>4d7d2dfb-79c5-4bb4-8467-8a61879b86be</child>
 		</and>
-		<and>
-			<child>88bf17aa-3896-4512-920e-601b23efda3a</child>
-		</and>
-		<and>
-			<child>44158566-7d93-488f-9932-10a4870bc1d7</child>
-		</and>
 	</Goal>
-	<Goal id="4d7d2dfb-79c5-4bb4-8467-8a61879b86be" name="Localizar a Avaliacao" number="1" preference="1.0" x="13" y="235" width="-1" height="-1" definition="Deve localizar as avaliações não respondidas pelo aluno" description="" color="No">
+	<Goal id="88bf17aa-3896-4512-920e-601b23efda3a" name="aguardar conclusão da avaliação" number="2" preference="1.0" x="470" y="299" width="-1" height="-1" definition="" description="" color="No">
+			<parameter name="avaliacao" collection="List" type="Questao"/>
+		<precedes>
+			<child>44158566-7d93-488f-9932-10a4870bc1d7</child>
+		</precedes>
+	</Goal>
+	<Goal id="44158566-7d93-488f-9932-10a4870bc1d7" name="corrigir parte objetiva" number="3" preference="1.0" x="861" y="296" width="-1" height="-1" definition="" description="" color="No">
+			<parameter name="avaliacao" collection="List" type="Questao"/>
+	</Goal>
+	<Goal id="4d7d2dfb-79c5-4bb4-8467-8a61879b86be" name="Identificar avaliações cadastradas" number="1" preference="1.0" x="98" y="298" width="-1" height="-1" definition="Deve localizar as avaliações não respondidas pelo aluno" description="" color="No">
 			<parameter name="avaliacoes" collection="List" type="Avaliacao"/>
 		<precedes>
 			<child>88bf17aa-3896-4512-920e-601b23efda3a</child>
 		</precedes>
-	</Goal>
-	<Goal id="88bf17aa-3896-4512-920e-601b23efda3a" name="Responder a Avaliacao" number="2" preference="1.0" x="323" y="241" width="-1" height="-1" definition="" description="" color="No">
-			<parameter name="avaliacoes" collection="List" type="Avaliacao"/>
-		<precedes>
-			<child>44158566-7d93-488f-9932-10a4870bc1d7</child>
-		</precedes>
-		<and>
-			<child>d482db74-e703-410c-a63b-11d673df7097</child>
-		</and>
-	</Goal>
-	<Goal id="44158566-7d93-488f-9932-10a4870bc1d7" name="Enviar a Avalição" number="3" preference="1.0" x="670" y="244" width="-1" height="-1" definition="" description="" color="No">
-			<parameter name="avaliacoes" collection="List" type="Avaliacao"/>
-	</Goal>
-	<Goal id="d482db74-e703-410c-a63b-11d673df7097" name="Responder Questões" number="2.1" preference="1.0" x="294" y="353" width="-1" height="-1" definition="" description="" color="No">
-			<parameter name="questoes" collection="List" type="QuestoesAvaliacao"/>
 	</Goal>
 </GoalDiagram>

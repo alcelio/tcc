@@ -27,7 +27,7 @@
 							<h:outputLabel />
 							<h:outputLabel />
 
-														<p:commandButton value="Fácil"
+							<p:commandButton value="Fácil"
 								action="#{mbQuestaoOrdenar.setaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}"
 								update="@form"
 								disabled="#{mbQuestaoOrdenar.testaGrauDificuldade(bbGlobal.DIFICULDADE_FACIL)}">
@@ -104,7 +104,8 @@
 									<p:ajax
 										listener="#{mbCadastroTopicoEstudo.setaCaminhoOrigem(bbGlobal.PAGINA_INCLUI_QUESTAO_ORDENAR)}" />
 									<f:setPropertyActionListener
-										target="#{mbCadastroTopicoEstudo.beanCabecalho}" value="#{mbQuestaoOrdenar.beanCabecalhoQuestao}" />
+										target="#{mbCadastroTopicoEstudo.beanCabecalho}"
+										value="#{mbQuestaoOrdenar.beanCabecalhoQuestao}" />
 								</p:commandButton>
 							</h:panelGrid>
 						</h:panelGrid>
@@ -116,7 +117,7 @@
 
 
 			<h:form id="formQuestao">
-				<p:growl id="msg0" />
+				<p:growl id="msg0" showDetail="true"/>
 
 				<h:panelGrid id="gridQuestao">
 					<h:panelGrid id="panenlBotoes" style="float:right; margin-top:10;"
@@ -134,28 +135,36 @@
 							<p:ajax update="formGrauDificuldade" />
 						</p:commandButton>
 
-						<p:commandButton value="Voltar" action="#{mbQuestaoOrdenar.goBack()}"
-							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
+						<p:commandButton value="Voltar"
+							action="#{mbQuestaoOrdenar.goBack()}" style="float:right"
+							immediate="true" icon="ui-icon ui-icon-close">
 						</p:commandButton>
 					</h:panelGrid>
 
 
+					<p:outputLabel for="time" value="Tempo estimado para responder:" />
+					<p:calendar id="time" locale="pt_BR"
+						value="#{mbQuestaoOrdenar.questao.tempoEstimadoResponder}"
+						pattern="HH:mm:ss" timeOnly="true" required="true"
+						requiredMessage="O campo [Tempo estimado para responder] é obrigatório" />
+
 					<h:outputLabel for="editorPergunta" value="Pergunta:" />
 					<p:editor id="editorPergunta" widgetVar="editorPergunta"
-						value="#{mbQuestaoOrdenar.questao.pergunta}" width="1230" height="100"
-						required="true"
+						value="#{mbQuestaoOrdenar.questao.pergunta}" width="1230"
+						height="100" required="true"
 						requiredMessage="O campo [Pergunta] é obrigatório!" />
 					<p:separator style="widht:1230; height: 20;" />
-					
+
 					<br />
-					<h:outputLabel for="editorRecomendacaoErro" value="Recomendação para Resposta errada:" />
-					<p:editor id="editorRecomendacao"
-						widgetVar="editorRecomendacao"
-						value="#{mbQuestaoOrdenar.questao.recomendacaoErro}"
-						width="1230" height="100" required="false"
-						requiredMessage="O Campo [Recomendação] é obrigatório" rendered="true" />
+					<h:outputLabel for="editorRecomendacaoErro"
+						value="Recomendação para Resposta errada:" />
+					<p:editor id="editorRecomendacao" widgetVar="editorRecomendacao"
+						value="#{mbQuestaoOrdenar.questao.recomendacaoErro}" width="1230"
+						height="100" required="false"
+						requiredMessage="O Campo [Recomendação] é obrigatório"
+						rendered="true" />
 					<p:separator style="widht:1230; height: 20;" />
-					
+
 					<br />
 
 
@@ -170,7 +179,7 @@
 							<h:panelGrid>
 								<h:outputLabel value="Ordem" />
 								<p:spinner value="#{mbQuestaoOrdenar.questao.respOrPrimeira}"
-									min="1" max="5" size="3" rendered="true"/>
+									min="1" max="5" size="3" rendered="true" />
 							</h:panelGrid>
 
 

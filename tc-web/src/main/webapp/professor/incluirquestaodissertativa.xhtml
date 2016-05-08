@@ -136,12 +136,19 @@
 						</p:commandButton>
 
 						<p:commandButton value="Voltar"
-							action="#{mbQuestaoDissertativa.goBack()}"
-							style="float:right" immediate="true" icon="ui-icon ui-icon-close">
+							action="#{mbQuestaoDissertativa.goBack()}" style="float:right"
+							immediate="true" icon="ui-icon ui-icon-close">
 						</p:commandButton>
 					</h:panelGrid>
 
-					<p:growl id="msg0" />
+					<p:growl id="msg0" showDetail="true"/>
+
+					<p:outputLabel for="time" value="Tempo estimado para responder:" />
+					<p:calendar id="time" locale="pt_BR"
+						value="#{mbQuestaoDissertativa.questao.tempoEstimadoResponder}"
+						pattern="HH:mm:ss" timeOnly="true" required="true"
+						requiredMessage="O campo [Tempo estimado para responder] é obrigatório" />
+
 					<h:outputLabel for="editorPergunta" value="Pergunta:" />
 					<p:editor id="editorPergunta" widgetVar="editorPergunta"
 						value="#{mbQuestaoDissertativa.questao.pergunta}" width="1230"
@@ -167,7 +174,6 @@
 						requiredMessage="O Campo [Recomedação] é obrigatório"
 						rendered="true" />
 					<p:separator style="widht:1230; height: 20;" />
-
 
 					<h:inputHidden value="#{mbQuestaoDissertativa.questao.idQuestao}" />
 

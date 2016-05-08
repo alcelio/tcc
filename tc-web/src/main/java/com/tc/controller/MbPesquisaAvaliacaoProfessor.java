@@ -1,8 +1,8 @@
 package com.tc.controller;
 
+import static com.tc.controller.MbLoginController.getUsuarioLogado;
 import static com.tc.util.IavaliarGlobal.PAGINA_CORRECAO_AVALIACAO;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
-import static com.tc.util.IavaliarGlobal.STATUS_AVALIACAO_2_PENDETE;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -12,43 +12,45 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import com.tc.data.AvaliacaoBeanDao;
-import com.tc.model.Avaliacao;
+import com.tc.data.AvaliacoesBeanDao;
+import com.tc.model.Avaliacoes;
 import com.tc.model.Disciplina;
-import com.tc.model.StatusAvaliacao;
 import com.tc.model.Turma;
+import com.tc.suport.IavaliarService;
+import com.tc.util.IavaliarGlobal;
 
 @ManagedBean
 @SessionScoped
 public class MbPesquisaAvaliacaoProfessor {
 
 	@EJB
-	AvaliacaoBeanDao daoAvaliacao;
+	AvaliacoesBeanDao daoAvaliacoes;
 
-	private StatusAvaliacao statusAvaliacao = new StatusAvaliacao();
+	private String status="";
 
 	private Disciplina disciplina;
 
-	private List<Avaliacao> avaliacoes;
-
-	private Avaliacao avaliacao;
-
-	private Turma turma;
+	private List<Avaliacoes> avaliacoes;
 
 	private String caminhoOrigem;
+	
+	private Turma turma;
+	
+	@ManagedProperty("#{iavaliarService}")
+	private IavaliarService service;
 
 	@PostConstruct
 	public void init() {
-		setAvaliacao(new Avaliacao());
 		setDisciplina(new Disciplina());
 		setTurma(new Turma());
 		// Carrega as avaliações para o aluno logado
 		try {
-			setAvaliacoes(daoAvaliacao.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(),
-					getStatusAvaliacao(), getDisciplina(), getTurma()));
+			setAvaliacoes(daoAvaliacoes.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(),
+					getStatus(), getDisciplina()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(SEVERITY_ERROR, "Erro ao aplicar filtros!", e.getMessage()));
@@ -62,8 +64,8 @@ public class MbPesquisaAvaliacaoProfessor {
 	 */
 	public void aplicaFiltroAvaliacao() {
 		try {
-			setAvaliacoes(daoAvaliacao.listarAvaliacoesProfessor(MbLoginController.getUsuarioLogado(),
-					getStatusAvaliacao(), getDisciplina(), getTurma()));
+			setAvaliacoes(daoAvaliacoes.listarAvaliacoesProfessor(getUsuarioLogado(),
+					getStatus(), getDisciplina()));
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(SEVERITY_ERROR, "Erro ao aplicar filtros!", e.getMessage()));
@@ -74,7 +76,7 @@ public class MbPesquisaAvaliacaoProfessor {
 	 * @return boolean
 	 */
 	public boolean corrigir(Integer status) {
-		if (status != null && STATUS_AVALIACAO_2_PENDETE.equals(status))
+		if (status != null && IavaliarGlobal.STATUS_AVALIACAO_PENDETE.equals(status))
 			return true;
 		return false;
 	}
@@ -100,11 +102,12 @@ public class MbPesquisaAvaliacaoProfessor {
 		}
 	}
 
-	public List<Avaliacao> getAvaliacoes() throws Exception {
+	
+	public List<Avaliacoes> getAvaliacoes() {
 		return avaliacoes;
 	}
 
-	public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+	public void setAvaliacoes(List<Avaliacoes> avaliacoes) {
 		this.avaliacoes = avaliacoes;
 	}
 
@@ -124,20 +127,20 @@ public class MbPesquisaAvaliacaoProfessor {
 		this.disciplina = disciplina;
 	}
 
-	public StatusAvaliacao getStatusAvaliacao() {
-		return statusAvaliacao;
+	public List<String> getStatusAvaliacao() {
+		return service.getStatusAvaliacao();
+	}
+	
+	public void setService(IavaliarService service) {
+		this.service = service;
 	}
 
-	public void setStatusAvaliacao(StatusAvaliacao statusAvaliacao) {
-		this.statusAvaliacao = statusAvaliacao;
+	public String getStatus() {
+		return status;
 	}
 
-	public Avaliacao getAvaliacao() {
-		return avaliacao;
-	}
-
-	public void setAvaliacao(Avaliacao avaliacao) {
-		this.avaliacao = avaliacao;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Turma getTurma() {
@@ -147,5 +150,7 @@ public class MbPesquisaAvaliacaoProfessor {
 	public void setTurma(Turma turma) {
 		this.turma = turma;
 	}
+	
+	
 
 }

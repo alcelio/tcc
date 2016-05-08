@@ -31,7 +31,8 @@
 							<p:selectOneMenu id="statusAvaliacao" style="width:280px"
 								value="#{mbPesquisaAvaliacaoAluno.status}">
 								<f:selectItem itemLabel="Filtrar por Status" itemValue="" />
-								<f:selectItems value="#{mbPesquisaAvaliacaoAluno.statusAvaliacao}"
+								<f:selectItems 
+									value="#{mbPesquisaAvaliacaoAluno.statusAvaliacao}"
 									var="status" itemValue="#{status}"
 									itemLabel="#{status}" size="20" />
 								<p:ajax event="change" process="@this"
@@ -92,11 +93,11 @@
 
 					<p:column style="width:130;text-align: center">
 						<p:commandButton icon="ui-icon-add" value="Responder"
-							rendered="#{!avaliacao.respondida}"
+							rendered="#{!avaliacao.avalicaoRespondida}"
 							action="#{mbPesquisaAvaliacaoAluno.responderAvaliacao()}"
 							update="@all" title="Responder Avaliação">
 							<f:setPropertyActionListener
-								target="#{mbResponderAvaliacao.avaliacao}" value="#{avaliacao}" />
+								target="#{mbResponderAvaliacao.avaliacoes}" value="#{avaliacao}" />
 							<p:ajax
 								listener="#{mbResponderAvaliacao.setaCaminhoOrigem(bbGlobal.PAGINA_AVALIACOES_ALUNO)}" />
 						</p:commandButton>

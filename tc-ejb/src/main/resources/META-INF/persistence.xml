@@ -13,16 +13,17 @@
       <class>com.tc.model.Aluno</class>
       <class>com.tc.model.AlunosTurma</class>
       <class>com.tc.model.Avaliacao</class>
+      <class>com.tc.model.Avaliacoes</class>
       <class>com.tc.model.Disciplina</class>
       <class>com.tc.model.Endereco</class>
       <class>com.tc.model.Historico</class>
       <class>com.tc.model.Instituicao</class>
-      <class>com.tc.model.Avaliacoes</class>
       <class>com.tc.model.Member</class>
       <class>com.tc.model.PK.AlunosTurmaPK</class>
       <class>com.tc.model.PK.AvalicoesPK</class>
       <class>com.tc.model.PK.ParametrosUsuarioPK</class>
       <class>com.tc.model.PK.QuestoesAvaliacaoPK</class>
+      <class>com.tc.model.PK.RespostaPK</class>
       <class>com.tc.model.Parametros</class>
       <class>com.tc.model.ParametrosAgentes</class>
       <class>com.tc.model.ParametrosSistema</class>
@@ -36,6 +37,7 @@
       <class>com.tc.model.QuestaoRelacionar</class>
       <class>com.tc.model.QuestaoVF</class>
       <class>com.tc.model.QuestoesAvaliacao</class>
+      <class>com.tc.model.Respostas</class>
       <class>com.tc.model.Serie</class>
       <class>com.tc.model.Sexo</class>
       <class>com.tc.model.StatusAvaliacao</class>

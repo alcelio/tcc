@@ -29,13 +29,14 @@
 							</p:selectOneMenu>
 
 							<p:selectOneMenu id="statusAvaliacao" style="width:280px"
-								value="#{mbPesquisaAvaliacaoProfessor.statusAvaliacao.idStatusAvaliacao}">
+								value="#{mbPesquisaAvaliacaoAluno.status}">
 								<f:selectItem itemLabel="Filtrar por Status" itemValue="" />
-								<f:selectItems value="#{bbStatusAvaliacao.statusAvalicoes}"
-									var="status" itemValue="#{status.idStatusAvaliacao}"
-									itemLabel="#{status.dsStatusAvaliacao}" size="20" />
+								<f:selectItems 
+									value="#{mbPesquisaAvaliacaoAluno.statusAvaliacao}"
+									var="status" itemValue="#{status}"
+									itemLabel="#{status}" size="20" />
 								<p:ajax event="change" process="@this"
-									listener="#{mbPesquisaAvaliacaoProfessor.aplicaFiltroAvaliacao()}"
+									listener="#{mbPesquisaAvaliacaoAluno.aplicaFiltroAvaliacao()}"
 									update="formtable" />
 							</p:selectOneMenu>
 
@@ -66,7 +67,7 @@
 			</p:tabView>
 			<h:form id="formtable">
 				<p:dataTable id="table"
-					value="#{mbPesquisaAvaliacaoProfessor.avaliacoes}" var="avaliacao"
+					value="#{mbPesquisaAvaliacaoProfessor.avaliacoes}" var="avaliacoes"
 					widgetVar="tableAvaliacoes"
 					emptyMessage="Nenhuma questão encontrada com os determinados critérios">
 
@@ -80,23 +81,23 @@
 							<f:selectItems value="#{bbDisciplina.disciplinas}" />
 							</p:selectOneMenu>
 						</f:facet>
-						<h:outputText value="#{avaliacao.disciplina.dsDisciplina}" />
+						<h:outputText value="#{avaliacoes.avaliacao.disciplina.dsDisciplina}" />
 					</p:column>
 
 					<p:column width="250" headerText="Status da Avaliação"
 						footerText="Status da Avaliação">
 						<h:outputText
-							value="#{avaliacao.statusAvaliacao.dsStatusAvaliacao}" />
+							value="#{avaliacoes.statusAvaliacao}" />
 					</p:column>
 
 					<p:column headerText="Turmas" footerText="Turma" style="width:280;">
-						<h:outputText value="#{avaliacao.turma.dsTurma}" />
+						<h:outputText value="#{avaliacoes.avaliacao.turma.dsTurma}" />
 					</p:column>
 
 
 					<p:column width="160" headerText="Data Limite"
 						footerText="Encerramento">
-						<h:outputText value="#{avaliacao.dataFimAvaliacao}"
+						<h:outputText value="#{avaliacoes.avaliacao.dataFimAvaliacao}"
 							pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" />
 					</p:column>
 
@@ -109,7 +110,7 @@
 							<p:ajax
 								listener="#{mbCorrigirAvaliacao.setaCaminhoOrigem(bbGlobal.PAGINA_AVALIACOES_PROFESSOR)}" />
 							<f:setPropertyActionListener
-								target="#{mbCorrigirAvaliacao.avaliacao}" value="#{avaliacao}" />
+								target="#{mbCorrigirAvaliacao.avaliacao}" value="#{avaliacoes}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
