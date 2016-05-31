@@ -60,7 +60,11 @@ public class MbPesquisaQuestao {
 
 	@PostConstruct
 	public void init() {
-		questoes = dao.listarQuestoes();
+		try {
+			questoes = dao.listarQuestoes();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		topicosEstudo = daoTopicos.listarTopicoEstudo();
 		disciplinas = daoDisciplina.listarDisciplina();
 
@@ -115,7 +119,11 @@ public class MbPesquisaQuestao {
 	}
 
 	public List<Questao> getQuestoes() {
-		questoes = dao.listarQuestoes();
+		try {
+			questoes = dao.listarQuestoes();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return questoes;
 	}
 

@@ -64,5 +64,10 @@ public class AvalicoesPK implements Serializable {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return getIdAluno().toString()+","+getIdAvaliacao()+toString();
+	}
+	
 	
 }

@@ -51,6 +51,12 @@ public class Respostas implements Serializable {
 	private int respOrdemAlunoD;
 	private int respOrdemAlunoE;
 	
+	private String RespAlunoRelOpcaoA;
+	private String RespAlunoRelOpcaoB;
+	private String RespAlunoRelOpcaoC;
+	private String RespAlunoRelOpcaoD;
+	private String RespAlunoRelOpcaoE;
+	
 	@Column(length=1000)
 	private String obsAlunoQuestao;
 	
@@ -59,8 +65,9 @@ public class Respostas implements Serializable {
 	
 	private boolean respondeuCorretamente;
 	
+	private boolean corrigidaAgente;
+	
 	public Respostas() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public RespostaPK getId() {
@@ -198,13 +205,69 @@ public class Respostas implements Serializable {
 	public void setObsAlunoQuestao(String obsAlunoQuestao) {
 		this.obsAlunoQuestao = obsAlunoQuestao;
 	}
+	
+
+	public String getRespAlunoRelOpcaoA() {
+		return RespAlunoRelOpcaoA;
+	}
+
+	public void setRespAlunoRelOpcaoA(String respAlunoRelOpcaoA) {
+		RespAlunoRelOpcaoA = respAlunoRelOpcaoA;
+	}
+
+	public String getRespAlunoRelOpcaoB() {
+		return RespAlunoRelOpcaoB;
+	}
+
+	public void setRespAlunoRelOpcaoB(String respAlunoRelOpcaoB) {
+		RespAlunoRelOpcaoB = respAlunoRelOpcaoB;
+	}
+
+	public String getRespAlunoRelOpcaoC() {
+		return RespAlunoRelOpcaoC;
+	}
+
+	public void setRespAlunoRelOpcaoC(String respAlunoRelOpcaoC) {
+		RespAlunoRelOpcaoC = respAlunoRelOpcaoC;
+	}
+
+	public String getRespAlunoRelOpcaoD() {
+		return RespAlunoRelOpcaoD;
+	}
+
+	public void setRespAlunoRelOpcaoD(String respAlunoRelOpcaoD) {
+		RespAlunoRelOpcaoD = respAlunoRelOpcaoD;
+	}
+
+	public String getRespAlunoRelOpcaoE() {
+		return RespAlunoRelOpcaoE;
+	}
+	
+
+	public boolean isCorrigidaAgente() {
+		return corrigidaAgente;
+	}
+
+	public void setCorrigidaAgente(boolean corrigidaAgente) {
+		this.corrigidaAgente = corrigidaAgente;
+	}
+
+	public void setRespAlunoRelOpcaoE(String respAlunoRelOpcaoE) {
+		RespAlunoRelOpcaoE = respAlunoRelOpcaoE;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((RespAlunoRelOpcaoA == null) ? 0 : RespAlunoRelOpcaoA.hashCode());
+		result = prime * result + ((RespAlunoRelOpcaoB == null) ? 0 : RespAlunoRelOpcaoB.hashCode());
+		result = prime * result + ((RespAlunoRelOpcaoC == null) ? 0 : RespAlunoRelOpcaoC.hashCode());
+		result = prime * result + ((RespAlunoRelOpcaoD == null) ? 0 : RespAlunoRelOpcaoD.hashCode());
+		result = prime * result + ((RespAlunoRelOpcaoE == null) ? 0 : RespAlunoRelOpcaoE.hashCode());
 		result = prime * result + ((aluno == null) ? 0 : aluno.hashCode());
 		result = prime * result + ((avaliacao == null) ? 0 : avaliacao.hashCode());
+		result = prime * result + (corrigidaAgente ? 1231 : 1237);
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((obsAlunoQuestao == null) ? 0 : obsAlunoQuestao.hashCode());
 		result = prime * result + ((questao == null) ? 0 : questao.hashCode());
@@ -232,6 +295,31 @@ public class Respostas implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Respostas other = (Respostas) obj;
+		if (RespAlunoRelOpcaoA == null) {
+			if (other.RespAlunoRelOpcaoA != null)
+				return false;
+		} else if (!RespAlunoRelOpcaoA.equals(other.RespAlunoRelOpcaoA))
+			return false;
+		if (RespAlunoRelOpcaoB == null) {
+			if (other.RespAlunoRelOpcaoB != null)
+				return false;
+		} else if (!RespAlunoRelOpcaoB.equals(other.RespAlunoRelOpcaoB))
+			return false;
+		if (RespAlunoRelOpcaoC == null) {
+			if (other.RespAlunoRelOpcaoC != null)
+				return false;
+		} else if (!RespAlunoRelOpcaoC.equals(other.RespAlunoRelOpcaoC))
+			return false;
+		if (RespAlunoRelOpcaoD == null) {
+			if (other.RespAlunoRelOpcaoD != null)
+				return false;
+		} else if (!RespAlunoRelOpcaoD.equals(other.RespAlunoRelOpcaoD))
+			return false;
+		if (RespAlunoRelOpcaoE == null) {
+			if (other.RespAlunoRelOpcaoE != null)
+				return false;
+		} else if (!RespAlunoRelOpcaoE.equals(other.RespAlunoRelOpcaoE))
+			return false;
 		if (aluno == null) {
 			if (other.aluno != null)
 				return false;
@@ -241,6 +329,8 @@ public class Respostas implements Serializable {
 			if (other.avaliacao != null)
 				return false;
 		} else if (!avaliacao.equals(other.avaliacao))
+			return false;
+		if (corrigidaAgente != other.corrigidaAgente)
 			return false;
 		if (id == null) {
 			if (other.id != null)

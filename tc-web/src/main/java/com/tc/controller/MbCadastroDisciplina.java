@@ -30,7 +30,6 @@ public class MbCadastroDisciplina implements Serializable {
 	private String caminhoOrigem;
 	
 	public MbCadastroDisciplina() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String novaDisciplina() {

@@ -1,9 +1,16 @@
 package com.tc.controller;
 
+import static com.tc.agentes.PlataformaAgentes.getMapEmCorrecao;
+import static com.tc.agentes.PlataformaAgentes.getMapInformacoes;
+import static com.tc.agentes.PlataformaAgentes.getMapMensagensUsuarios;
+import static com.tc.controller.MbLoginController.getUsuarioLogado;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
+import static com.tc.util.IavaliarGlobal.SOLICITACAO_CORRECAO;
 import static com.tc.util.IavaliarGlobal.STATUS_AVALIACAO_PENDETE;
 import static com.tc.util.IntegerUtil.ZERO;
+import static java.lang.Boolean.TRUE;
 import static javax.faces.application.FacesMessage.SEVERITY_INFO;
+import static javax.faces.context.FacesContext.getCurrentInstance;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.Date;
@@ -16,16 +23,25 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.tc.agentes.PlataformaAgentes;
+import com.tc.beans.BeanMensagem;
+import com.tc.beans.BeanSolicitacao;
 import com.tc.data.AvaliacoesBeanDao;
+import com.tc.data.HistoricoResponderAvalicaoBeanDao;
 import com.tc.data.QuestaoBeanDao;
 import com.tc.data.RespostasBeanDao;
 import com.tc.model.Aluno;
 import com.tc.model.Avaliacoes;
+import com.tc.model.HistoricoResponderAvaliacao;
 import com.tc.model.Respostas;
+import com.tc.util.IavaliarUtil;
+
+import jade.core.Agent;
 
 @ManagedBean
 @SessionScoped
-public class MbResponderAvaliacao {
+public class MbResponderAvaliacao extends Agent {
+	private static final long serialVersionUID = 3343701879628402434L;
 
 	@EJB
 	AvaliacoesBeanDao daoAvaliacoes;
@@ -33,6 +49,8 @@ public class MbResponderAvaliacao {
 	QuestaoBeanDao daoQuestao;
 	@EJB
 	RespostasBeanDao daoRespostas;
+	@EJB
+	HistoricoResponderAvalicaoBeanDao daoHistorico;
 
 	private Avaliacoes avaliacoes;
 
@@ -45,18 +63,66 @@ public class MbResponderAvaliacao {
 	private boolean confirmouInicio;
 
 	private List<Respostas> respostas;
+	
+	private long tempoInicial;
+
+	private BeanMensagem msg;
+
+	/**
+	 * Método para buscar as informações que o agente professor colocou no map
+	 * de informações
+	 */
+	private void atualizaRespostas() {
+		boolean isAguardar = true;
+		while (isAguardar) {
+			if (getMapInformacoes().containsKey(getUsuarioLogado().getLogin())) {
+				isAguardar = false;
+			}
+		}
+		Respostas respostasRecebida = (Respostas) getMapInformacoes().get(getUsuarioLogado().getLogin());
+
+		if (respostasRecebida != null) {
+			getRespostas().get(getIndiceQuestao())
+					.setRespondeuCorretamente(respostasRecebida.isRespondeuCorretamente());
+			getRespostas().get(getIndiceQuestao()).setCorrigidaAgente(respostasRecebida.isCorrigidaAgente());
+		}
+
+		getMapInformacoes().remove(getUsuarioLogado().getLogin());
+	}
+
+	private void exibeMensagem() {
+		// Aguarda agente terminar correção da questão
+		boolean isAguardar = true;
+		while (isAguardar) {
+			if (!getMapEmCorrecao().containsKey(getUsuarioLogado().getLogin())) {
+				isAguardar = false;
+			}
+		}
+		BeanMensagem msg = getMapMensagensUsuarios().get(getUsuarioLogado().getLogin());
+
+		if (msg != null) {
+			getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_INFO, msg.getMensagem(), msg.getDetalhe()));
+			// Remonve correção pendende para o usuário
+			PlataformaAgentes.getMapEmCorrecao().remove(getUsuarioLogado().getLogin());
+			// Remove as mensagens deposiadas para o usuário
+			PlataformaAgentes.getMapMensagensUsuarios().remove(getUsuarioLogado().getLogin());
+			// Para atualizar a resposta na base de daos
+		}
+
+	}
 
 	@PostConstruct
 	public void init() {
 		setAvaliacoes(new Avaliacoes());
 		setIndiceQuestao(0);
-		setIndiceQuestaoAnterior(0);
 	}
+
 
 	/**
 	 * Método que carrega para as respostas para a lista
 	 */
 	public void inicializaListaDeRespostas() {
+		tempoInicial = System.currentTimeMillis();
 		if (getAvaliacoes() != null && getAvaliacoes().getId() != null) {
 			try {
 				setRespostas(daoRespostas.buscaRespostasParaAvalaicaoAluno((Aluno) getAvaliacoes().getAluno(),
@@ -92,6 +158,9 @@ public class MbResponderAvaliacao {
 	public void retarnaQuestao() {
 		// Atualiza indice
 		try {
+			geraHistorico();
+			solicitaCorrecao();
+			atualizaRespostas();
 			setIndiceQuestao(getIndiceQuestao() - 1);
 			if (getIndiceQuestao() < ZERO) {
 				setIndiceQuestao(ZERO);
@@ -100,15 +169,60 @@ public class MbResponderAvaliacao {
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(SEVERITY_INFO, "Erro ao localizar questão anterior.", e.getMessage()));
+		}finally {
+			exibeMensagem();
 		}
 
 	}
 
+	private void geraHistorico(){
+		HistoricoResponderAvaliacao hist = new HistoricoResponderAvaliacao();
+		hist.setAluno(getAvaliacoes().getAluno()); 
+		hist.setAvaliacao(getAvaliacoes().getAvaliacao()); 
+		hist.setQuestao(getAvaliacoes().getAvaliacao().getQuestoesAvaliacao().get(getIndiceQuestao()).getQuestao());
+		
+		hist.setTempoRespondendo(System.currentTimeMillis() - tempoInicial);
+		daoHistorico.create(hist);
+		tempoInicial = System.currentTimeMillis();
+		
+		try {
+			long count = daoHistorico.tempoMedioPorQuestao(getAvaliacoes().getAvaliacao().getQuestoesAvaliacao().get(getIndiceQuestao()).getQuestao());
+			
+			System.out.println("Data: "+ IavaliarUtil.formatarHoraComSegundos(new Date(count)));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+				
+	}
+	
+	private void solicitaCorrecao() {
+		try {
+			getMapEmCorrecao().put(getUsuarioLogado().getLogin(), TRUE);
+			BeanSolicitacao bean = new BeanSolicitacao();
+			bean.setSolicitacao(SOLICITACAO_CORRECAO);
+			bean.setRespostas(getRespostas().get(getIndiceQuestao()));
+			bean.setIndiceQuestao(getIndiceQuestao() + 1);
+			bean.setLoginUsuario(getUsuarioLogado().getLogin());
+			PlataformaAgentes.enviaSolicitacaoServico(bean);
+
+		} catch (Exception e) {
+			getMapEmCorrecao().remove(getUsuarioLogado().getLogin());
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Método atualiza indice de questões da avaliação
+	 * 
+	 * @throws InterruptedException
 	 */
-	public void avanvaQuestao() {
+	public void avancaQuestao() throws InterruptedException {
 		try {
+			geraHistorico();
+			solicitaCorrecao();
+			atualizaRespostas();
+			
 			setIndiceQuestao(getIndiceQuestao() + 1);
 			if (getIndiceQuestao() > getAvaliacoes().getAvaliacao().getQuestoesAvaliacao().size() - 1) {
 				setIndiceQuestao(getAvaliacoes().getAvaliacao().getQuestoesAvaliacao().size() - 1);
@@ -118,6 +232,8 @@ public class MbResponderAvaliacao {
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(SEVERITY_INFO, "Erro ao localizar a próxima questão!", e.getMessage()));
+		} finally {
+			exibeMensagem();
 		}
 
 	}
@@ -128,27 +244,22 @@ public class MbResponderAvaliacao {
 			getAvaliacoes().setDtaRespondida(new Date());
 			getAvaliacoes().setStatusAvaliacao(STATUS_AVALIACAO_PENDETE);
 			getAvaliacoes().getAvaliacao().setRespostas(getRespostas());
-			
+
 			// Salva a avaliação
 			daoAvaliacoes.update(getAvaliacoes());
-			
-			
+
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(SEVERITY_INFO, "Erro ao finalizar a avalição.", e.getMessage()));
 		}
 
-		//Cria novas isntancias para próxima avaliação;
+		// Cria novas isntancias para próxima avaliação;
 		setAvaliacoes(new Avaliacoes());
 		setIndiceQuestao(0);
 		setIndiceQuestaoAnterior(0);
 
+		// pararAtualizador();
 		return goBack();
-	}
-
-
-	public void setaCaminhoOrigem(String origem) {
-		this.caminhoOrigem = origem;
 	}
 
 	/**
@@ -190,7 +301,7 @@ public class MbResponderAvaliacao {
 		return caminhoOrigem;
 	}
 
-	public void setCaminhoOrigem(String caminhoOrigem) {
+	public void setaCaminhoOrigem(String caminhoOrigem) {
 		this.caminhoOrigem = caminhoOrigem;
 	}
 
@@ -226,4 +337,13 @@ public class MbResponderAvaliacao {
 		this.respostas = respostas;
 	}
 
+	public BeanMensagem getMsg() {
+		return msg;
+	}
+
+	public void setMsg(BeanMensagem msg) {
+		this.msg = msg;
+	}
+
+	
 }

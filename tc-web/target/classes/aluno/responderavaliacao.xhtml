@@ -250,8 +250,9 @@
 		<h:form rendered="#{mbResponderAvaliacao.confirmouInicio}">
 			<p:panel id="basic" style="margin-bottom:20px">
 
+<!-- update="@form: formGeral" -->
 				<h:panelGrid columns="4">
-					<p:commandLink process="@form :formGeral" update="@form: formGeral"
+					<p:commandLink process="@form :formGeral" update="@all"
 						action="#{mbResponderAvaliacao.retarnaQuestao()}"
 						title="Questão Anterior">
 						<p:graphicImage library="imagens" name="seta_esquerda.png"
@@ -308,26 +309,26 @@
 					</h:panelGrid>
 
 
-					<p:commandLink process="@form :formGeral" update="@form: formGeral"
-						action="#{mbResponderAvaliacao.avanvaQuestao()}"
+					<p:commandLink process="@form :formGeral" update="@all"
+						action="#{mbResponderAvaliacao.avancaQuestao()}"
 						title="Próxima Questão">
 						<p:graphicImage library="imagens" name="seta_direita.png"
 							style="border:0" />
-						
+
 					</p:commandLink>
 					
-					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-							<p:commandButton value="Sim" type="button"
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"  >
+							<p:commandButton value="Continuar" type="button"
 								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-							<p:commandButton value="Não" type="button"
+							<p:commandButton value="Voltar" type="button"
 								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 						</p:confirmDialog>
 						
 				<h:panelGrid style="float:left; margin-right:20" >
-					<p:commandButton value="Conlcuir Avaliação" process="@all" update="@all"
-							actionListener="#{mbResponderAvaliacao.concluirAvaliacao()}" icon="ui-icon-disk" >
+					<p:commandButton value="Conlcuir Avaliação" update="@all" process="@all"
+							action="#{mbResponderAvaliacao.concluirAvaliacao()}" icon="ui-icon-disk" >
 							<p:confirm header="Atenção" message="Deseja gravar respostas e encerrar a avaliação?"
-								icon="ui-icon-alert" />
+								icon="ui-icon-alert"  />
 						</p:commandButton>
 				</h:panelGrid>
 

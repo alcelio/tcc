@@ -6,9 +6,8 @@ create database tcc_banco;
 INSERT INTO `Sexo` (`IdSexo`,`dsSexo`) VALUES 
  (1,'MASCULINO'),
  (2,'FEMININO');
-
-
-
+ 
+ 
  INSERT INTO `Serie`(`idSerie`,`dsSerie`) VALUES
 (1,'1° ANO'),
 (2,'2° ANO'),

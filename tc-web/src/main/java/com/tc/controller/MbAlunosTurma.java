@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import com.tc.data.AlunosTurmaBeanDao;
 import com.tc.data.AvaliacaoBeanDao;
 import com.tc.data.AvaliacoesBeanDao;
+import com.tc.data.RespostasBeanDao;
 import com.tc.data.TurmaBeanDao;
 import com.tc.data.UsuarioBeanDao;
 import com.tc.model.AlunosTurma;
@@ -39,6 +40,8 @@ public class MbAlunosTurma implements Serializable {
 	private AvaliacaoBeanDao daoAvaliacao;
 	@EJB
 	private AvaliacoesBeanDao daoAvaliacoes;
+	@EJB
+	private RespostasBeanDao daoRespostas;
 
 	private List<AlunosTurma> turmasAluno;
 	private Turma turma;
@@ -62,7 +65,7 @@ public class MbAlunosTurma implements Serializable {
 	}
 
 	public void addAlunoTurma() throws Exception {
-		
+
 		AlunosTurma ta = new AlunosTurma();
 		AlunosTurmaPK pk = new AlunosTurmaPK();
 		pk.setIdTurma(turma.getIdTurma());
@@ -73,17 +76,17 @@ public class MbAlunosTurma implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Aluno já está cadastrado nesta turma.", ""));
 			return;
 		}
-		
-		//busca todas as avaliações existentes para esta turma;
+
+		// busca todas as avaliações existentes para esta turma;
 		List<Avaliacao> avalicoes = daoAvaliacao.listarAvaliacoesPorTurma(getTurma());
-		if(avalicoes != null && avalicoes.size() > 0){
+		if (avalicoes != null && avalicoes.size() > 0) {
 			for (Avaliacao avaliacao : avalicoes) {
-				if(avaliacao.getDataFimAvaliacao().after(new Date())){
+				if (avaliacao.getDataFimAvaliacao().after(new Date())) {
 					daoAvaliacoes.incluiAvaliacaoParaAluno(getUsuarioLogado(), avaliacao);
 				}
 			}
 		}
-		
+
 		ta.setId(pk);
 		ta.setAluno(MbLoginController.getUsuarioLogado());
 		ta.setTurma(turma);

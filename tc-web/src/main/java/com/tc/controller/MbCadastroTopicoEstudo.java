@@ -41,7 +41,6 @@ public class MbCadastroTopicoEstudo implements Serializable {
 	private BeanCabecalhoQuestoes beanCabecalho =  new BeanCabecalhoQuestoes();
 	
 	 public MbCadastroTopicoEstudo() {
-		// TODO Auto-generated constructor stub
 	}
 	 
 	/**

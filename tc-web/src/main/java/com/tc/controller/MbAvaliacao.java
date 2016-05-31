@@ -149,7 +149,12 @@ public class MbAvaliacao implements Serializable {
 	}
 
 	private void atualizar() {
-		dao.update(getAvaliacao());
+		try {
+			dao.update(getAvaliacao());
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(SEVERITY_INFO, "Erro ao atualizar avaliação.", e.getMessage()));
+		}
 	}
 
 	private void salvar() {

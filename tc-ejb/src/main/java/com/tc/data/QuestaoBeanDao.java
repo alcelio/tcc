@@ -14,6 +14,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.tc.model.Questao;
+import com.tc.model.QuestaoObjetiva;
 import com.tc.util.CriaCriteria;
 
 /**
@@ -43,7 +44,7 @@ public class QuestaoBeanDao implements Serializable{
     	em.remove(em.getReference(Questao.class, entidade.getIdQuestao()));  
     }
     
-    public List<Questao> listarQuestoes (){
+	public List<Questao> listarQuestoes () throws Exception{
     	return em.createNamedQuery("Questao.findAll", Questao.class).getResultList();
     }
     
@@ -57,5 +58,16 @@ public class QuestaoBeanDao implements Serializable{
 			throw new Exception("Erro ao carregar Questão no banco de dados.", e);
 		}
 	}
-    
+	
+	public QuestaoObjetiva buscaQuestaoObjetivaPorId(Integer idQuestao) throws Exception {
+		final Session session = em.unwrap(Session.class);
+		try {
+			final Criteria crit = CriaCriteria.createCriteria(QuestaoObjetiva.class, session);
+			crit.add(Restrictions.eq("idQuestao", idQuestao));
+			return (QuestaoObjetiva) crit.uniqueResult();
+		} catch (final Exception e) {
+			throw new Exception("Erro ao carregar Questão no banco de dados.", e);
+		}
+	}
+	
 }

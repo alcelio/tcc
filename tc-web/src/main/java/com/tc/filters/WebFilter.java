@@ -36,7 +36,6 @@ public class WebFilter implements Filter {
 			arg2.doFilter(req, resp);
 		} finally {
 			long tempoFinal = System.currentTimeMillis();
-
 			System.out.println("Tempo da requisicao: " + uri + " - (ms): "
 					+ (tempoFinal - tempoInicial));
 		}

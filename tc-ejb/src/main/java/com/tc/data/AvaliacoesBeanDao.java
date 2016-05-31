@@ -23,8 +23,11 @@ import com.tc.model.Avaliacao;
 import com.tc.model.Avaliacoes;
 import com.tc.model.Disciplina;
 import com.tc.model.Professor;
+import com.tc.model.QuestoesAvaliacao;
+import com.tc.model.Respostas;
 import com.tc.model.Usuario;
 import com.tc.model.PK.AvalicoesPK;
+import com.tc.model.PK.RespostaPK;
 import com.tc.util.CriaCriteria;
 
 /**
@@ -178,6 +181,9 @@ public class AvaliacoesBeanDao implements Serializable {
 	 * @throws Exception
 	 */
 	public void incluiAvaliacaoParaAluno(Usuario usuario, Avaliacao entidade) throws Exception {
+
+		Avaliacoes avaliacoes = null;
+
 		try {
 			AvalicoesPK pk = new AvalicoesPK();
 			pk.setIdAluno(usuario.getIdUsuario());
@@ -185,17 +191,55 @@ public class AvaliacoesBeanDao implements Serializable {
 
 			Avaliacao avaliacao = daoAvaliacao.buscaPorId(entidade.getIdAvaliacao());
 
-			Avaliacoes avaliacoes = new Avaliacoes();
+			avaliacoes = new Avaliacoes();
 			avaliacoes.setId(pk);
 			avaliacoes.setAluno(daoUsuario.buscaUsuarioPorId(usuario.getIdUsuario()));
 			avaliacoes.setProfessor(daoUsuario.buscaUsuarioPorId(avaliacao.getProfessor().getIdUsuario()));
 			avaliacoes.setAvaliacao(avaliacao);
 			avaliacoes.setStatusAvaliacao(STATUS_AVALIACAO_AGUARDANDO_INICIO);
 			create(avaliacoes);
+			criaRespostasParaAvaliacao(usuario, avaliacoes);
 		} catch (Exception e) {
-			throw new Exception("Erro incluir avaliação para o aluno [" + usuario.getNome() + "]" + e.getMessage());
+			em.remove(avaliacoes);
+			throw new Exception("Erro incluir avaliação para o aluno [" + usuario.getNome() + "]", e);
 		}
 
+	}
+
+	/**
+	 * Método que cria as entradas para respostas das questões da avaliação para
+	 * cada aluno
+	 * 
+	 * @param usuario
+	 * @param avalicoes
+	 * @throws Exception
+	 */
+	private void criaRespostasParaAvaliacao(Usuario usuario, Avaliacoes avalicoes) throws Exception {
+		try {
+			List<Respostas> listaRespostas = new ArrayList<Respostas>();
+			Respostas resp;
+			RespostaPK pk;
+			List<QuestoesAvaliacao> listaQuestoes = avalicoes.getAvaliacao().getQuestoesAvaliacao();
+			for (QuestoesAvaliacao questaoAvaliacao : listaQuestoes) {
+				resp = new Respostas();
+				pk = new RespostaPK();
+				pk.setIdAluno(usuario.getIdUsuario());
+				pk.setIdAvaliacao(questaoAvaliacao.getId().getIdAvaliacao());
+				pk.setIdQuestao(questaoAvaliacao.getId().getIdQuestao());
+				resp.setId(pk);
+				resp.setQuestao(questaoAvaliacao.getQuestao());
+				resp.setAvaliacao(questaoAvaliacao.getAvaliacao());
+				resp.setAluno(usuario);
+//				em.persist(resp);
+				listaRespostas.add(resp);
+				
+			}
+			Avaliacao avaliacao = daoAvaliacao.buscaPorId(avalicoes.getAvaliacao().getIdAvaliacao());
+			avaliacao.setRespostas(listaRespostas);
+			daoAvaliacao.update(avaliacao);
+		} catch (Exception e) {
+			throw new Exception("Erro ao criar entrada para respospostas da avaliação.", e);
+		}
 	}
 
 	/**

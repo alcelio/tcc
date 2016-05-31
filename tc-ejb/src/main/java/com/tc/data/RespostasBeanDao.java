@@ -42,6 +42,11 @@ public class RespostasBeanDao implements Serializable {
 	@EJB
 	UsuarioBeanDao daoUsuario;
 	
+    
+	public void update(Respostas entidade){
+    	em.merge(entidade);
+    }
+	
 
 	public RespostasBeanDao() {
 	}

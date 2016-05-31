@@ -13,7 +13,6 @@ public class RespostaPK implements Serializable {
 	private Integer idQuestao;
 	
 	public RespostaPK() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getIdAluno() {

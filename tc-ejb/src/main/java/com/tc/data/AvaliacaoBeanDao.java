@@ -69,8 +69,7 @@ public class AvaliacaoBeanDao implements Serializable {
 			daoAvaliacoes.incluiAvalicoesParaTurma(usuario, entidade);
 		} catch (Exception e) {
 			em.remove(avaliacao);
-			e.printStackTrace();
-			throw new Exception("Erro ao persistir dados da avaliação." + e.getMessage());
+			throw new Exception("Erro ao persistir dados da avaliação.", e);
 		}
 
 		try {
@@ -96,14 +95,18 @@ public class AvaliacaoBeanDao implements Serializable {
 			em.merge(avaliacao);
 		} catch (Exception e) {
 			em.remove(avaliacao);
-			e.printStackTrace();
-			throw new Exception("Erro ao persistir dados da avaliação." + e.getMessage());
+			throw new Exception("Erro ao persistir dados da avaliação.", e);
 		}
 
 	}
 
-	public void update(Avaliacao entidade) {
-		em.merge(entidade);
+	public void update(Avaliacao entidade) throws Exception {
+		try {
+			em.merge(entidade);
+		} catch (Exception e) {
+			throw new Exception("Erro ao atualizar avaliação [idAvaliacao: "+entidade.getIdAvaliacao()+"].", e);
+		}
+
 	}
 
 	public void remove(Avaliacao entidade) {
@@ -113,206 +116,6 @@ public class AvaliacaoBeanDao implements Serializable {
 	public List<Avaliacao> listarAvaliacoes() {
 		return em.createNamedQuery("Avaliacao.findAll", Avaliacao.class).getResultList();
 	}
-
-	// /**
-	// * Método que retorna as avaliações para o aluno, turma e disciplinas
-	// * informados, parametros nulos serão desconsiderados
-	// *
-	// * @param usuario
-	// * @param statusAvaliacao
-	// * @param disciplina
-	// * @return {@link List} Avaliacao
-	// * @throws Exception
-	// */
-	// public List<Avaliacao> listarAvaliacoesAluno(Usuario usuario, String
-	// statusAvaliacao,
-	// Disciplina disciplina) throws Exception {
-	//
-	// if (usuario != null && usuario.getIdUsuario() != null
-	// && (statusAvaliacao == null || statusAvaliacao == null)
-	// && (disciplina == null || disciplina.getIdDisciplina() == null))
-	// return listarAvaliacoesAluno(usuario);
-	//
-	// if (usuario != null && usuario.getIdUsuario() != null
-	// && (statusAvaliacao == null || statusAvaliacao == null) && disciplina !=
-	// null
-	// && disciplina.getIdDisciplina() != null)
-	// return listarAvaliacoesAlunoPorDisciplina(listarAvaliacoesAluno(usuario),
-	// disciplina);
-	//
-	// if (usuario.getIdUsuario() != null && (disciplina == null ||
-	// disciplina.getIdDisciplina() == null)
-	// && statusAvaliacao != null && statusAvaliacao != null)
-	// return
-	// listarAvaliacoesAlunoPorStatusAvalicao(listarAvaliacoesAluno(usuario),
-	// statusAvaliacao);
-	//
-	// if (usuario.getIdUsuario() != null && statusAvaliacao != null &&
-	// statusAvaliacao != null
-	// && disciplina != null && disciplina.getIdDisciplina() != null)
-	// return
-	// listarAvaliacoesAlunoPorStatusAvalicaoDisciplina(listarAvaliacoesAluno(usuario),
-	// statusAvaliacao,
-	// disciplina);
-	// return null;
-	// }
-
-	// /**
-	// * Método que retorna as avaliações da lista informada cuja a discipla e
-	// * status de avaliações sejam iguais aos parametros informados para
-	// * disciplina e status
-	// *
-	// * @param avaliacoes
-	// * @param status
-	// * @return
-	// */
-	// private List<Avaliacao>
-	// listarAvaliacoesAlunoPorStatusAvalicaoDisciplina(List<Avaliacao>
-	// avaliacoes,
-	// String status, Disciplina disciplina) {
-	// List<Avaliacao> retorno = new ArrayList<>();
-	//
-	// if (avaliacoes != null && status != null) {
-	// for (Avaliacao avaliacao : avaliacoes) {
-	// if (avaliacao.getStatusAvaliacao().equals(status)
-	// &&
-	// avaliacao.getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina()))
-	// retorno.add(avaliacao);
-	// }
-	// return retorno;
-	//
-	// }
-	// return null;
-	// }
-
-	// /**
-	// * Método que retorna as avaliações da lista informada cujas a discipla,
-	// * status de avaliações e turma sejam iguais aos parametros informados
-	// para
-	// * disciplina e status e turma
-	// *
-	// * @param avaliacoes
-	// * @param status
-	// * @return
-	// */
-	// private List<Avaliacao>
-	// listarAvaliacoesProfessorPorStatusAvalicaoDisciplinaTurma(List<Avaliacao>
-	// avaliacoes,
-	// String status, Disciplina disciplina, Turma turma) {
-	// List<Avaliacao> retorno = new ArrayList<>();
-	//
-	// if (avaliacoes != null && status != null) {
-	// for (Avaliacao avaliacao : avaliacoes) {
-	// if (avaliacao.getStatusAvaliacao().equals(status)
-	// &&
-	// avaliacao.getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina())
-	// && avaliacao.getTurma().getIdTurma().equals(turma.getIdTurma()))
-	// retorno.add(avaliacao);
-	// }
-	// return retorno;
-	//
-	// }
-	// return null;
-	// }
-
-	// /**
-	// * Método que retorna as avaliações da lista informada cuja a discipla é
-	// * igual a disciplina informa por parametro
-	// *
-	// * @param avaliacoes
-	// * @param status
-	// * @return
-	// */
-	// private List<Avaliacao>
-	// listarAvaliacoesAlunoPorStatusAvalicao(List<Avaliacao> avaliacoes, String
-	// status) {
-	// List<Avaliacao> retorno = new ArrayList<>();
-	//
-	// if (avaliacoes != null && status != null) {
-	// for (Avaliacao avaliacao : avaliacoes) {
-	// if (avaliacao.getStatusAvaliacao().equals(status))
-	// retorno.add(avaliacao);
-	// }
-	// return retorno;
-	//
-	// }
-	// return null;
-	// }
-
-	// /**
-	// * Método que retorna as avaliações da lista informada cuja a discipla é
-	// * igual a disciplina informa por parametro
-	// *
-	// * @param avaliacoes
-	// * @param disciplina
-	// * @return
-	// */
-	// private List<Avaliacao>
-	// listarAvaliacoesAlunoPorDisciplina(List<Avaliacao> avaliacoes, Disciplina
-	// disciplina) {
-	// List<Avaliacao> retorno = new ArrayList<>();
-	//
-	// if (avaliacoes != null && disciplina != null) {
-	// for (Avaliacao avaliacao : avaliacoes) {
-	// if
-	// (avaliacao.getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina()))
-	// retorno.add(avaliacao);
-	// }
-	// return retorno;
-	//
-	// }
-	// return null;
-	// }
-
-	// /**
-	// * Método que retorna as avaliações da lista informada cuja a discipla e
-	// status sejam
-	// * igual a disciplina e status informados por parametro
-	// *
-	// * @param avaliacoes
-	// * @param disciplina
-	// * @return
-	// */
-	// private List<Avaliacao>
-	// listarAvaliacoesProfessorPorDisciplinaStatus(List<Avaliacao> avaliacoes,
-	// Disciplina disciplina, String statusAvaliacao) {
-	// List<Avaliacao> retorno = new ArrayList<>();
-	//
-	// if (avaliacoes != null && disciplina != null) {
-	// for (Avaliacao avaliacao : avaliacoes) {
-	// if
-	// (avaliacao.getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina())
-	// && avaliacao.getStatusAvaliacao().equals(statusAvaliacao))
-	// retorno.add(avaliacao);
-	// }
-	// return retorno;
-	// }
-	// return null;
-	// }
-
-	// /**
-	// * Método que retorna as avaliações da lista informada cuja a discipla é
-	// * igual a disciplina informa por parametro
-	// *
-	// * @param avaliacoes
-	// * @param disciplina
-	// * @return
-	// */
-	// private List<Avaliacao>
-	// listarAvaliacoesProfessorPorDisciplina(List<Avaliacao> avaliacoes,
-	// Disciplina disciplina) {
-	// List<Avaliacao> retorno = new ArrayList<>();
-	//
-	// if (avaliacoes != null && disciplina != null) {
-	// for (Avaliacao avaliacao : avaliacoes) {
-	// if
-	// (avaliacao.getDisciplina().getIdDisciplina().equals(disciplina.getIdDisciplina()))
-	// retorno.add(avaliacao);
-	// }
-	// return retorno;
-	// }
-	// return null;
-	// }
 
 	/**
 	 * * Método que retorna as avaliações da lista informada cuja a turma é

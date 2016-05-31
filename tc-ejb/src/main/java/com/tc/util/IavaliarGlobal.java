@@ -1,6 +1,48 @@
 package com.tc.util;
 
 public class IavaliarGlobal {
+
+	public static final String SOLICITACAO_FOGO ="Fogo";
+	public static final String SOLICITACAO_LADRAO ="Ladrao";
+	public static final String SOLICITACAO_DOENTE ="Doente";
+	public static final String SERVICO_PRENDER_LADRAO ="Prender Ladrao";
+	public static final String SERVICO_APAGAR_FOGO ="Apagar Fogo";
+	public static final String SERVICO_CURAR_DOENCA ="Salvar vidas";
+	
+	/**
+	 * Guarda chave como nome identificar avanço de uma questão para outra
+	 */
+	public static final String AVANCOU_QUESTAO ="AVANCOU";
+	
+	/**
+	 * Guarda chave como nome para identificar o retorno de uma questão para outra
+	 */
+	public static final String RETORNO_QUESTAO ="RETORNOU";
+	
+	
+	/**
+	 * Indicando o nome para o servico de correção de respostas
+	 */
+	public static final String SOLICITACAO_CORRECAO ="Correcao";
+	
+	
+	/**
+	 * Guarda o nome para o pedido de correção de questão
+	 */
+	public static final String SERVICO_CORRIGIR_QUESTAO ="Corrigir Questao";
+	
+	
+	public static final String AGENTE_CORRETOR = "Corretor";
+	
+	public static final String AGENTE_BOMBEIRO = "Bombeiro";
+	
+	public static final String AGENTE_SOLICITANTE = "Solicitante";
+	
+	public static final String AGENTE_RESPOSNDER_AVALIACAO = "Responder";
+
+	public static final String PREFIXO_AGENTE_ALUNO = "AgenteAluno";
+	
+	public static final String PREFIXO_AGENTE_PROFESSOR = "AgenteProfessor";
 	/**
 	 * Indica o status de avaliação corrigida
 	 */

@@ -29,27 +29,6 @@ public class MbCadastroAluno implements Serializable {
 	private String confirmaSenha;
 	private String caminhoOrigem;
 	
-	public Aluno getAluno(){
-		if(aluno == null){
-			aluno = new Aluno();
-		}
-		return aluno;
-	}
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
-	}
-	public String getConfirmaSenha() {
-		return confirmaSenha;
-	}
-	public void setConfirmaSenha(String confirmaSenha) {
-		this.confirmaSenha = confirmaSenha;
-	}
-	public String getCaminhoOrigem() {
-		return caminhoOrigem;
-	}
-	public void setCaminhoOrigem(String vaminhoOrigem) {
-		this.caminhoOrigem = vaminhoOrigem;
-	}
 	
 	public String goBack() {
 		if(isBlank(caminhoOrigem)){
@@ -85,6 +64,27 @@ public class MbCadastroAluno implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "As senhas não conferem.", ""));
 		}
 	}
-
-
+	
+	public Aluno getAluno(){
+		if(aluno == null){
+			aluno = new Aluno();
+		}
+		return aluno;
+	}
+	
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
+	public String getConfirmaSenha() {
+		return confirmaSenha;
+	}
+	public void setConfirmaSenha(String confirmaSenha) {
+		this.confirmaSenha = confirmaSenha;
+	}
+	public String getCaminhoOrigem() {
+		return caminhoOrigem;
+	}
+	public void setCaminhoOrigem(String vaminhoOrigem) {
+		this.caminhoOrigem = vaminhoOrigem;
+	}
 }
