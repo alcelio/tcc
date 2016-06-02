@@ -1,5 +1,7 @@
 package com.tc.data;
 
+import static com.tc.util.IavaliarGlobal.QUESTAO_DISSERTATIVA;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -19,8 +21,10 @@ import com.tc.model.AlunosTurma;
 import com.tc.model.Avaliacao;
 import com.tc.model.QuestoesAvaliacao;
 import com.tc.model.Respostas;
+import com.tc.model.Usuario;
 import com.tc.model.PK.RespostaPK;
 import com.tc.util.CriaCriteria;
+import com.tc.util.IavaliarGlobal;
 
 /**
  * Session Bean implementation class UsuarioBeanDao
@@ -82,6 +86,26 @@ public class RespostasBeanDao implements Serializable {
 			return crit.list();
 		} catch (final Exception e) {
 			throw new Exception("Erro ao carregar dados da tabela.", e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Respostas> buscarDissertativas(Usuario aluno, Avaliacao avaliacao) throws Exception {
+		
+		final Session session = em.unwrap(Session.class);
+		
+		try {
+			final Criteria crit = CriaCriteria.createCriteria(Respostas.class, session);
+			
+			crit.add(Restrictions.eq("aluno", aluno)).add(Restrictions.eq("avaliacao", avaliacao));
+			crit.createCriteria("questao").add(Restrictions.eq("tipoQuestao", QUESTAO_DISSERTATIVA));
+			
+			return crit.list();
+
+		} catch (final Exception e) {
+		
+			throw new Exception("Erro ao carregar dados da tabela.", e);
+		
 		}
 	}
 

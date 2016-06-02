@@ -47,6 +47,7 @@ public class Avaliacao implements Serializable {
 	private String criteriosCorrecao;
 	private Long notaMaxima;
 	private String conceitoGeral;
+	private boolean concluida;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idDisciplina")
@@ -189,11 +190,20 @@ public class Avaliacao implements Serializable {
 		this.questoesAvaliacao = questoesAvaliacao;
 	}
 
+	public boolean isConcluida() {
+		return concluida;
+	}
+
+	public void setConcluida(boolean concluida) {
+		this.concluida = concluida;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((conceitoGeral == null) ? 0 : conceitoGeral.hashCode());
+		result = prime * result + (concluida ? 1231 : 1237);
 		result = prime * result + ((criteriosCorrecao == null) ? 0 : criteriosCorrecao.hashCode());
 		result = prime * result + ((dataAvaliacao == null) ? 0 : dataAvaliacao.hashCode());
 		result = prime * result + ((dataFimAvaliacao == null) ? 0 : dataFimAvaliacao.hashCode());
@@ -223,6 +233,8 @@ public class Avaliacao implements Serializable {
 			if (other.conceitoGeral != null)
 				return false;
 		} else if (!conceitoGeral.equals(other.conceitoGeral))
+			return false;
+		if (concluida != other.concluida)
 			return false;
 		if (criteriosCorrecao == null) {
 			if (other.criteriosCorrecao != null)

@@ -6,7 +6,6 @@ import static com.tc.util.IavaliarGlobal.PREFIXO_AGENTE_ALUNO;
 import java.io.IOException;
 
 import com.tc.model.Respostas;
-import com.tc.util.IavaliarGlobal;
 
 import jade.core.AID;
 import jade.core.Agent;

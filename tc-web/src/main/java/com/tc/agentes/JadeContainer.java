@@ -17,11 +17,9 @@ public class JadeContainer {
 			AgentController agentControllerBOmbeiro =ac.createNewAgent("Bombeiro", Bombeiro.class.getName(), null);
 			agentControllerBOmbeiro.start();
 			
-			AgentController agentControllerMedico =ac.createNewAgent("Medico", Medico.class.getName(), null);
-			agentControllerMedico.start();
 			
-			AgentController agentControllerPolicial =ac.createNewAgent("Policial", Policial.class.getName(), null);
-			agentControllerPolicial.start();
+//			AgentController agentControllerPolicial =ac.createNewAgent("Policial", Policial.class.getName(), null);
+//			agentControllerPolicial.start();
 			ac.start();
 		} catch (ControllerException e) {
 			e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.tc.data;
 
+import static com.tc.util.IavaliarGlobal.QUESTAO_DISSERTATIVA;
 import static com.tc.util.IavaliarGlobal.STATUS_AVALIACAO_AGUARDANDO_INICIO;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -18,6 +19,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import com.tc.beans.BeanEstatiticasTurma;
 import com.tc.model.AlunosTurma;
 import com.tc.model.Avaliacao;
 import com.tc.model.Avaliacoes;
@@ -25,6 +27,7 @@ import com.tc.model.Disciplina;
 import com.tc.model.Professor;
 import com.tc.model.QuestoesAvaliacao;
 import com.tc.model.Respostas;
+import com.tc.model.Turma;
 import com.tc.model.Usuario;
 import com.tc.model.PK.AvalicoesPK;
 import com.tc.model.PK.RespostaPK;
@@ -53,6 +56,45 @@ public class AvaliacoesBeanDao implements Serializable {
 	RespostasBeanDao daoRespostas;
 
 	public AvaliacoesBeanDao() {
+	}
+
+	/**
+	 * Método que retorna os dados de uma avaliação de uma turma
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Respostas> buscaRespostasAvaliacao(Avaliacao avaliacao, Turma turma, Disciplina disciplina)
+			throws Exception {
+
+		if (avaliacao == null || turma == null || disciplina == null) {
+			throw new Exception("Não é possivel gerar as infomações estatísticas com parametros nulos.");
+		}
+
+		BeanEstatiticasTurma esstatisticas = new BeanEstatiticasTurma();
+		final Session session = em.unwrap(Session.class);
+		try {
+
+			final Criteria crit = CriaCriteria.createCriteria(Avaliacoes.class, session);
+
+			crit.createCriteria("avaliacao").add(Restrictions.eq("disciplina", disciplina))
+					.add(Restrictions.eq("turma", turma)).createCriteria("respostas");
+
+			List<Respostas> listaRespostas = crit.list();
+
+			List<AlunosTurma> alunosTurma = daoAlunosTurma.listarAlunosPorTurma(turma);
+
+			for (AlunosTurma aluno : alunosTurma) {
+
+			}
+
+			esstatisticas.setQtAlunos(alunosTurma.size());
+
+			return null;
+		} catch (Exception e) {
+			throw new Exception("Erro ao gerar as estatísticas sobre a avaliação.." + e.getMessage());
+		}
+
 	}
 
 	/**
@@ -123,6 +165,7 @@ public class AvaliacoesBeanDao implements Serializable {
 				return buscaAvaliacoesPorDisciplina(crit.list(), disciplina);
 
 			return crit.list();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Erro ao obeter lista de avaliações." + e.getMessage());
@@ -151,8 +194,8 @@ public class AvaliacoesBeanDao implements Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Avaliacoes> listarAvaliacoesProfessor(Usuario usuarioLogado, String status, Disciplina disciplina)
-			throws Exception {
+	public List<Avaliacoes> listarAvaliacoesProfessor(Usuario usuarioLogado, String status, Disciplina disciplina,
+			Turma turma) throws Exception {
 		final Session session = em.unwrap(Session.class);
 		try {
 			final Criteria crit = CriaCriteria.createCriteria(Avaliacoes.class, session);
@@ -163,8 +206,19 @@ public class AvaliacoesBeanDao implements Serializable {
 			if (!isBlank(status))
 				crit.add(Restrictions.eq("statusAvaliacao", status));
 
+			if (turma != null && turma.getIdTurma() != null && 
+					disciplina != null	&& disciplina.getIdDisciplina() != null) {
+				crit.createCriteria("avaliacao").add(Restrictions.eq("turma", turma))
+						.add(Restrictions.eq("disciplina", disciplina));
+				return crit.list();
+			}
+
 			if (disciplina != null && disciplina.getIdDisciplina() != null)
-				return buscaAvaliacoesPorDisciplina(crit.list(), disciplina);
+				crit.createCriteria("avaliacao").add(Restrictions.eq("disciplina", disciplina));
+			
+			if(turma != null && turma.getIdTurma() != null){
+				crit.createCriteria("avaliacao").add(Restrictions.eq("turma", turma));
+			}
 
 			return crit.list();
 		} catch (Exception e) {
@@ -230,9 +284,9 @@ public class AvaliacoesBeanDao implements Serializable {
 				resp.setQuestao(questaoAvaliacao.getQuestao());
 				resp.setAvaliacao(questaoAvaliacao.getAvaliacao());
 				resp.setAluno(usuario);
-//				em.persist(resp);
+				// em.persist(resp);
 				listaRespostas.add(resp);
-				
+
 			}
 			Avaliacao avaliacao = daoAvaliacao.buscaPorId(avalicoes.getAvaliacao().getIdAvaliacao());
 			avaliacao.setRespostas(listaRespostas);

@@ -16,7 +16,7 @@
 			<div id="homeTop"></div>
 
 			<div id="home">
-			 <h:form id="formtable">
+			 <h:form id="formtable" rendered="#{mbAvisos.avisos.size() > 0}">
                 <p:growl id="msg1"/>
                 <p:dataTable id="idTabela" var="aviso" value="#{mbAvisos.avisos}"
                              paginator="false" rows="10" emptyMessage="Nenhum aviso encontrado"
@@ -40,7 +40,7 @@
 						<div align="center">
 							<p:commandLink action="#{mbAvisos.deletar()}"
 								onclick="if (!confirm('Confirma a exclusão do aviso?')) return false;"
-								update="@form" title="Excluir aviso"> 
+								process="@this" update="@all" title="Excluir aviso"> 
 								<p:graphicImage library="imagens" name="trash.png"
 									style="border:0" />
 								<f:setPropertyActionListener

@@ -4,19 +4,23 @@ import static com.tc.util.IavaliarGlobal.AGENTE_SOLICITANTE;
 import static com.tc.util.IavaliarGlobal.PREFIXO_AGENTE_ALUNO;
 import static com.tc.util.IavaliarGlobal.PREFIXO_AGENTE_PROFESSOR;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.tc.beans.BeanMensagem;
 import com.tc.beans.BeanSolicitacao;
+import com.tc.controller.AgentesController;
 import com.tc.controller.MbLoginController;
+import com.tc.model.Avisos;
 import com.tc.model.Usuario;
 
 import jade.core.Agent;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.util.ExtendedProperties;
 import jade.util.leap.Properties;
 import jade.wrapper.AgentContainer;
@@ -26,7 +30,7 @@ import jade.wrapper.StaleProxyException;
 
 public class PlataformaAgentes extends Agent {
 	private static final long serialVersionUID = 1L;
-
+	
 	private static AgentContainer agentContainer;
 
 	private static HashMap<String, BeanMensagem> mapMenasagensUsuario;
@@ -35,11 +39,14 @@ public class PlataformaAgentes extends Agent {
 	
 	private static HashMap<String, Object > mapInformacoes;
 	
+	private static List<Avisos> listaAvisos;
+	
 	public static boolean isPlataformaInicializada;
 	
 	public static void main(String[] args) {
 		try {
 			getMainContainer();
+			taskPersisteAvisos();
 			//criaContainerAgentes();
 		} catch (ControllerException e) {
 			// TODO Auto-generated catch block
@@ -82,10 +89,6 @@ public class PlataformaAgentes extends Agent {
 		return agentContainer;
 	}
 
-	// AgentController agentControllerCorretor
-	// =agentContainer.createNewAgent(AGENTE_CORRETOR,
-	// AgenteCorretor.class.getName() , null);
-	// agentControllerCorretor.start();
 	public static void criaNovoAgente(Usuario usuario, String nome, Class<?> clazz, Object[] args) throws StaleProxyException, ControllerException {
 		AgentController agentController = getMainContainer().createNewAgent(nome,clazz.getName(), args);
 		agentController.start();
@@ -110,6 +113,13 @@ public class PlataformaAgentes extends Agent {
 		if (mapMenasagensUsuario == null)
 			mapMenasagensUsuario = new HashMap<String, BeanMensagem>();
 		return mapMenasagensUsuario;
+	}
+	
+	public static List<Avisos> getListaDeAvisos(){
+		if(listaAvisos == null){
+			listaAvisos = new ArrayList<Avisos>();
+		}
+		return listaAvisos;
 	}
 	
 	/**
@@ -164,25 +174,43 @@ public class PlataformaAgentes extends Agent {
 		}
 	}
 
-	// /**
-	// * Mapa para guardar os respostas das questões respondidas
-	// * @return
-	// */
-	// public static Res<RespostaPK, Respostas> getMapRespostas() {
-	// if(mapRespostas == null)
-	// mapRespostas = new HashMap<>();
-	// return mapRespostas;
-	// }
-
-	// Método para registar serviço
-	public static void registraServico(Agent a, ServiceDescription sd) {
-		DFAgentDescription dfd = new DFAgentDescription();
-		dfd.addServices(sd);
-		try {
-			DFService.register(a, dfd);
-		} catch (Exception e) {
-			System.out.println("Erro ao registrar serviço.");
-			e.printStackTrace();
+	
+	
+	/**
+	 * Utilizado para persistir as avisos geradas pelos agentes;
+	 * */
+	private static void taskPersisteAvisos() {
+		
+		// Converte os minutos para miles,
+		int miles = 1 * 1 * 10000;
+		System.out.println("Gravando avisos...");
+		Timer timer = new Timer("Thr-gravaAviso-task");
+		TimerTask t = new TimerTask() {
+			@Override
+			public void run() {
+				try {
+					PlataformaAgentes.gravarAvisosGerados();
+				} catch (Exception e) {
+					System.out.println("Erro ao gravar avisos...");
+				}
+			}
+		};
+		timer.schedule(t, new Date(), miles);
+	}
+	
+	private static void gravarAvisosGerados(){
+		if(listaAvisos != null && listaAvisos.size() > 0){
+			for (Avisos aviso : listaAvisos) {
+				try {
+					if(!AgentesController.daoAvisos.isExisteAviso(aviso.getUsuario(), aviso.getTipoAviso())){
+						AgentesController.daoAvisos.create(aviso);
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				listaAvisos.clear();
+			}
 		}
 	}
 

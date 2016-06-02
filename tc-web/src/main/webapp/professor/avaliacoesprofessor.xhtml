@@ -17,45 +17,33 @@
 						<h:panelGrid columns="5" cellpadding="10" styleClass="panelGrid"
 							id="grid0">
 
-							<p:selectOneMenu id="disciplina" style="width:260px"
-								value="#{mbPesquisaAvaliacaoProfessor.disciplina.idDisciplina}">
+							<p:selectOneMenu id="disciplina" style="width:300px"
+								value="#{mbAvaliacoesProfessor.disciplina.idDisciplina}">
 								<f:selectItem itemLabel="Filtrar por Disciplina" itemValue="" />
 								<f:selectItems value="#{bbDisciplina.disciplinas}"
 									var="disciplina" itemValue="#{disciplina.idDisciplina}"
 									itemLabel="#{disciplina.dsDisciplina}" size="20" />
 								<p:ajax event="change" process="@this"
-									listener="#{mbPesquisaAvaliacaoProfessor.aplicaFiltroAvaliacao()}"
+									listener="#{mbAvaliacoesProfessor.aplicaFiltroAvaliacao()}"
 									update="formtable" />
 							</p:selectOneMenu>
 
-							<p:selectOneMenu id="statusAvaliacao" style="width:280px"
-								value="#{mbPesquisaAvaliacaoAluno.status}">
-								<f:selectItem itemLabel="Filtrar por Status" itemValue="" />
-								<f:selectItems 
-									value="#{mbPesquisaAvaliacaoAluno.statusAvaliacao}"
-									var="status" itemValue="#{status}"
-									itemLabel="#{status}" size="20" />
-								<p:ajax event="change" process="@this"
-									listener="#{mbPesquisaAvaliacaoAluno.aplicaFiltroAvaliacao()}"
-									update="formtable" />
-							</p:selectOneMenu>
-
-							<p:selectOneMenu id="turma" style="width:310px"
-								value="#{mbPesquisaAvaliacaoProfessor.turma.idTurma}">
+							<p:selectOneMenu id="turma" style="width:220px"
+								value="#{mbAvaliacoesProfessor.turma.idTurma}">
 								<f:selectItem itemLabel="Filtrar por Turma" itemValue="" />
-								<f:selectItems value="#{bbTurmas.turmas}"
-									var="turmas" itemValue="#{turmas.idTurma}"
-									itemLabel="#{turmas.dsTurma}" size="20" />
+								<f:selectItems value="#{bbTurmas.turmas}" var="turmas"
+									itemValue="#{turmas.idTurma}" itemLabel="#{turmas.dsTurma}"
+									size="20" />
 								<p:ajax event="change" process="@this"
-									listener="#{mbPesquisaAvaliacaoProfessor.aplicaFiltroAvaliacao()}"
+									listener="#{mbAvaliacoesProfessor.aplicaFiltroAvaliacao()}"
 									update="formtable" />
 							</p:selectOneMenu>
 
 							<h:panelGrid id="panenlBotoes"
-								style="float:right; margin-left:220;" columns="1">
+								style="float:right; margin-left:535;" columns="1">
 
 								<p:commandButton value="Voltar"
-									action="#{mbPesquisaAvaliacaoProfessor.goBack()}"
+									action="#{mbAvaliacoesProfessor.goBack()}"
 									style="float:right" immediate="true"
 									icon="ui-icon ui-icon-close">
 								</p:commandButton>
@@ -67,51 +55,43 @@
 			</p:tabView>
 			<h:form id="formtable">
 				<p:dataTable id="table"
-					value="#{mbPesquisaAvaliacaoProfessor.avaliacoes}" var="avaliacoes"
+					value="#{mbAvaliacoesProfessor.listaAvaliacao}" var="avaliacao"
 					widgetVar="tableAvaliacoes"
 					emptyMessage="Nenhuma questão encontrada com os determinados critérios">
 
-					<p:column headerText="Disciplinas" footerText="Disciplina"
-						style="width:250px;">
+					<p:column headerText="Disciplina" footerText="Disciplina"
+						style="width:130;">
 						<f:facet name="filter1">
 							<p:selectOneMenu
 								onchange="#{mbPesqiosaAvaliacao.aplicaFiltroAvaliacao()}"
-								style="width:180px">
+								style="width:250px">
 								noSelectionOption="true" />
 							<f:selectItems value="#{bbDisciplina.disciplinas}" />
 							</p:selectOneMenu>
 						</f:facet>
-						<h:outputText value="#{avaliacoes.avaliacao.disciplina.dsDisciplina}" />
+						<h:outputText value="#{avaliacao.disciplina.dsDisciplina}" />
 					</p:column>
 
-					<p:column width="250" headerText="Status da Avaliação"
-						footerText="Status da Avaliação">
-						<h:outputText
-							value="#{avaliacoes.statusAvaliacao}" />
+					<p:column headerText="Turma" footerText="Turma"
+						style="width:80; text-align: center">
+						<h:outputText value="#{avaliacao.turma.dsTurma}" />
 					</p:column>
 
-					<p:column headerText="Turmas" footerText="Turma" style="width:280;">
-						<h:outputText value="#{avaliacoes.avaliacao.turma.dsTurma}" />
-					</p:column>
-
-
-					<p:column width="160" headerText="Data Limite"
-						footerText="Encerramento">
-						<h:outputText value="#{avaliacoes.avaliacao.dataFimAvaliacao}"
-							pattern="dd/MM/yyyy HH:mm:ss" locale="pt_BR" />
+					<p:column width="170" headerText="Título"
+						footerText="Título da Avaliação">
+						<h:outputText value="#{avaliacao.tituloAvaliacao}" />
 					</p:column>
 
 
-					<p:column style="width:130;text-align: center">
-						<p:commandButton icon="ui-icon-add" value="Corrigir"
-							rendered="#{mbPesquisaAvaliacaoProfessor.corrigir(avaliacao.statusAvaliacao.idStatusAvaliacao)}"
-							action="#{mbPesquisaAvaliacaoProfessor.corrigirAvaliacao()}"
-							update="@all" title="Responder Avaliação">
-							<p:ajax
-								listener="#{mbCorrigirAvaliacao.setaCaminhoOrigem(bbGlobal.PAGINA_AVALIACOES_PROFESSOR)}" />
+					<p:column style="width:100;text-align: center">
+						<p:commandButton icon="ui-icon-add" value="Ver desempenho"
+							action="#{mbAvaliacoesProfessor.aplicaFiltroAvaliacao()}"
+							update="@all" title="Consultar dados estatísticos da avaliação">
+							
 							<f:setPropertyActionListener
-								target="#{mbCorrigirAvaliacao.avaliacao}" value="#{avaliacoes}" />
+								target="#{mbAvaliacoesProfessor.avaliacao}" value="#{avaliacao}" />
 						</p:commandButton>
+
 					</p:column>
 				</p:dataTable>
 			</h:form>

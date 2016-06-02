@@ -2,6 +2,7 @@ package com.tc.beans;
 
 import java.io.Serializable;
 
+import com.tc.model.Avaliacoes;
 import com.tc.model.Questao;
 import com.tc.model.Respostas;
 
@@ -19,6 +20,17 @@ public class BeanSolicitacao implements Serializable{
 	
 	private String loginUsuario;
 	
+	private Avaliacoes avaliacoes;
+	
+	
+	public Avaliacoes getAvaliacoes() {
+		return avaliacoes;
+	}
+
+	public void setAvaliacoes(Avaliacoes avaliacoes) {
+		this.avaliacoes = avaliacoes;
+	}
+
 	public String getSolicitacao() {
 		return solicitacao;
 	}

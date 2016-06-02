@@ -38,50 +38,34 @@
 
 				<p:submenu label="Questões"
 					rendered="#{mbLoginController.professor}">
-					<p:menuitem value="Consultar Questões públicas"
-						url="/restrito/atualizacadastro.jsf" />
-					<p:menuitem value="Buscador de Questão"
-						url="/professor/pesquisaquestao.jsf" />
-					<p:submenu label="Incluir Questão">
-						<p:menuitem value="Dissertativa"
-							url="/professor/incluirquestaodissertativa.jsf" />
-						<p:menuitem value="Objetiva"
-							url="/professor/incluirquestaoobjetiva.jsf" />
-						<p:menuitem value="Relacionar"
-							url="/professor/incluirquestaorelacionar.jsf" />
-						<p:menuitem value="Verdadeiro ou Falso"
-							url="/professor/incluirquestaoVF.jsf" />
-						<p:menuitem value="Ordenar"
-							url="/professor/incluirquestaoordenar.jsf" />
-					</p:submenu>
+					<p:menuitem value="Nova Questão Dissertativa"
+						url="/professor/incluirquestaodissertativa.jsf" />
+					<p:menuitem value="Nova Questão Objetiva"
+						url="/professor/incluirquestaoobjetiva.jsf" />
+					<p:menuitem value="Nova Questão Relacionar"
+						url="/professor/incluirquestaorelacionar.jsf" />
+					<p:menuitem value="Nova Questão Verdadeiro ou Falso"
+						url="/professor/incluirquestaoVF.jsf" />
+					<p:menuitem value="Nova Questão Ordenar"
+						url="/professor/incluirquestaoordenar.jsf" />
 				</p:submenu>
 
 				<p:submenu label="Avaliações"
 					rendered="#{mbLoginController.professor}">
 					<p:menuitem value="Criar Avaliação"
 						url="/professor/criaravaliacao.jsf" />
-					<p:menuitem value="Busca Avaliações"
+					<p:menuitem value="Aguardando Correção"
+						url="/professor/avaliacoesProfessorCorrigir.jsf" />
+					<p:menuitem value="Avaliações Concluídas/Desempenhos"
 						url="/professor/avaliacoesprofessor.jsf" />
-					<p:menuitem value="Corrigir Avaliação"
-						url="/professor/correcaoavaliacao.jsf" />
-					<p:menuitem value="Estatísticas/Informações"
-						url="/professor/estatisticas.jsf" />
 
+				</p:submenu>
+
+				<p:submenu label="Turmas" rendered="#{mbLoginController.professor}">
+					<p:menuitem value="Gestão de Turmas"
+						url="/professor/turmasprofessor.jsf" />
 				</p:submenu>
 				
-					<p:submenu label="Turmas"
-					rendered="#{mbLoginController.professor}">
-					<p:menuitem value="Minhas turmas"
-						url="/professor/turmasprofessor.jsf" />
-
-				</p:submenu>
-
-				<p:submenu label="Estatísticas"
-					rendered="#{mbLoginController.professor}">
-					<p:menuitem value="Estatísticas/Informações"
-						url="/professor/estatisticas.jsf" />
-				</p:submenu>
-
 				<p:submenu label="Aluno" rendered="#{mbLoginController.aluno}">
 					<p:menuitem value="Minhas Avaliações"
 						url="/aluno/avaliacoesaluno.jsf" />
@@ -93,10 +77,6 @@
 						<p:menuitem value="Turma, Grupo ou Curso"
 							url="/aluno/entrarturma.jsf" />
 					</p:submenu>
-				</p:submenu>
-
-
-				<p:submenu label="Preferências">
 				</p:submenu>
 
 				<p:submenu label="Perfil">

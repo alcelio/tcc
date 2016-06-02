@@ -4,9 +4,12 @@ import static com.tc.agentes.PlataformaAgentes.getMapEmCorrecao;
 import static com.tc.agentes.PlataformaAgentes.getMapInformacoes;
 import static com.tc.agentes.PlataformaAgentes.getMapMensagensUsuarios;
 import static com.tc.controller.MbLoginController.getUsuarioLogado;
+import static com.tc.util.IavaliarGlobal.MENSAGEM_AVISO_CORRIGIR;
+import static com.tc.util.IavaliarGlobal.PAGINA_AVALIACOES_PROFESSOR;
 import static com.tc.util.IavaliarGlobal.PAGINA_HOME;
 import static com.tc.util.IavaliarGlobal.SOLICITACAO_CORRECAO;
-import static com.tc.util.IavaliarGlobal.STATUS_AVALIACAO_PENDETE;
+import static com.tc.util.IavaliarGlobal.STATUS_AVALIACAO_PENDETE_CORRECAO;
+import static com.tc.util.IavaliarGlobal.TIPO_AVISO_CORRECAO;
 import static com.tc.util.IntegerUtil.ZERO;
 import static java.lang.Boolean.TRUE;
 import static javax.faces.application.FacesMessage.SEVERITY_INFO;
@@ -27,14 +30,17 @@ import com.tc.agentes.PlataformaAgentes;
 import com.tc.beans.BeanMensagem;
 import com.tc.beans.BeanSolicitacao;
 import com.tc.data.AvaliacoesBeanDao;
+import com.tc.data.AvisosBeanDao;
 import com.tc.data.HistoricoResponderAvalicaoBeanDao;
 import com.tc.data.QuestaoBeanDao;
 import com.tc.data.RespostasBeanDao;
 import com.tc.model.Aluno;
 import com.tc.model.Avaliacoes;
+import com.tc.model.Avisos;
 import com.tc.model.HistoricoResponderAvaliacao;
+import com.tc.model.QuestaoDissertativa;
+import com.tc.model.QuestoesAvaliacao;
 import com.tc.model.Respostas;
-import com.tc.util.IavaliarUtil;
 
 import jade.core.Agent;
 
@@ -51,6 +57,8 @@ public class MbResponderAvaliacao extends Agent {
 	RespostasBeanDao daoRespostas;
 	@EJB
 	HistoricoResponderAvalicaoBeanDao daoHistorico;
+	@EJB
+	AvisosBeanDao daoAvisos;
 
 	private Avaliacoes avaliacoes;
 
@@ -188,7 +196,7 @@ public class MbResponderAvaliacao extends Agent {
 		try {
 			long count = daoHistorico.tempoMedioPorQuestao(getAvaliacoes().getAvaliacao().getQuestoesAvaliacao().get(getIndiceQuestao()).getQuestao());
 			
-			System.out.println("Data: "+ IavaliarUtil.formatarHoraComSegundos(new Date(count)));
+			System.out.println("Tempo para resolver questão: "+ count);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -211,7 +219,7 @@ public class MbResponderAvaliacao extends Agent {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Método atualiza indice de questões da avaliação
 	 * 
@@ -242,11 +250,14 @@ public class MbResponderAvaliacao extends Agent {
 		try {
 			getAvaliacoes().setAvalicaoRespondida(true);
 			getAvaliacoes().setDtaRespondida(new Date());
-			getAvaliacoes().setStatusAvaliacao(STATUS_AVALIACAO_PENDETE);
+			getAvaliacoes().setStatusAvaliacao(STATUS_AVALIACAO_PENDETE_CORRECAO);
 			getAvaliacoes().getAvaliacao().setRespostas(getRespostas());
 
 			// Salva a avaliação
 			daoAvaliacoes.update(getAvaliacoes());
+			
+			//avisaFinalizacaoAvaliacao();
+			geraAvisoCorrecao();
 
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null,
@@ -288,6 +299,41 @@ public class MbResponderAvaliacao extends Agent {
 		}
 		return false;
 	}
+	
+	/**
+	 * Método que executa os procedimentos depois que um aluno finaliza de responder a avaliação
+	 * @param bean
+	 * @throws Exception
+	 */
+	private void geraAvisoCorrecao() throws Exception{
+		List<QuestoesAvaliacao> listaQuestoes = getAvaliacoes().getAvaliacao().getQuestoesAvaliacao();
+		
+		boolean isQuestaoDissertativa =false;
+		if(listaQuestoes != null && listaQuestoes.size() > 0){
+			for (QuestoesAvaliacao questoesAvaliacao : listaQuestoes) {
+				if(questoesAvaliacao.getQuestao() instanceof QuestaoDissertativa){
+					isQuestaoDissertativa = true;
+					break;
+				}
+			}
+		}
+		
+		if(isQuestaoDissertativa){
+			if(!daoAvisos.isExisteAviso(getAvaliacoes().getProfessor(), TIPO_AVISO_CORRECAO)){
+				Avisos aviso = new Avisos();
+				aviso.setDataGeracao(new Date());
+				aviso.setDescricao(MENSAGEM_AVISO_CORRIGIR);
+				aviso.setLink(PAGINA_AVALIACOES_PROFESSOR);
+				aviso.setTipoAviso(TIPO_AVISO_CORRECAO);
+				aviso.setUsuario(getAvaliacoes().getProfessor());
+				aviso.setAtivo(true);
+				daoAvisos.create(aviso);
+			}
+		}
+		
+
+	}
+
 
 	public Avaliacoes getAvaliacoes() {
 		return avaliacoes;

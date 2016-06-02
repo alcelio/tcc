@@ -33,6 +33,7 @@ public class Avisos implements Serializable {
 
 	private String descricao;
 	private String link;
+	private String tipoAviso;
 
 	@ManyToOne
 	@JoinColumn(name = "idUsuario")
@@ -81,12 +82,20 @@ public class Avisos implements Serializable {
 		this.link = link;
 	}
 
-	public Usuario getProfessor() {
+	public String getTipoAviso() {
+		return tipoAviso;
+	}
+
+	public void setTipoAviso(String tipoAviso) {
+		this.tipoAviso = tipoAviso;
+	}
+
+	public Usuario getUsuario() {
 		return usuario;
 	}
 
-	public void setProfessor(Usuario professor) {
-		this.usuario = professor;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
@@ -98,6 +107,7 @@ public class Avisos implements Serializable {
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((idAvisos == null) ? 0 : idAvisos.hashCode());
 		result = prime * result + ((link == null) ? 0 : link.hashCode());
+		result = prime * result + ((tipoAviso == null) ? 0 : tipoAviso.hashCode());
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
 		return result;
 	}
@@ -133,6 +143,11 @@ public class Avisos implements Serializable {
 				return false;
 		} else if (!link.equals(other.link))
 			return false;
+		if (tipoAviso == null) {
+			if (other.tipoAviso != null)
+				return false;
+		} else if (!tipoAviso.equals(other.tipoAviso))
+			return false;
 		if (usuario == null) {
 			if (other.usuario != null)
 				return false;
@@ -140,5 +155,4 @@ public class Avisos implements Serializable {
 			return false;
 		return true;
 	}
-	
 }

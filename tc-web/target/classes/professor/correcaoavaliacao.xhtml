@@ -9,8 +9,73 @@
 	template="/templates/principal.xhtml">
 
 	<ui:define name="tarefas">
-	
-	correcaoavaliacao.xhtml
+
+		<h:form>
+			<p:dataScroller
+				value="#{mbAvaliacoesProfessor.respostasDissertativas}"
+				var="respostas" chunkSize="10" mode="inline" scrollHeight="450">
+				<f:facet name="header">
+            Questõs Dissertativas para serem corrigidas.<br />
+					<h:outputText value="Aluno: " />
+					<h:outputText
+						value="#{mbAvaliacoesProfessor.avaliacoes.aluno.nome}" />
+					<br />
+
+					<h:outputText value="Avaliação: " />
+					<h:outputText
+						value="#{mbAvaliacoesProfessor.avaliacao.tituloAvaliacao}" />
+
+					<div align="right" style="margin-right: 15px">
+						<p:commandButton value="Voltar" immediate="true"
+							action="#{mbAvaliacoesProfessor.goBack()}"
+							icon="ui-icon ui-icon-close" update="@all"
+							style="width:100px; height:30px">
+						</p:commandButton>
+
+						<p:commandButton value="Salvar"
+							action="#{mbAvaliacoesProfessor.gravaCorrecoesDissertativas()}"
+							icon="ui-icon-disk" update="@all"
+							style="width:100px; height:30px">
+
+							<f:setPropertyActionListener
+								target="#{mbAvaliacoesProfessor.respostasDissertativas}"
+								value="#{respostas}" />
+						</p:commandButton>
+					</div>
+				</f:facet>
+
+				<h:panelGrid columns="2" style="width:100%"
+					columnClasses="logo,detail" cellspacing="15" cellpadding="10">
+
+					<p:outputPanel>
+						<h:panelGrid columns="2" cellspacing="10">
+							<h:outputText value="Questão: " />
+							<h:outputText value="#{respostas.questao.pergunta}"
+								style="font-weight: bold " escape="false"/>
+
+							<h:outputText value="Resposta: " />
+							<h:outputText value="#{respostas.respDissetativa}"
+								style="font-weight: bold; color: #4e9a06;" escape="false" />
+
+						</h:panelGrid>
+
+						<div align="right">
+							<h:outputText value="A resposta esta? " />
+							<p:selectBooleanButton id="value1"
+								value="#{respostas.respondeuCorretamente}" onLabel="Correta"
+								offLabel="Incorreta" style="width:100px" />
+
+						</div>
+
+
+						<p:separator />
+					</p:outputPanel>
+				</h:panelGrid>
+
+			</p:dataScroller>
+
+
+		</h:form>
 
 	</ui:define>
 

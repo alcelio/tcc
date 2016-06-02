@@ -62,5 +62,19 @@ public class AvisosBeanDao implements Serializable{
 			throw new Exception("Erro ao carregar lista de avisos", e);
 		}
 	}
+	
+	public boolean isExisteAviso(Usuario usuario, String tipoAviso) throws Exception{
+		final Session session = em.unwrap(Session.class);
+		
+		try {
+			final Criteria crit = CriaCriteria.createCriteria(Avisos.class, session);
+			crit.add(Restrictions.eq("usuario", usuario)).add(Restrictions.eq("ativo", true)).add(Restrictions.eq("tipoAviso", tipoAviso));
+			
+			return crit.list().size() > 0;
+			
+		} catch (final Exception e) {
+			throw new Exception("Erro ao carregar lista de avisos", e);
+		}
+	}
     
 }

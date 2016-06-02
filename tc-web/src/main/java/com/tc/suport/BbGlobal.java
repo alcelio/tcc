@@ -6,10 +6,31 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean (name="bbGlobal")
 @ApplicationScoped
 public class BbGlobal {
+	
+	/**
+	 * Endereço da página para visualização de avalições que o professor deve corrigir
+	 */
+	public static final String PAGINA_AVALIACOES_PROFESSOR_A_CORRIGIR = "/professor/avaliacoesProfessorCorrigir.jsf";
+	
+	/**
+	 * Indica o status de avaliação corrigida
+	 */
+	private  final String STATUS_AVALIACAO_CORRIGIDA = "CORRIGIDA";
+
+	/**
+	 * Indica o status de avaliação PENDENTE DE CORREÇÃO
+	 */
+	private  final String STATUS_AVALIACAO_PENDETE_CORRECAO = "PENDENTE DE CORREÇÃO";
+	
+	/**
+	 * Indica o status de avaliação AGUARDANDO INÍCIO(aguardando para ser respondida)
+	 */
+	private  final String STATUS_AVALIACAO_AGUARDANDO_INICIO = "AGUARDANDO INÍCIO";
+
 	/**
 	 * Endereço da página para para visualização de avalições
 	 */
-	private static final String PAGINA_PESQUISA_AVALIACAO = "/professor/pesquisaavaliacao.jsf";
+	private  final String PAGINA_PESQUISA_AVALIACAO = "/professor/pesquisaavaliacao.jsf";
 	/**
 	 * Indica a opção 'A' para as respostas
 	 */
@@ -179,6 +200,11 @@ public class BbGlobal {
 	 * Endereço da página de visualização de estatisticas para aluno;
 	 */
 	private  final String PAGINA_ESTATISTICAS_ALUNO = "/aluno/estatisticasaluno.jsf";
+
+	/**
+	 * Endereço da página de visualização de estatisticas para o professor ;
+	 */
+	private static final String PAGINA_ESTATISTICAS_PROFESSOR = "/aluno/estatisticasProfessor.jsf";
 
 	/**
 	 * Endereço da página pare responder avaliaçao
@@ -392,6 +418,11 @@ public class BbGlobal {
 	public String getPAGINA_ESTATISTICAS_ALUNO() {
 		return PAGINA_ESTATISTICAS_ALUNO;
 	}
+	
+
+	public static String getPaginaEstatisticasProfessor() {
+		return PAGINA_ESTATISTICAS_PROFESSOR;
+	}
 
 	public String getPAGINA_RESPONDER_AVALIACAO() {
 		return PAGINA_RESPONDER_AVALIACAO;
@@ -481,7 +512,7 @@ public class BbGlobal {
 		return OPACAO_E;
 	}
 
-	public static String getPaginaPesquisaAvaliacao() {
+	public String getPaginaPesquisaAvaliacao() {
 		return PAGINA_PESQUISA_AVALIACAO;
 	}
 
@@ -489,9 +520,26 @@ public class BbGlobal {
 		return PAGINA_AVALIACOES_PROFESSOR;
 	}
 
+	public String getSTATUS_AVALIACAO_CORRIGIDA() {
+		return STATUS_AVALIACAO_CORRIGIDA;
+	}
+
+	public String getSTATUS_AVALIACAO_PENDETE_CORRECAO() {
+		return STATUS_AVALIACAO_PENDETE_CORRECAO;
+	}
+
+	public String getSTATUS_AVALIACAO_AGUARDANDO_INICIO() {
+		return STATUS_AVALIACAO_AGUARDANDO_INICIO;
+	}
+
+	public String getPAGINA_PESQUISA_AVALIACAO() {
+		return PAGINA_PESQUISA_AVALIACAO;
+	}
+
 	public String getPAGINA_TURMAS_PROFESSOR() {
 		return PAGINA_TURMAS_PROFESSOR;
 	}
+
 	
 	
 }

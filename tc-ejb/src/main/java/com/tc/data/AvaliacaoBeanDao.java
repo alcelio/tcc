@@ -17,6 +17,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.tc.model.AlunosTurma;
 import com.tc.model.Avaliacao;
+import com.tc.model.Disciplina;
 import com.tc.model.QuestoesAvaliacao;
 import com.tc.model.Respostas;
 import com.tc.model.Turma;
@@ -136,30 +137,38 @@ public class AvaliacaoBeanDao implements Serializable {
 			throw new Exception("Erro ao carregar dados da tabela.", e);
 		}
 	}
+	
+	/**
+	 * * Método que retorna todas a avaliacoes que estã co processo de resposta concluídos
+	 * 
+	 * @param turma
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Avaliacao> listarAvaliacoesConcluidas(Usuario usuarioLogado, Disciplina disciplina, Turma turma) throws Exception {
+		final Session session = em.unwrap(Session.class);
+		try {
+			final Criteria crit = CriaCriteria.createCriteria(Avaliacao.class, session);
+			
+			if (usuarioLogado != null && usuarioLogado.getIdUsuario() != null)
+				crit.add(Restrictions.eq("professor", usuarioLogado)).add(Restrictions.eq("concluida", true));
 
-	// /**
-	// * Método que retorna as avalições diponíveis para um aluno
-	// *
-	// * @param usuario
-	// * @return
-	// * @throws Exception
-	// */
-	// @SuppressWarnings("unchecked")
-	// private List<Avaliacao> listarAvaliacoesAluno(Usuario usuario) throws
-	// Exception {
-	// final Session session = em.unwrap(Session.class);
-	// try {
-	// List<Turma> turmas = daoAlunosTurma.listarTurmasDoAluno(usuario);
-	// final Criteria crit = CriaCriteria.createCriteria(Avaliacao.class,
-	// session);
-	// crit.add(Restrictions.in("turma", turmas));
-	// return crit.list();
-	//
-	// } catch (final Exception e) {
-	// throw new Exception("Erro ao carregar Avaliações do aluno no banco de
-	// dados.", e);
-	// }
-	// }
+			
+			if (disciplina != null && disciplina.getIdDisciplina() != null)
+				crit.add(Restrictions.eq("disciplina", disciplina));
+			
+			if (turma!= null && turma.getIdTurma() != null)
+				crit.add(Restrictions.eq("turma", turma));			
+			
+
+			return crit.list();
+
+		} catch (final Exception e) {
+			throw new Exception("Erro ao gerar lista de avaliações.", e);
+		}
+	}
+
 
 	public Avaliacao buscaPorId(Integer idAvaliacao) throws Exception {
 		final Session session = em.unwrap(Session.class);

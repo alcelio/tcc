@@ -1,22 +1,32 @@
 package com.tc.agentes;
 
+import static com.tc.agentes.PlataformaAgentes.getListaDeAvisos;
 import static com.tc.agentes.PlataformaAgentes.getMapInformacoes;
 import static com.tc.agentes.PlataformaAgentes.getMapMensagensUsuarios;
+import static com.tc.util.IavaliarGlobal.MENSAGEM_AVISO_CORRIGIR;
+import static com.tc.util.IavaliarGlobal.PAGINA_AVALIACOES_PROFESSOR;
 import static com.tc.util.IavaliarGlobal.PREFIXO_AGENTE_PROFESSOR;
+import static com.tc.util.IavaliarGlobal.SOLICITACAO_CORRECAO;
+import static com.tc.util.IavaliarGlobal.SOLICITACAO_FINALIZA_RESPONDER_AVALICAO;
+import static com.tc.util.IavaliarGlobal.TIPO_AVISO_CORRECAO;
+
+import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 
 import com.tc.beans.BeanMensagem;
 import com.tc.beans.BeanSolicitacao;
 import com.tc.data.RespostasBeanDao;
+import com.tc.model.Avisos;
 import com.tc.model.Questao;
 import com.tc.model.QuestaoDissertativa;
 import com.tc.model.QuestaoObjetiva;
 import com.tc.model.QuestaoOrdenar;
 import com.tc.model.QuestaoRelacionar;
 import com.tc.model.QuestaoVF;
+import com.tc.model.QuestoesAvaliacao;
 import com.tc.model.Respostas;
-import com.tc.util.IavaliarGlobal;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -24,7 +34,6 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.UnreadableException;
 
 /**
  * Classe que implementa os comportamentos para o agente Professsor
@@ -42,13 +51,13 @@ public class AgenteProfessor extends Agent {
 	protected void setup() {
 		System.out.println(PREFIXO_AGENTE_PROFESSOR + " inicializado...");
 		// Descrição do servico
-		ServiceDescription servico = new ServiceDescription();
+		//ServiceDescription servico = new ServiceDescription();
 		// Seu serviço é apagar fogo
-		servico.setType(IavaliarGlobal.SERVICO_CORRIGIR_QUESTAO);
+		//servico.setType(IavaliarGlobal.SERVICO_CORRIGIR_QUESTAO);
 
-		servico.setName(this.getLocalName());
+		//servico.setName(this.getLocalName());
 
-		registraServico(servico);
+		//registraServico(servico);
 
 		recebeMensagens();
 
@@ -87,14 +96,22 @@ public class AgenteProfessor extends Agent {
 					try {
 						bean = (BeanSolicitacao) msg.getContentObject();
 
-						if (bean.getSolicitacao().equals(IavaliarGlobal.SOLICITACAO_CORRECAO)) {
+						if (bean.getSolicitacao().equals(SOLICITACAO_CORRECAO)) {
 							executaCorrecaoQuestao(bean);
 							ACLMessage reply = msg.createReply();
 							reply.setContent("Inicializando correção de questão");
 							myAgent.send(reply);
 
 						}
-					} catch (UnreadableException e) {
+						
+						if (bean.getSolicitacao().equals(SOLICITACAO_FINALIZA_RESPONDER_AVALICAO)) {
+							executaFinalizacaoResponderAvalicao(bean);
+							ACLMessage reply = msg.createReply();
+							reply.setContent("Executando comportamento de finalização de avaliação...");
+							myAgent.send(reply);
+
+						}
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -129,8 +146,39 @@ public class AgenteProfessor extends Agent {
 		System.out.println("SMA - Encerrdada correção da questão [" + bean.getIndiceQuestao() + "]");
 		PlataformaAgentes.getMapEmCorrecao().remove(bean.getLoginUsuario());
 	}
+	/**
+	 * Método que executa os procedimentos depois que um aluno finaliza de responder a avaliação
+	 * @param bean
+	 * @throws Exception
+	 */
+	private void executaFinalizacaoResponderAvalicao(BeanSolicitacao bean) throws Exception{
+		List<QuestoesAvaliacao> listaQuestoes = bean.getAvaliacoes().getAvaliacao().getQuestoesAvaliacao();
+		
+		boolean isQuestaoDissertativa =false;
+		if(listaQuestoes != null && listaQuestoes.size() > 0){
+			for (QuestoesAvaliacao questoesAvaliacao : listaQuestoes) {
+				if(questoesAvaliacao.getQuestao() instanceof QuestaoDissertativa){
+					isQuestaoDissertativa = true;
+					break;
+				}
+			}
+		}
+		
+		if(isQuestaoDissertativa){
+			Avisos aviso = new Avisos();
+			aviso.setDataGeracao(new Date());
+			aviso.setDescricao(MENSAGEM_AVISO_CORRIGIR);
+			aviso.setLink(PAGINA_AVALIACOES_PROFESSOR);
+			aviso.setTipoAviso(TIPO_AVISO_CORRECAO);
+			aviso.setUsuario(bean.getAvaliacoes().getProfessor());
+			aviso.setAtivo(true);
+			getListaDeAvisos().add(aviso);
+		}
+		
+
+	}
 	
-	
+
 	/**
 	 * Método para aplicar a correção da questão
 	 * @param resposta

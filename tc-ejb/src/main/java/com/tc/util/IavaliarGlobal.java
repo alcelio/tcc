@@ -10,9 +10,18 @@ public class IavaliarGlobal {
 	public static final String SERVICO_CURAR_DOENCA ="Salvar vidas";
 	
 	/**
-	 * Guarda chave como nome identificar avanço de uma questão para outra
+	 * Chave para identificar avisos no mapInformacoes
 	 */
-	public static final String AVANCOU_QUESTAO ="AVANCOU";
+	public static final String CHAVE_AVISO ="CHAVE AVISO";
+	
+	public static final String TIPO_AVISO_CORRECAO ="CORRECAO";
+	
+	public static final String TIPO_AVISO_RESPODNER ="RESPONDER";
+
+	public static final String MENSAGEM_AVISO_RESPONDER ="Olá, você tem avaliações para responder.";
+	
+	public static final String MENSAGEM_AVISO_CORRIGIR ="Olá, você tem avaliações pendentes de correção.";
+ 
 	
 	/**
 	 * Guarda chave como nome para identificar o retorno de uma questão para outra
@@ -21,9 +30,14 @@ public class IavaliarGlobal {
 	
 	
 	/**
-	 * Indicando o nome para o servico de correção de respostas
+	 * Indicando o nome para o servico de correção de questao
 	 */
 	public static final String SOLICITACAO_CORRECAO ="Correcao";
+	
+	/**
+	 * Indicando o nome para o servico de finaliza avaliacao
+	 */
+	public static final String SOLICITACAO_FINALIZA_RESPONDER_AVALICAO ="Finalizar Responder Avaliacao";
 	
 	
 	/**
@@ -51,7 +65,7 @@ public class IavaliarGlobal {
 	/**
 	 * Indica o status de avaliação PENDENTE DE CORREÇÃO
 	 */
-	public static final String STATUS_AVALIACAO_PENDETE = "PENDENTE DE CORREÇÃO";
+	public static final String STATUS_AVALIACAO_PENDETE_CORRECAO = "PENDENTE DE CORREÇÃO";
 	
 	/**
 	 * Indica o status de avaliação AGUARDANDO INÍCIO(aguardando para ser respondida)
@@ -204,6 +218,11 @@ public class IavaliarGlobal {
 	 * Endereço da página de visualização de estatisticas para aluno;
 	 */
 	public static final String PAGINA_ESTATISTICAS_ALUNO = "/aluno/estatisticasaluno.jsf";
+
+	/**
+	 * Endereço da página de visualização de estatisticas para o professor ;
+	 */
+	public static final String PAGINA_ESTATISTICAS_PROFESSOR = "/aluno/estatisticasProfessor.jsf";
 	
 	/**
 	 * Endereço da página pare responder avaliaçao
@@ -301,4 +320,8 @@ public class IavaliarGlobal {
 	 */
 	public static final String PAGINA_AVALIACOES_PROFESSOR = "/professor/avaliacoesprofessor.jsf";
 	
+	/**
+	 * Endereço da página para visualização de avalições
+	 */
+	public static final String PAGINA_AVALIACOES_PROFESSOR_A_CORRIGIR = "/professor/avaliacoesProfessorCorrigir.jsf";
 }
